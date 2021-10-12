@@ -28,9 +28,9 @@ In Ubuntu:
 Tutorials:
 ----------
 
-  [x] -- Written documentation accessed from inside the program -- NEEDS MAJOR UPGRADE!
-  [ ] -- Youtube video tutorials -- HOPEFULLY COMING SOON!
-  [x] -- Case files that can be used to see working examples (..\solFEM_v3\Example Mesh Files) -- MORE EXAMPLE MESHES COMING!
+- Written documentation accessed from inside the program -- NEEDS MAJOR UPGRADE!
+- Youtube video tutorials -- HOPEFULLY COMING SOON!
+- Case files that can be used to see working examples (..\solFEM_v3\Example Mesh Files) -- MORE EXAMPLE MESHES COMING!
 
 
 
