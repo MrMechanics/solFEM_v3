@@ -1,0 +1,198 @@
+#
+#
+#	NEEDS TO BE UPDATED!!!
+#
+#
+#--------------------------
+SOLUTION, solution_name1, Static
+#--------------------------
+	MESHES, <elementset_1>, <elementset_2>				(specific element sets, all elements used if not specified)
+	CONSTRAINTS, <constraint_1>							(bind node sets together, optional)
+	CONSTRAINTS, <constraint_2>
+	LOADS, <load_1>					 					(name of loads used)
+	LOADS, <load_2>
+	BOUNDARIES, <boundary_1>							(name of boundaries used)
+	BOUNDARIES, <boundary_2>
+#
+#
+#--------------------------
+RESULTS, solution_name1
+#--------------------------
+	DISPLACEMENT, plot, <nodeset>, text, <elementset>
+	NODEFORCE, plot, <nodeset>, text, <elementset>
+	STRAIN, plot, <elementset>, text, <elementset>
+	STRESS, plot, <elementset>, text, <elementset>
+#
+# results available to plot (3D viewer) in linear Static solution: STRESS, STRAIN, DISPLACEMENT, NODEFORCE
+# results available to text (*.res file) in linear Static solution: STRESS, STRAIN, DISPLACEMENT, NODEFORCE
+#
+#
+#
+#
+#
+#--------------------------
+SOLUTION, solution_name2, StaticPlastic
+#--------------------------
+	MESHES, <elementset_1>, <elementset_2>				(specific element sets, all elements used if not specified)
+	CONSTRAINTS, <constraint_1>							(bind node sets together, optional)
+	CONSTRAINTS, <constraint_2>
+	LOADS, <load_1>					 					(name of loads used)
+	LOADS, <load_2>
+	BOUNDARIES, <boundary_1>							(name of boundaries used)
+	BOUNDARIES, <boundary_2>
+#
+#
+#--------------------------
+RESULTS, solution_name2
+#--------------------------
+	DISPLACEMENT, plot, <nodeset>, text, <elementset>
+	NODEFORCE, plot, <nodeset>, text, <elementset>
+	STRAIN, plot, <elementset>, text, <elementset>
+	STRESS, plot, <elementset>, text, <elementset>
+#
+# results available to plot (3D viewer) in nonlinear StaticPlastic solution: STRESS, STRAIN, DISPLACEMENT, NODEFORCE
+# results available to text (*.res file) in nonlinear StaticPlastic solution: STRESS, STRAIN, DISPLACEMENT, NODEFORCE
+#
+#
+#
+#
+#
+#--------------------------
+SOLUTION, solution_name3, Eigenmodes
+#--------------------------
+	MESHES, <elementset_1>, <elementset_2>				(specific element sets, all elements used if not specified)
+	CONSTRAINTS, <constraint_1>							(bind node sets together, optional)
+	CONSTRAINTS, <constraint_2>
+	BOUNDARIES, <boundary_1>							(name of boundaries used)
+	BOUNDARIES, <boundary_2>
+#
+#
+#--------------------------
+RESULTS, solution_name3
+#--------------------------
+	MODESHAPES, <number of modes>						(required)
+	ENERGYDENSITY
+#
+# results available to plot (3D viewer) in Eigenmodes solution: MODESHAPES, ENERGYDENSITY
+# default results to text (*.res file) in Eigenmodes solution: EIGENFREQUENCIES, MASS, INERTIA MATRIX
+#
+#
+#
+#
+#
+#--------------------------
+SOLUTION, solution_name4, ModalDynamic
+#--------------------------
+	MESHES, <elementset_1>, <elementset_2>				(specific element sets, all elements used if not specified)
+	DAMPINGS, <damp_1>
+	CONSTRAINTS, <constraint_1>							(bind node sets together, optional)
+	CONSTRAINTS, <constraint_2>
+	LOADS, <load_1>					 					(name of loads used)
+	LOADS, <load_2>
+	BOUNDARIES, <boundary_1>							(name of boundaries used)
+	BOUNDARIES, <boundary_2>
+#
+#
+#--------------------------
+RESULTS, solution_name4
+#--------------------------
+	MODESHAPES, <number of modes>						(required)
+	ENERGYDENSITY
+	DISPLACEMENT, plot, <nodeset>, text, <nodeset>, <timestep>
+	ACCELERATION, plot, <nodeset>, text, <nodeset>, <timestep>
+	VELOCITY, plot, <nodeset>, text, <nodeset>, <timestep>
+	NODEFORCE, plot, <nodeset>, text, <elementset>, <timestep>
+	STRAIN, plot, <elementset>, text, <elementset>, <timestep>		(only works with STRAINGAUGE elements)
+	STRESS, plot, <elementset>, text, <elementset>, <timestep>		(only works with STRAINGAUGE elements)
+#
+# results available to plot (2D graph) in ModalDynamic solution: DISPLACEMENT, ACCELERATION, VELOCITY, NODEFORCE, STRESS, STRAIN
+# results available to text (*.res file) in ModalDynamic solution: DISPLACEMENT, ACCELERATION, VELOCITY, NODEFORCE, STRESS, STRAIN
+#
+#
+#
+#
+#
+#
+#		  number, nodes...
+SET_NODES, 401, 49, 60, 274, 281
+#
+#
+#			 number, elements...
+SET_ELEMENTS, 101, 2004, 2914, 2913, 2964, 3135, 3346
+#
+#
+#
+#
+#		   type, name, E-modulus, poisson, density, thermal exp coeff
+MATERIAL, Isotropic, aluminum, 68900, 0.29, 2.7e-9, 2.31e-5
+#
+#
+#		   type, name, damping ratio
+DAMPING, Viscous, damp_1, 0.03
+DAMPING, Frequency, damp_2, 103
+#
+#
+#		   type, table, filename
+TABLE, accel_data, 102, accel1.tab
+TABLE, stress_strain, 101, stress_strain6061.tab
+#
+#
+#		  type, number, material name
+SECTION, SolidSect, 1, aluminum
+#
+#		  type, number, material name, area, Izz, Iyy
+SECTION, RodSect, 2, aluminum, 100
+SECTION, BeamSect, 3, aluminum, 100, 3333, 208
+#
+#		 type, number, material name, thickness, planestrain=True (default planestress)
+SECTION, PlaneSect, 4, aluminum, 5
+SECTION, PlaneSect, 5, aluminum, 50, planestrain
+SECTION, PlateSect, 6, aluminum, 20
+#
+#
+#
+#	   type, name, nodeset/elementset, scalar/table, vector coordinates...
+LOAD, Force, uniform_load_1, 201,  30.0, 0.0, -1.0, 0.0						(spread out evenly on all nodes in nodeset)
+LOAD, Force, uniform_load_2, 201, 500.0, 0.0, -1.0, 0.0
+LOAD, ForceConcentrated, concentrated_load_1, 301, -100.0, 1.0, 0.0, 0.0	(applied to every node in nodeset)
+LOAD, ForceConcentrated, concentrated_load_2, 302, -76.0, 1.0, 0.0, 0.0
+LOAD, ForceDynamic, dynamic_load_1, 401, 2, 0.0, 1.0, 0.0
+LOAD, ForceDynamic, dynamic_load_2, 402, 2, 1.0, 0.0, 0.0
+LOAD, Gravity, grav_load_1, 501, 9.81, 0.0, -1.0, 0.0
+LOAD, Torque, torque_load_1, 601, 200.0, 0.0, -1.0, 0.0
+LOAD, Pressure, press_load_1, 701, 101.2, 0.0, -1.0, 0.0
+#
+#
+#
+#			type, name, nodeset/elementset, value/table, DOFs...
+BOUNDARY, Displacement, fixed_nodes11, 101, 0.0, 1, 2, 3
+BOUNDARY, Displacement, fixed_nodes12, 102, 102, 1
+BOUNDARY, Acceleration, fixed_nodes11, 103, 102, 2
+#
+#
+#
+#			type, name, nodeset1, nodeset2, tolerance
+CONSTRAINT, NodeLock, constraint_1, 201, 202, 0.01			(nodes in nodeset1 that are within tolerance distance
+#															 to nodes in nodeset2 will be locked together with regards
+#															 to displacement)
+#
+#
+#     number, coordinates...
+NODE,    1,  7.200000e+001, -2.000000e+001, -1.000000e+001
+NODE,    2,  7.200000e+001, -3.500000e+001, -1.000000e+001
+# ...
+NODE, 6214,  2.173915e-001, -2.141304e+001,  5.434783e+000
+NODE, 6215,  4.750000e+001,  2.772727e+001,  1.111989e+001
+#
+#
+#		  type, number, section, nodes...
+ELEMENT, TET10N,    1, 1,  561,  753,  509,  754, 1011, 1010, 1009, 1013, 1012, 1014
+ELEMENT, TET10N,    2, 1,  599,  754,  755,  756, 1017, 1016, 1015, 1019, 1018, 1020
+# ...
+ELEMENT, QUAD8N, 3437, 4,  983,  433,  432,  539, 3220, 5643, 3222, 4173, 4210, 4177
+ELEMENT, QUAD8N, 3438, 4,  953,  270,  678,  271, 3783, 5772, 3666, 3779, 3782, 4568
+#
+#
+#
+#
+#

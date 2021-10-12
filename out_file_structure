@@ -1,0 +1,285 @@
+
+ *.out-file structure
+ --------------------
+
+	solFEM.py takes input from a *.sol-file and generates two files
+	that contain the results. One *.res-file and one *.out-file. The
+	*.res-file is written reading from the *.out-file. The *.out-file
+	is also used to load results into the 3D-viewer.
+
+
+
+  model (FEModel-obj)	<--- read and built from *.sol-file
+	|
+	|
+	| ---- model.nodes (dict)
+	|
+	| ---- model.elements (dict)
+	|
+	| ---- model.nodesets (dict)
+	|
+	| ---- model.elementsets (dict)
+	|
+	| ---- model.materials (dict)
+	|
+	| ---- model.sections (dict)
+	|
+	| ---- model.boundaries (dict)
+	|
+	| ---- model.constraints (dict)
+	|
+	| ---- model.loads (dict)
+	|
+	| ---- model.tables (dict)
+	|
+	| ---- model.solutions (dict)
+	|		|
+	|		| ---- model.solutions['sol_name1'] (solution-obj Static) 
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name1'].name (str)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name1'].mesh (mesh-obj)		<--- pointer to model.meshes[i]
+	|		|		|
+	|		|		| ---- model.solutions['sol_name1'].boundaries (dict) {'boundary_name': boundary-obj, ... }
+	|		|		|
+	|		|		| ---- model.solutions['sol_name1'].loads (dict) {'load_name': load-obj, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name1'].constraints (dict) {'constraint_name': constr-obj, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name1'].fixedDOFs (dict) {DOF: disp, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name1'].results (dict)
+	|		|				|
+	|		|				| ---- { 'displacement': { 'text': nodesetnumber,    'plot': nodesetnumber }
+	|		|						 'nodeforce'   : { 'text': nodesetnumber, 	 'plot': nodesetnumber }
+	|		|						 'elementforce': { 'text': elementsetnumber, 'plot': elementsetnumber }
+	|		|						 'stress'	   : { 'text': elementsetnumber, 'plot': elementsetnumber }
+	|		|						 'strain'	   : { 'text': elementsetnumber, 'plot': elementsetnumber } }
+	|		|
+	|		|
+	|		| ---- model.solutions['sol_name2'] (solution-obj Eigenmodes) 
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name2'].name (str)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name2'].eigenfrequencies (list)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name2'].eigenvalues (array)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name2'].eigenvectors (array)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name2'].mesh (mesh-obj)		<--- pointer to model.meshes[i]
+	|		|		|
+	|		|		| ---- model.solutions['sol_name2'].boundaries (dict) {'boundary_name': boundary-obj, ... }
+	|		|		|
+	|		|		| ---- model.solutions['sol_name2'].constraints (dict) {'constraint_name': constr-obj, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name2'].fixedDOFs (dict) {DOF: disp, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name2'].results (dict)
+	|		|				|
+	|		|				| ---- { 'modeshapes': 	  numberOfEigenfrequencies
+	|		|						 'energydensity': True/False				}
+	|		|
+	|		|
+	|		| ---- model.solutions['sol_name3'] (solution-obj ModalDynamic) 
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name3'].name (str)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name3'].eigenfrequencies (list)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name3'].eigenvalues (array)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name3'].eigenvectors (array)
+	|		|		|
+	|	   	|		| ---- model.solutions['sol_name3'].mesh (mesh-obj)			<--- pointer to model.meshes[i]
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].boundaries (dict) {'boundary_name': boundary-obj, ... }
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].loads (dict) {'load_name': load-obj, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].constraints (dict) {'constraint_name': constr-obj, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].dampings (dict) {'damping_name': damp-obj, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].tables (dict) {'table_number': table-obj, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].fixedDOFs (dict) {DOF: disp, ...}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].hasBaseMotion (bool)
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].dampRatio (list)
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].nModes (int)
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].acceleration (dict)
+	|	   	|		|		|
+	|		|		|		| ---- model.solutions['sol_name3'].acceleration[nodenum] (dict)
+	|		|		|				|
+	|		|		|				| ---- {X: [...], Y: [...], Z: [...], RX: [...], RY: [...], RZ: [...]}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].velocity (dict)
+	|	   	|		|		|
+	|		|		|		| ---- model.solutions['sol_name3'].velocity[nodenum] (dict)
+	|		|		|				|
+	|		|		|				| ---- {X: [...], Y: [...], Z: [...], RX: [...], RY: [...], RZ: [...]}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].displacement (dict)
+	|	   	|		|		|
+	|		|		|		| ---- model.solutions['sol_name3'].displacement[nodenum] (dict)
+	|		|		|				|
+	|		|		|				| ---- {X: [...], Y: [...], Z: [...], RX: [...], RY: [...], RZ: [...]}
+	|		|		|
+	|		|		| ---- model.solutions['sol_name3'].frf_accel (dict)
+	|	   	|				|
+	|		|				| ---- model.solutions['sol_name3'].frf_accel[nodenum] (dict)
+	|		|						|
+	|		|						| ---- {X: {REAL: [...], IMAG: [...], MAGN: [...], PHASE: [...]},
+	|		|								Y: {REAL: [...], IMAG: [...], MAGN: [...], PHASE: [...]},
+	|		|								  ...
+	|		|								RZ: {REAL: [...], IMAG: [...], MAGN: [...], PHASE: [...]}}
+	|		|
+	|		|
+	|		| ---- model.solutions['sol_name4'] (solution-obj StaticPlastic) 
+	|				|
+	|	   			| ---- model.solutions['sol_name4'].name (str)
+	|				|
+	|	   			| ---- model.solutions['sol_name4'].mesh (mesh-obj)			<--- pointer to model.meshes[i]
+	|				|
+	|				| ---- model.solutions['sol_name4'].boundaries (dict) {'boundary_name': boundary-obj, ... }
+	|				|
+	|				| ---- model.solutions['sol_name4'].loads (dict) {'load_name': load-obj, ...}
+	|				|
+	|				| ---- model.solutions['sol_name4'].constraints (dict) {'constraint_name': constr-obj, ...}
+	|				|
+	|				| ---- model.solutions['sol_name4'].fixedDOFs (dict) {DOF: disp, ...}
+	|				|
+	|				| ---- model.solutions['sol_name4'].results (dict)
+	|						|
+	|						| ---- { 'displacement': { 'text': nodesetnumber,    'plot': nodesetnumber }
+	|								 'nodeforce'   : { 'text': nodesetnumber, 	 'plot': nodesetnumber }
+	|								 'elementforce': { 'text': elementsetnumber, 'plot': elementsetnumber }
+	|								 'stress'	   : { 'text': elementsetnumber, 'plot': elementsetnumber }
+	|								 'strain'	   : { 'text': elementsetnumber, 'plot': elementsetnumber } }
+	|
+	|
+	|----- model.meshes[i] (mesh-obj)	<--- built from one or more element sets (defaults to all nodes and elements in *.sol-file
+	|		|
+	|		| ---- model.meshes[i].is3D (bool)
+	|		|
+	|		| ---- model.meshes[i].NFAT (list)
+   ...		|
+			| ---- model.meshes[i].NFMT (list)
+			|
+			| ---- model.meshes[i].nDOFs (int)
+			|
+			| ---- model.meshes[i].needMassMatrix (bool)
+			|
+			| ---- model.meshes[i].totalMass (float)
+			|
+			| ---- model.meshes[i].centerOfMass (array)
+			|
+			| ---- model.meshes[i].inertiaTensor (array)
+			|
+			| ---- model.meshes[i].elements (dict)
+			|
+			| ---- model.meshes[i].nodes (dict)
+			|
+			| ---- model.meshes[i].nodes (dict) {nodenum: nodeobj, ...}
+			|		|
+			|		| ---- model.meshes[i].nodes[nodenum].solutions (dict)
+			|				|
+			|				| ---- model.meshes[i].nodes[nodenum].solutions['sol_name1'] (dict)  <--- Static solution
+			|				|		|
+			|				|		| ---- model.meshes[i].nodes[nodenum].solutions['sol_name1']['displacement'] (list)
+			|				|		|		|
+			|			   ...		|		| ---- [X, Y, Z, RX, RY, RZ, MAGN]
+			|						|
+			|						| ---- model.meshes[i].nodes[nodenum].solutions['sol_name1']['nodeforce'] (list)
+			|						|		|
+			|						|		| ---- [X, Y, Z, RX, RY, RZ, MAGN]
+			|						|
+			|						| ---- model.meshes[i].nodes[nodenum].solutions['sol_name1']['avg_strain'] (dict)
+			|						|		|
+			|						|		| ---- {'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
+			|						|
+			|						| ---- model.meshes[i].nodes[nodenum].solutions['sol_name1']['avg_stress'] (dict)
+			|								|
+			|								| ---- {'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
+			|
+			|
+			| ---- model.meshes[i].elements (dict) {elmnum: elmobj, ...}
+					|
+					| ---- model.meshes[i].elements[elmnum].solutions (dict) 
+							|
+							| ---- model.meshes[i].elements[elmnum].solutions['sol_name1'] (dict)  <--- Static solution
+							|		|
+							|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['elementforce'] (dict)
+							|		|		|
+							|		|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['elementforce'][nodenum] (list)
+							|		|				|
+							|		|				| ---- [AXIAL, SHEARY1, SHEARZ1, MX1, MY1, MZ1, SHEARY2, SHEARZ2, MX2, MY2, MZ2]
+							|		|
+							|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['strain'] (dict)
+							|		|		|
+							|		|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['strain']['nodal'] (dict)
+							|	   	|		|		|
+							|		|		|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['strain']['nodal'][nodenum] (dict)
+							|		|		|				|
+							|		|		|				| ---- { 'strain_tensor': [strain_tensor] (array)
+							|		|		|						 'VonMises':  	   value		  (float)
+							|		|		|						 'MaxPrinc':  	   value		  (float)
+							|		|		|						 'MinPrinc':  	   value		  (float)
+							|		|		|						 'MaxShear': 	   value		  (float)  }
+							|		|		|
+							|		|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['strain']['int_point'] (dict)
+							|		|				|
+							|		|				| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['strain']['int_point'][intpointnum] (dict)
+							|		|						|
+							|		|						| ---- { 'strain_tensor': [strain_tensor] (array)
+							|		|								 'VonMises':  	   value		  (float)
+							|		|								 'MaxPrinc':  	   value		  (float)
+							|		|								 'MinPrinc':  	   value		  (float)
+							|		|								 'MaxShear': 	   value		  (float) }
+							|		|		
+							|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['stress'] (dict)
+							|				|
+							|				| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['stress']['nodal'] (dict)
+							|	   			|		|
+							|				|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['stress']['nodal'][nodenum] (dict)
+							|				|				|
+							|				|				| ---- { 'stress_tensor': [stress_tensor] (array)
+							|				|						 'VonMises':  	   value		  (float)
+							|				|						 'MaxPrinc':  	   value		  (float)
+							|				|						 'MinPrinc':  	   value		  (float)
+							|				|						 'MaxShear': 	   value		  (float) }
+							|				|
+							|				| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['stress']['int_point'] (dict)
+							|						|
+							|						| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['stress']['int_point'][intpointnum] (dict)
+							|								|
+							|								| ---- { 'stress_tensor': [stress_tensor] (array)
+							|										 'VonMises':  	   value		  (float)
+							|										 'MaxPrinc':  	   value		  (float)
+							|										 'MinPrinc':  	   value		  (float)
+							|										 'MaxShear': 	   value		  (float) }
+							|
+							|				
+							| ---- model.meshes[i].elements[elmnum].solutions['sol_name3'] (dict) <--- ModalDynamic solution (STRAINGAUGE elements only)
+							|		|
+							|		| ---- model.meshes[i].elements[elmnum].solutions['sol_name3']['strains'] (dict)
+							|				|
+							|				| ---- model.meshes[i].elements[elmnum].solutions['sol_name3']['strains']['int_point'] (dict)
+						  	|						|
+						    |						| ---- model.meshes[i].elements[elmnum].solutions['sol_name1']['strains']['int_point'][intpointnum] (dict)
+						   ...								|
+															| ---- { 'strain_tensor':    [strain_tensor] (array)
+																	 'e_VonMises':  	 value		 	 (float)
+																	 'e_Principal': 	 strains		 (list)
+																	 'stress_tensor':    [stress_tensor] (array)
+																	 's_VonMises':  	 value		 	 (float)
+																	 's_Principal': 	 stresses		 (list)  }
+
+
+
+
+
