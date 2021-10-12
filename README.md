@@ -14,7 +14,7 @@ Python3 with the following modules must be installed for the program to work:
 - matplotlib
 
 With the above mentioned python modules installed, copy the solFEM_v3 folder to any location, 
-open a terminal window and navigate to '../solFEM_v3/work_directory'. The program can then be
+open a terminal window and navigate to '..\solFEM_v3\work_directory'. The program can then be
 started from the terminal by running the script 'program.py'.
 
 In windows 10:
