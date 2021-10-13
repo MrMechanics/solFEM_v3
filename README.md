@@ -39,14 +39,14 @@ Disclaimer:
 -----------
 
 This program is meant as a barebones FEM program for quick and dirty calculations.
-The code will have many bugs, and should only be used for educational purposes and
-as a tool for engineers who wish to dig into FEM code build more intuition for how
-the finite element method works.
+The code has many bugs, and should only be used for educational purposes. It is
+meant as a tool for engineers who wish to dig into FEM code and build more intuition
+for how the finite element method works.
 
 PS! It is generally not recommended to build big models with many parts, as the
 program can crash abruptly which might lose you all your work and cause a lot of
-frustration. It is possible to save your work in *.mdl files, but they are not a
-very robust format, so it is safest to save your work in *.sol files.
+frustration. It is possible to save your work in .mdl files, but they are not a
+very robust format, so it is safest to save your work in .sol files.
 
 
 Have fun!
