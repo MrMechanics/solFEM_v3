@@ -20,8 +20,6 @@ from timeit import time
 from scipy.sparse.linalg import ArpackNoConvergence
 from scipy.integrate import cumtrapz
 
-from matrix import mPrint
-
 
 
 
