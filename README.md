@@ -3,7 +3,7 @@ A small open source Finite Element program with very basic mesh generation, solv
 
 
 
-Installation:
+Requirements:
 -------------
 
 Python3 with the following modules must be installed for the program to work:
@@ -39,9 +39,9 @@ Disclaimer:
 -----------
 
 This program is meant as a barebones FEM program for quick and dirty calculations.
-The code has many bugs, and should only be used for educational purposes. It is
-meant as a tool for engineers who wish to dig into FEM code and build more intuition
-for how the finite element method works.
+There may be some bugs, and the program should only be used for educational purposes.
+It is meant as a tool for engineers who wish to dig into FEM code and build more
+intuition for how the finite element method works.
 
 PS! It is generally not recommended to build big models with many parts, as the
 program can crash abruptly which might lose you all your work and cause a lot of
