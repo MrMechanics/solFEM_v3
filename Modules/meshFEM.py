@@ -35,9 +35,10 @@ user in dialog box.
 	def __init__(self, new_elements):
 		super(MakeElements, self).__init__()
 		self.setWindowTitle('Make Element(s)')
+		self.setWindowIcon(QtGui.QIcon('../Icons/icon_new_elements.png'))
 
 		self.new_elements = new_elements
-		self.element_type = 'BEAM2N'
+		self.element_type = 'BEAM2N2D'
 
 		self.element_types = {'BEAM2N2D': QtGui.QPixmap('../Icons/pix_rod2_beam2.png'),
 							  'ROD2N2D' : QtGui.QPixmap('../Icons/pix_rod2_beam2.png'),
@@ -176,6 +177,7 @@ user in dialog box.
 	def __init__(self, selected_elements, element_type, extrude_elements):
 		super(ExtrudeElements, self).__init__()
 		self.setWindowTitle('Extrude Element(s)')
+		self.setWindowIcon(QtGui.QIcon('../Icons/icon_extrude_elements.png'))
 
 		self.element_type = element_type
 		self.selected_elements = selected_elements
