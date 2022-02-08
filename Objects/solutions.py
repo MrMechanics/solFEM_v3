@@ -18,7 +18,9 @@ from signaler import *
 from math import sqrt
 from timeit import time
 from scipy.sparse.linalg import ArpackNoConvergence
+from scipy.linalg import eigh
 from scipy.integrate import cumtrapz
+
 
 
 
@@ -78,8 +80,8 @@ and generates results as requested.
 									[:,self.index11[:(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs))]]
 			self.K_12 = self.K_mpc[self.index11,:][:,self.index11][range(0,self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs)),:] \
 									[:,range(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs),self.mesh.nDOFs+len(self.MPCs))]
-			if self.type == 'ModalDynamic':
-				if self.hasBaseMotion:
+			if self.type in ['Eigenmodes', 'ModalDynamic']:
+				if len(self.fixedDOFs) > 0:
 					self.K_22 = self.K_mpc[self.index11,:][:,self.index11][range(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs),self.mesh.nDOFs+len(self.MPCs)),:] \
 											[:,range(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs),self.mesh.nDOFs+len(self.MPCs))]
 		else:
@@ -94,8 +96,8 @@ and generates results as requested.
 									[:,self.index11[:(self.mesh.nDOFs-len(self.fixedDOFs))]]
 			self.K_12 = self.mesh.K[self.index11,:][:,self.index11][range(0,self.mesh.nDOFs-len(self.fixedDOFs)),:] \
 									[:,range(self.mesh.nDOFs-len(self.fixedDOFs),self.mesh.nDOFs)]
-			if self.type == 'ModalDynamic':
-				if self.hasBaseMotion:
+			if self.type in ['Eigenmodes', 'ModalDynamic']:
+				if len(self.fixedDOFs) > 0:
 					self.K_22 = self.mesh.K[self.index11,:][:,self.index11][range(self.mesh.nDOFs-len(self.fixedDOFs),self.mesh.nDOFs),:] \
 											[:,range(self.mesh.nDOFs-len(self.fixedDOFs),self.mesh.nDOFs)]
 
@@ -107,8 +109,8 @@ and generates results as requested.
 				M = M.tocsc()
 				self.M_11 = M[self.index11[:(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs))],:] \
 								[:,self.index11[:(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs))]]
-				if self.type == 'ModalDynamic':
-					if self.hasBaseMotion:
+				if self.type in ['Eigenmodes', 'ModalDynamic']:
+					if len(self.fixedDOFs) > 0:
 						self.M_12 = M[self.index11,:][:,self.index11][range(0,self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs)),:] \
 											[:,range(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs),self.mesh.nDOFs+len(self.MPCs))]
 						self.M_22 = M[self.index11,:][:,self.index11][range(self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs),self.mesh.nDOFs+len(self.MPCs)),:] \
@@ -117,8 +119,8 @@ and generates results as requested.
 				M = sp.diags(self.mesh.M,0)
 				M = M.tocsc()
 				self.M_11 = M[self.index11[:(self.mesh.nDOFs-len(self.fixedDOFs))],:][:,self.index11[:(self.mesh.nDOFs-len(self.fixedDOFs))]]
-				if self.type == 'ModalDynamic':
-					if self.hasBaseMotion:
+				if self.type in ['Eigenmodes', 'ModalDynamic']:
+					if len(self.fixedDOFs) > 0:
 						self.M_12 = M[self.index11,:][:,self.index11][range(0,self.mesh.nDOFs-len(self.fixedDOFs)),:] \
 											[:,range(self.mesh.nDOFs-len(self.fixedDOFs),self.mesh.nDOFs)]
 						self.M_22 = M[self.index11,:][:,self.index11][range(self.mesh.nDOFs-len(self.fixedDOFs),self.mesh.nDOFs),:] \
@@ -201,6 +203,8 @@ the force vector F.
 		for j in self.loads:
 			if self.loads[j].type == 'Gravity':
 				self.loads[j].calcDegreeOfFreedomForces(self.mesh.nDOFs,self.mesh.NFMT,self.mesh.elements)
+			elif self.loads[j].type == 'ForceDistributed':
+				self.loads[j].calcDegreeOfFreedomForces(self.mesh.nDOFs,self.mesh.NFMT,self.mesh.elements,self.fixedDOFs,self.MPCs)
 			elif self.loads[j].type == 'Torque':
 				self.loads[j].calcDegreeOfFreedomForces(self.mesh.nDOFs,self.mesh.NFMT,self.mesh.nodes)
 			else:
@@ -293,6 +297,10 @@ the force vector F.
 	Calculate node forces for FE-model.
 	'''
 		self.F = self.mesh.K.dot(self.u)
+		self.F = np.reshape(self.F,(len(self.F),1))
+		for j in self.loads:
+			if self.loads[j].type == 'ForceDistributed':
+				self.F -= self.loads[j].F
 
 		self.reactionForces = {}
 		for BC in self.boundaries:
@@ -308,7 +316,7 @@ the force vector F.
 				m = 0
 				for nfs in range(6):
 					if self.mesh.nodes[node].NFS[nfs] == 1:
-						self.mesh.nodes[node].solutions[self.name]['nodeforce'][nfs] = self.F[self.mesh.NFMT[node]+m]
+						self.mesh.nodes[node].solutions[self.name]['nodeforce'][nfs] = float(self.F[self.mesh.NFMT[node]+m])
 						m += 1
 				self.mesh.nodes[node].solutions[self.name]['nodeforce'][6] = \
 							sqrt(self.mesh.nodes[node].solutions[self.name]['nodeforce'][0]**2 + \
@@ -322,7 +330,7 @@ the force vector F.
 						m = 0
 						for nfs in range(6):
 							if self.mesh.nodes[node].NFS[nfs] == 1:
-								self.mesh.nodes[node].solutions[self.name]['nodeforce'][nfs] = self.F[self.mesh.NFMT[node]+m]
+								self.mesh.nodes[node].solutions[self.name]['nodeforce'][nfs] = float(self.F[self.mesh.NFMT[node]+m])
 								m += 1
 						self.mesh.nodes[node].solutions[self.name]['nodeforce'][6] = \
 									sqrt(self.mesh.nodes[node].solutions[self.name]['nodeforce'][0]**2 + \
@@ -403,8 +411,7 @@ the force vector F.
 			print('\t...average element strains...')
 			for element in self.mesh.elements:
 				if self.name in self.mesh.elements[element].solutions:
-					if ('strain' in self.mesh.elements[element].solutions[self.name]) and \
-							(self.mesh.elements[element].type not in ['ROD2N', 'ROD2N2D', 'BEAM2N', 'BEAM2N2D']):
+					if ('strain' in self.mesh.elements[element].solutions[self.name]):
 						for elm_node in range(len(self.mesh.elements[element].nodes)):
 							node_number = self.mesh.elements[element].nodes[elm_node].number
 							if 'avg_strain' not in self.mesh.nodes[node_number].solutions[self.name]:
@@ -436,8 +443,7 @@ the force vector F.
 			print('\t...average element stresses...')
 			for element in self.mesh.elements:
 				if self.name in self.mesh.elements[element].solutions:
-					if ('stress' in self.mesh.elements[element].solutions[self.name]) and \
-							(self.mesh.elements[element].type not in ['ROD2N', 'ROD2N2D', 'BEAM2N', 'BEAM2N2D']):
+					if ('stress' in self.mesh.elements[element].solutions[self.name]):
 						for elm_node in range(len(self.mesh.elements[element].nodes)):
 							node_number = self.mesh.elements[element].nodes[elm_node].number
 							if 'avg_stress' not in self.mesh.nodes[node_number].solutions[self.name]:
@@ -701,6 +707,19 @@ the force vector F.
 
 
 
+class StaticPlastic(Solution):
+	'''
+Non-linear Static solver with material
+plasticity.
+'''
+	def __init__(self,name,mesh):
+		self.type = 'StaticPlastic'
+		super(StaticPlastic,self).__init__(name,mesh)
+
+
+
+
+
 class Eigenmodes(Solution):
 	'''
 Eigenmodes solver. Solves for eigenfrequencies
@@ -730,7 +749,7 @@ modified mass matrix, M_11.
 		self.mesh.centerOfMass = self.mesh.centerOfMass*(1.0/self.mesh.totalMass[0])
 
 
-	def calcInertiaTensor(self):	# WRONG RESULTS?? NOT THE SAME RESULTS AS CALCULATED IN FREECAD
+	def calcInertiaTensor(self):	# WRONG RESULTS?? NOT THE SAME AS CALCULATED IN FREECAD
 		'''
 	Calculate the inertia tensor for the
 	mesh used in this solution. Both about
@@ -835,7 +854,7 @@ modified mass matrix, M_11.
 				self.eigenvectors = np.insert(self.eigenvectors,DOF,0.,axis=0)
 
 
-	def calcModalEffectiveMass(self):	### WRONG RESULTS BECAUSE OF WRONG r AND THEREFORE L
+	def calcModalEffectiveMass(self):	### WRONG!!!
 		'''
 	Calculate the modal effective mass for
 	every eigenmode using the normalized
@@ -900,99 +919,7 @@ modified mass matrix, M_11.
 				else:
 					pass
 				previous_node = node
-#		self.centerOfFixedDOFs[0] = self.centerOfFixedDOFs[0]/x_count
-#		self.centerOfFixedDOFs[1] = self.centerOfFixedDOFs[1]/y_count
-#		if z_count != 0:
-#			self.centerOfFixedDOFs[2] = self.centerOfFixedDOFs[2]/z_count
 
-#		freeDOFs = {}
-#		for DOF in range(nDOFs):
-#			if DOF in self.fixedDOFs:
-#				pass
-#			else:
-#				freeDOFs[DOF] = 0.
-#		self.centerOfMassFreeDOFs = np.zeros(3)
-#		self.massOfFreeDOFs = np.zeros(3)
-#		x_count = 0
-#		y_count = 0
-#		z_count = 0
-#		for DOF in freeDOFs:
-#			Nodes = sorted(NFMT.keys())
-#			previous_node = Nodes[0]
-#			for node in Nodes:
-#				if previous_node == node:
-#					pass
-#				elif NFMT[previous_node] <= DOF < NFMT[node]:
-#					dof_count = 0
-#					for dof in range(6):
-#						if NFAT[previous_node][dof] == 1:
-#							if NFMT[previous_node]+dof_count == DOF:
-#								if dof_count == 0:
-#									self.centerOfMassFreeDOFs[0] += self.mesh.nodes[previous_node].coord[0][0]*self.mesh.M[DOF]
-#									self.massOfFreeDOFs[0] += self.mesh.M[DOF]
-#									x_count += 1
-#								elif dof_count == 1:
-#									self.centerOfMassFreeDOFs[1] += self.mesh.nodes[previous_node].coord[1][0]*self.mesh.M[DOF]
-#									self.massOfFreeDOFs[1] += self.mesh.M[DOF]
-#									y_count += 1
-#								elif dof_count == 2:
-#									self.centerOfMassFreeDOFs[2] += self.mesh.nodes[previous_node].coord[2][0]*self.mesh.M[DOF]
-#									self.massOfFreeDOFs[2] += self.mesh.M[DOF]
-#									z_count += 1
-#								else:
-#									pass
-#							dof_count += 1
-#				elif node == Nodes[-1] and DOF > NFMT[node]:
-#					dof_count = 0
-#					for dof in range(6):
-#						if NFAT[node][dof] == 1:
-#							if NFMT[node]+dof_count == DOF:
-#								if dof_count == 0:
-#									self.centerOfMassFreeDOFs[0] += self.mesh.nodes[previous_node].coord[0][0]*self.mesh.M[DOF]
-#									self.massOfFreeDOFs[0] += self.mesh.M[DOF]
-#									x_count += 1
-#								elif dof_count == 1:
-#									self.centerOfMassFreeDOFs[1] += self.mesh.nodes[previous_node].coord[1][0]*self.mesh.M[DOF]
-#									self.massOfFreeDOFs[1] += self.mesh.M[DOF]
-#									y_count += 1
-#								elif dof_count == 2:
-#									self.centerOfMassFreeDOFs[2] += self.mesh.nodes[previous_node].coord[2][0]*self.mesh.M[DOF]
-#									self.massOfFreeDOFs[2] += self.mesh.M[DOF]
-#									z_count += 1
-#								else:
-#									pass
-#							dof_count += 1
-#				else:
-#					pass
-#				previous_node = node
-#		self.centerOfMassFreeDOFs[0] = self.centerOfMassFreeDOFs[0]/self.massOfFreeDOFs[0]
-#		self.centerOfMassFreeDOFs[1] = self.centerOfMassFreeDOFs[1]/self.massOfFreeDOFs[1]
-#		if z_count != 0:
-#			self.centerOfMassFreeDOFs[2] = self.centerOfMassFreeDOFs[2]/self.massOfFreeDOFs[2]
-
-#		print 'centerOfFixedDOFs:', self.centerOfFixedDOFs
-#		print 'massOfFixedDOFs:', self.massOfFixedDOFs
-#		print 'centerOfMassFreeDOFs:', self.centerOfMassFreeDOFs
-#		print 'massOfFixedDOFs:', self.massOfFreeDOFs
-		
-#		self.r_abq = np.zeros((nDOFs,nDOFs))
-#		for node in self.mesh.nodes:
-#			r_n = np.identity(6)
-#			r_n[0][4] =  (self.mesh.nodes[node].coord[2][0] - self.centerOfFixedDOFs[2])
-#			r_n[0][5] = -(self.mesh.nodes[node].coord[1][0] - self.centerOfFixedDOFs[1])
-#			r_n[1][3] = -(self.mesh.nodes[node].coord[2][0] - self.centerOfFixedDOFs[2])
-#			r_n[1][5] =  (self.mesh.nodes[node].coord[0][0] - self.centerOfFixedDOFs[0])
-#			r_n[2][3] =  (self.mesh.nodes[node].coord[1][0] - self.centerOfFixedDOFs[1])
-#			r_n[2][4] = -(self.mesh.nodes[node].coord[0][0] - self.centerOfFixedDOFs[0])
-#
-#			DOF0 = self.mesh.NFMT[self.mesh.nodes[node].number]
-#			for dof1 in range(6):
-#				for dof2 in range(6):
-#					self.r_abq[DOF0+dof1][DOF0+dof2] += r_n[dof1][dof2]
-#		self.r_abq = np.delete(self.r_abq,(0,1,2,3,4,5),axis=0)
-#		self.r_abq = np.delete(self.r_abq,(0,1,2,3,4,5),axis=1)
-
-#		r = sp.csc_matrix(self.r_abq)
 		r = np.ones(nDOFs+len(self.MPCs)-len(self.fixedDOFs))
 		r = sp.diags(r,0)
 		r = r.tocsc()
@@ -1184,9 +1111,9 @@ of the acceleration.
 		if self.hasBaseMotion:
 			# rearrange the stiffness and mass matrices
 			# with regards to the accelerated boundary DOFs
-			L = self.mesh.nDOFs+len(self.MPCs)
-			M = self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs)
-			N = len(self.fixedDOFs)
+			L = self.mesh.nDOFs+len(self.MPCs)						# total number of DOFs
+			M = self.mesh.nDOFs+len(self.MPCs)-len(self.fixedDOFs)	# number of internal DOFs
+			N = len(self.fixedDOFs)									# number of fixed DOFs
 
 			self.T1 = -sp.linalg.inv(self.K_11).dot(self.K_12)
 			T2 = np.ones(M)
@@ -1323,6 +1250,7 @@ of the acceleration.
 		'''
 	Calculates displacements of only selected
 	nodes specified in *.sol-file, using modal
+	dynamics.
 
 	self.K_11		- Stiffness matrix of model
 					  modified to exclude DOFs
@@ -1662,6 +1590,7 @@ of the acceleration.
 			# solution to be written in
 			# *.out-file
 			self.base_disp = {}
+			self.base_accel = {}
 			node_DOFs = ['X', 'Y', 'Z', 'RX', 'RY', 'RZ']
 			for bound in self.boundaries:
 				for node in self.boundaries[bound].nodeset:
@@ -1669,18 +1598,26 @@ of the acceleration.
 					for nfs in range(6):
 						if self.mesh.nodes[node].NFS[nfs] == 1:
 							self.base_disp[node_DOFs[nfs]] = ZdT[:,self.index11[M+m]].toarray()
+							self.base_accel[node_DOFs[nfs]] = ZaT[:,self.index11[M+m]].toarray()
 							m += 1
 					break
 				break
 			for node in self.displacement:
 				for dof in self.displacement[node]:
-					self.displacement[node][dof] = ZdT[:,self.index11.index(self.displacement[node][dof])].toarray()-self.base_disp[dof]
+					if dof in self.base_disp:
+						self.displacement[node][dof] = ZdT[:,self.index11.index(self.displacement[node][dof])].toarray()-self.base_disp[dof]
+					else:
+						self.displacement[node][dof] = ZdT[:,self.index11.index(self.displacement[node][dof])].toarray()
 			for node in self.velocity:
 				for dof in self.velocity[node]:
 					self.velocity[node][dof] = ZvT[:,self.index11.index(self.velocity[node][dof])].toarray()
 			for node in self.acceleration:
 				for dof in self.acceleration[node]:
 					self.acceleration[node][dof] = ZaT[:,self.index11.index(self.acceleration[node][dof])].toarray()
+			# include base motion acceleration in results
+			self.acceleration[0] = {}
+			for dof in self.base_accel:
+				self.acceleration[0][dof] = self.base_accel[dof]
 			for node in self.frf_accel:
 				for dof in self.frf_accel[node]:
 					self.frf_accel[node][dof] = {'MAGN': fwdFFT(ZaT[:,self.index11.index(self.frf_accel[node][dof])].toarray())[3]}
@@ -1706,8 +1643,8 @@ of the acceleration.
 			F_1 = sp.coo_matrix((np.array(data),(np.array(row),np.array(col))),shape=(M,self.n))
 			F_1 = F_1.tocsc()
 
-			init_disp = np.zeros((self.mesh.nDOFs-len(self.fixedDOFs),1))
-			init_velc = np.zeros((self.mesh.nDOFs-len(self.fixedDOFs),1))
+			init_disp = np.zeros((self.mesh.nDOFs-len(self.fixedDOFs)+len(self.MPCs),1))
+			init_velc = np.zeros((self.mesh.nDOFs-len(self.fixedDOFs)+len(self.MPCs),1))
 
 			q0 = evecs_s.T.dot(self.M_11).dot(init_disp)
 			dq_dt0 = evecs_s.T.dot(self.M_11).dot(init_velc)
@@ -1897,6 +1834,10 @@ of the acceleration.
 						write_to_csv['acceleration'][node] = {}
 					for dof in self.acceleration[node]:
 						write_to_csv['acceleration'][node][dof] = self.acceleration[node][dof]
+				if 0 in self.acceleration:
+					write_to_csv['acceleration'][0] = {}
+					for dof in self.acceleration[0]:
+						write_to_csv['acceleration'][0][dof] = self.acceleration[0][dof]
 			for node in self.frf_accel:
 				if node in text_nodes and 'frf_accel' in text_result:
 					if has_frf == False:
@@ -1921,7 +1862,7 @@ of the acceleration.
 			for res in write_to_csv:
 				if res in text_result:
 					for node in write_to_csv[res]:
-						if node in text_nodes:
+						if node in text_nodes or node == 0:
 							for dof in write_to_csv[res][node]:
 								fobj.write(','+res+'_node_'+str(node)+'_'+dof)
 			fobj.write('\n')
@@ -1946,7 +1887,10 @@ of the acceleration.
 					for node in write_to_csv[res]:
 						for dof in write_to_csv[res][node]:
 							if res in ['displacement', 'velocity', 'acceleration']:
-								fobj.write(','+str(write_to_csv[res][node][dof][n]))
+								if self.hasBaseMotion:
+									fobj.write(','+str(write_to_csv[res][node][dof][n][0]))
+								else:
+									fobj.write(','+str(write_to_csv[res][node][dof][n]))
 							else:
 								if n < n_f:
 									fobj.write(','+str(write_to_csv[res][node][dof]['MAGN'][n]))
@@ -1957,16 +1901,6 @@ of the acceleration.
 
 
 
-
-
-class StaticPlastic(Solution):
-	'''
-Non-linear Static solver with material
-plasticity.
-'''
-	def __init__(self,name,mesh):
-		self.type = 'StaticPlastic'
-		super(StaticPlastic,self).__init__(name,mesh)
 
 
 

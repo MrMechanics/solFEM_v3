@@ -15,6 +15,9 @@ from math import sqrt
 
 
 
+
+
+
 class GaussQuad(object):
 	'''
 Gauss integration rules listed for easy
@@ -25,12 +28,14 @@ access to individual element integration
 '''
 	def __init__(self):
 		self.quad_p1 = [[0.0,2.0],]
-		self.quad_p2 = [[-1.0/sqrt(3.0), 1.0], [1.0/sqrt(3.0), 1.0]]
-		self.quad_p3 = [[-sqrt(0.6), 5.0/9.0], [0.0, 8.0/9.0], [sqrt(0.6), 5.0/9.0]]
-		self.quad_p4 = [[-sqrt((3.0+2.0*sqrt(6.0/5.0))/7), 0.5-sqrt(5.0/6.0)/6.0],
-			 			[-sqrt((3.0-2.0*sqrt(6.0/5.0))/7), 0.5+sqrt(5.0/6.0)/6.0],
-			 			[ sqrt((3.0-2.0*sqrt(6.0/5.0))/7), 0.5+sqrt(5.0/6.0)/6.0],
-			 			[ sqrt((3.0+2.0*sqrt(6.0/5.0))/7), 0.5-sqrt(5.0/6.0)/6.0]]
+		self.quad_p2 = [[-0.5773502691896258, 1.0], [0.5773502691896258, 1.0]]
+		self.quad_p3 = [[-0.7745966692414834, 0.5555555555555556],
+						[0.0, 0.8888888888888888],
+						[0.7745966692414834, 0.5555555555555556]]
+		self.quad_p4 = [[-0.8611363115940526, 0.34785484513745385],
+			 			[-0.3399810435848563, 0.65214515486254610],
+			 			[ 0.3399810435848563, 0.65214515486254610],
+			 			[ 0.8611363115940526, 0.34785484513745385]]
 		self.tri_p3 = [[0.666666667, 0.166666667, 0.166666667],
 					   [0.166666667, 0.666666667, 0.166666667],
 					   [0.166666667, 0.166666667, 0.666666667],
@@ -163,6 +168,47 @@ Has two active degrees of freedom per node.
 		self.EFS = [[1,1,0,0,0,0],]*2
 		self.nodeFreedomSignature()
 		self.type = 'ROD2N2D'
+		self.setOrientation()
+
+
+
+	def setOrientation(self,orient='None'):
+		'''
+	Sets the element orientation which is used
+	when rendering element in viewer if cross
+	section has been specified for section.
+	
+	If orient == 'None', the orientation is set
+	to a default, where the two nodes define the
+	local x-vector to be [x2-x1, y2-y1].
+	
+	orient = {'x-vec': [x, y]}	x-vector specified by user
+	'''
+		x21 = self.nodes[1].coord[0][0]-self.nodes[0].coord[0][0]
+		y21 = self.nodes[1].coord[1][0]-self.nodes[0].coord[1][0]
+
+		self.length = sqrt(x21**2 + y21**2)
+
+		if orient != 'None':
+			if x21 < 0. and orient['x-vec'][0] < 0.:
+				xv = np.array([x21, y21, 0.])
+			elif x21 >= 0. and orient['x-vec'][0] >= 0.:
+				xv = np.array([x21, y21, 0.])
+			else:
+				self.nodes[0], self.nodes[1] = self.nodes[1], self.nodes[0]
+				x21 = self.nodes[1].coord[0][0]-self.nodes[0].coord[0][0]
+				y21 = self.nodes[1].coord[1][0]-self.nodes[0].coord[1][0]
+				xv = np.array([x21, y21, 0.])
+			xu = xv/self.length
+		else:
+			xv = np.array([x21, y21, 0.])
+			xu = xv/self.length
+
+		zu = np.array([0.,0.,1.])
+		yu = np.cross(zu,xu)
+		self.orientation = {'x-vec': xu,
+							'y-vec': yu,
+							'z-vec': zu}
 
 
 	def nodeFreedomSignature(self):
@@ -354,6 +400,50 @@ Has three active degrees of fredom per node.
 		self.M[5][5] = self.M[5][5]*((self.length**2)/12)
 
 
+	def calcEquivalentNodalForces(self,distForce,freeDOFs):
+		'''
+	Calculate the equivalent nodal forces from
+	a distributed load on element.
+	distForce 			   - force vector per element length
+	self.eqNodeForcesLocal - equivalent node forces in local
+							 reference frame
+	self.eqNodeForces	   - equivalent node forces in global
+							 reference frame
+	'''
+		F = np.dot(self.T_elm[:3,:3],distForce)
+		if freeDOFs in [[1,1,1,1,1,1],[0,0,0,1,1,1],[1,1,1,0,0,0]]:
+			self.eqNodeForcesLocal = [ F[0]*self.length/2.,		   # fx1
+									   F[1]*self.length/2.,		   # fy1
+									   F[1]*(self.length**2)/12.,  # mz1
+									   F[0]*self.length/2.,		   # fx2
+									   F[1]*self.length/2.,		   # fy2
+								 	  -F[1]*(self.length**2)/12. ] # mz2
+		elif freeDOFs in [[1,1,1,1,1,0],[1,1,1,1,0,0],[1,1,1,0,1,0]]:
+			self.eqNodeForcesLocal = [ F[0]*self.length/2.,		   # fx1
+									   F[1]*self.length*5./8.,	   # fy1
+									   F[1]*(self.length**2)/8.,   # mz1
+									   F[0]*self.length/2.,		   # fx2
+									   F[1]*self.length*3./8.,	   # fy2
+								 	   0. ] 					   # mz2
+		elif freeDOFs in [[1,1,0,1,1,1],[1,0,0,1,1,1],[0,1,0,1,1,1]]:
+			self.eqNodeForcesLocal = [ F[0]*self.length/2.,		   # fx1
+									   F[1]*self.length*3./8.,	   # fy1
+									   0.,  					   # mz1
+									   F[0]*self.length/2.,		   # fx2
+									   F[1]*self.length*5./8.,	   # fy2
+								 	  -F[1]*(self.length**2)/8. ]  # mz2
+		elif freeDOFs in [[1,1,0,1,1,0],[1,0,0,1,1,0],[0,1,0,1,1,0],[1,1,0,0,1,0],[1,1,0,1,0,0]]:
+			self.eqNodeForcesLocal = [ F[0]*self.length/2.,		   # fx1
+									   F[1]*self.length/2.,		   # fy1
+									   0.,						   # mz1
+									   F[0]*self.length/2.,		   # fx2
+									   F[1]*self.length/2.,		   # fy2
+								 	   0. ] 					   # mz2
+		else:
+			print('\n\tUnknown element configuration for equivalent nodal forces in element', self.number)
+		self.eqNodeForces = np.linalg.inv(self.T_elm).dot(self.eqNodeForcesLocal)
+
+
 	def calcForces(self,u,sol):
 		'''
 	Calculate the internal element forces using
@@ -369,6 +459,13 @@ Has three active degrees of fredom per node.
 		self.solutions[sol]['elementforce'][5] = nodeforce[2]
 		self.solutions[sol]['elementforce'][6] = nodeforce[4]
 		self.solutions[sol]['elementforce'][10] = nodeforce[5]
+
+		if hasattr(self,'eqNodeForcesLocal'):
+			self.solutions[sol]['elementforce'][0] += self.eqNodeForcesLocal[0]
+			self.solutions[sol]['elementforce'][1] -= self.eqNodeForcesLocal[1]
+			self.solutions[sol]['elementforce'][5] -= self.eqNodeForcesLocal[2]
+			self.solutions[sol]['elementforce'][6] -= self.eqNodeForcesLocal[4]
+			self.solutions[sol]['elementforce'][10] -= self.eqNodeForcesLocal[5]
 
 
 	def calcStrain(self,u,calcStrain,calcStress,sol):	# NOT READY
@@ -729,8 +826,13 @@ Class for quadrilateral 4-node 2D element.
 Has two active degrees of freedom per node.
 4 nodes gives 8 degrees of freedom total.
 '''
-	def __init__(self,number,sect,nodes,gaussQuad):
-		self.gaussPnts = gaussQuad.quad_p2
+	def __init__(self,number,sect,nodes,gaussQuad,reducedIntegration=False):
+		if reducedIntegration:
+			self.gaussPnts = gaussQuad.quad_p1
+			self.reducedIntegration = True
+		else:
+			self.gaussPnts = gaussQuad.quad_p2
+			self.reducedIntegration = False
 		super(QUAD4N,self).__init__(number,sect,nodes)
 		self.EFS = [[1,1,0,0,0,0],]*4
 		self.nodeFreedomSignature()
@@ -782,6 +884,66 @@ Has two active degrees of freedom per node.
 		return [detJ,B]
 
 
+	def hourGlassControl(self):
+		'''
+	Apply hourglass control. NOT READY TO USE!!!
+
+	Method taken from "A UNIFORM STRAIN HEXAHEDRON 
+	AND QUADRILATERAL WITH ORTHOGONAL HOURGLASS CONTROL"
+	by D. P. FLANAGAN AND T. BELYTSCHKO
+	'''
+		x1 = self.nodes[0].coord[0][0]
+		x2 = self.nodes[1].coord[0][0]
+		x3 = self.nodes[2].coord[0][0]
+		x4 = self.nodes[3].coord[0][0]
+		y1 = self.nodes[0].coord[1][0]
+		y2 = self.nodes[1].coord[1][0]
+		y3 = self.nodes[2].coord[1][0]
+		y4 = self.nodes[3].coord[1][0]
+
+		A = 0.5*((x3-x1)*(y4-y2) + (x2-x4)*(y3-y1))
+		print('A:', A)
+		B = 0.5*np.array([[y2-y4, y3-y1, y4-y2, y1-y3],
+						  [x4-x2, x1-x3, x2-x4, x3-x1]])
+		print('B:', B.shape)
+		print(B)		
+		HG_shape = (0.25/A)*np.array([[x2*(y3-y4) + x3*(y4-y2) + x4*(y2-y3)],
+									  [x3*(y1-y4) + x4*(y3-y1) + x1*(y4-y3)],
+									  [x4*(y1-y2) + x1*(y2-y4) + x2*(y4-y1)],
+									  [x1*(y3-y2) + x2*(y1-y3) + x3*(y2-y1)]])
+		
+		k = 0.01 # 0.01, 0.125, 0.5
+		h = self.section.thickness
+		G = self.section.material.shearMod
+		p = self.section.material.density
+		K = self.section.material.elastMod/(3*(1-2*self.section.material.poisson))
+		print('bulk modulus:', K)
+		dt = A*np.sqrt(p/((K+G+G)*np.multiply(B,B)))
+		print('dt:', dt)
+
+		v = dt[0][0]*np.array([[1., 1.],
+							   [1., 1.],
+							   [1., 1.],
+							   [1., 1.]])
+		print('v:', v)
+
+		q = 0.5*np.multiply(v,HG_shape)
+		print('q:', q.shape)
+		print(q)
+
+		Q = q.dot(0.5*k*h*(K+G+G)*np.multiply(B,B))
+		print('Q:', Q.shape)
+		print(Q)
+		print('HG_shape:', HG_shape.shape)
+		print(HG_shape)
+		
+		fHG_res = 0.5*np.multiply(Q,HG_shape)
+		print('fHG_res:', fHG_res.shape)
+		print(fHG_res)
+		
+		return fHG_res
+
+
 	def calcStiffnessMatrix(self):
 		'''
 	Calculate the element stiffness matrix using
@@ -804,7 +966,6 @@ Has two active degrees of freedom per node.
 				w_j = self.gaussPnts[j][1]
 
 				[detJ,B] = self.calcStrainDisplacementMatrix(ksi,eta)
-
 				self.K = ((B.transpose().dot(self.section.E)).dot(B))*(w_i*w_j*detJ*self.section.thickness) + self.K
 
 
@@ -1158,6 +1319,7 @@ Has 3 active degrees of freedom per node.
 		self.EFS = [[1,1,1,0,0,0],]*2
 		self.nodeFreedomSignature()
 		self.type = 'ROD2N'
+		self.setOrientation()
 
 
 	def nodeFreedomSignature(self):
@@ -1171,6 +1333,81 @@ Has 3 active degrees of freedom per node.
 				self.nodes[i].NFS[1] = 1
 			if self.nodes[i].NFS[2] == 0:
 				self.nodes[i].NFS[2] = 1
+
+
+	def setOrientation(self,orient='None'):
+		'''
+	Sets the element orientation which is used
+	by viewer to render element if cross section
+	has been applied to section.
+	
+	If x1 --> x2 is vertical, then y1 --> y2
+	is set to be the same as the global negative
+	x-axis.
+	
+	orient = {'x-vec': [x, y, z],	x-vector specified by user
+			  'y-vec': [x, y, z]}	y-vector specified by user
+	'''
+		x21 = self.nodes[1].coord[0][0]-self.nodes[0].coord[0][0]
+		y21 = self.nodes[1].coord[1][0]-self.nodes[0].coord[1][0]
+		z21 = self.nodes[1].coord[2][0]-self.nodes[0].coord[2][0]
+
+		self.length = sqrt(x21**2 + y21**2 + z21**2)
+
+		x1 = self.nodes[0].coord[0][0]
+		x2 = self.nodes[1].coord[0][0]
+		y1 = self.nodes[0].coord[1][0]
+		y2 = self.nodes[1].coord[1][0]
+		z1 = self.nodes[0].coord[2][0]
+		z2 = self.nodes[1].coord[2][0]
+
+		if orient != 'None':
+			if x21 < 0. and orient['x-vec'][0] < 0.:
+				xv = np.array([x21, y21, z21])
+			elif x21 >= 0. and orient['x-vec'][0] >= 0.:
+				xv = np.array([x21, y21, z21])
+			else:
+				# if node order not alligned with beam orientation,
+				# switch nodes 1 and 2 to allign them
+				self.nodes[0], self.nodes[1] = self.nodes[1], self.nodes[0]
+				x21 = self.nodes[1].coord[0][0]-self.nodes[0].coord[0][0]
+				y21 = self.nodes[1].coord[1][0]-self.nodes[0].coord[1][0]
+				z21 = self.nodes[1].coord[2][0]-self.nodes[0].coord[2][0]
+				xv = np.array([x21, y21, z21])
+				x1 = self.nodes[0].coord[0][0]
+				x2 = self.nodes[1].coord[0][0]
+				y1 = self.nodes[0].coord[1][0]
+				y2 = self.nodes[1].coord[1][0]
+				z1 = self.nodes[0].coord[2][0]
+				z2 = self.nodes[1].coord[2][0]
+			xu = xv/self.length
+			n1_offset = np.array([x1,y1,z1]) + np.array(orient['y-vec'])
+			n2_offset = np.array([x2,y2,z2]) + np.array(orient['y-vec'])
+
+		else:
+			if abs(x21) < 0.001 and abs(y21) > 0.001:
+				n1_offset = np.array([x1-1, y1, z1])
+				n2_offset = np.array([x2-1, y2, z2])
+			else:
+				n1_offset = np.array([x1, y1+1, z1])
+				n2_offset = np.array([x2, y2+1, z2])
+			xv = np.array([x21, y21, z21])
+			xu = xv/self.length
+
+		n_offset = n1_offset + 0.5*(n2_offset-n1_offset)
+
+		ov = n_offset - np.array([x1,y1,z1])
+		yv = ov - np.dot(ov,xu)*xu
+		mag = sqrt(yv[0]**2 + yv[1]**2 + yv[2]**2)
+		if mag == 0.:
+			yu = yv
+		else:
+			yu = yv/mag
+		zu = np.cross(xu, yu)
+
+		self.orientation = {'x-vec': xu,
+							'y-vec': yu,
+							'z-vec': zu}
 
 
 	def calcStiffnessMatrix(self):
@@ -1355,9 +1592,6 @@ Subclass of Element.
 		self.orientation = {'x-vec': xu,
 							'y-vec': yu,
 							'z-vec': zu}
-#		print('element '+str(self.number)+', orientation:')
-#		for direction in self.orientation:
-#			print(direction, self.orientation[direction])
 
 		txx = xu[0]
 		txy = xu[1]
@@ -1368,46 +1602,6 @@ Subclass of Element.
 		tzx = zu[0]
 		tzy = zu[1]
 		tzz = zu[2]
-
-		self.T_elm = np.array([[ txx, txy, txz,   0,   0,   0,   0,   0,   0,   0,   0,   0],
-							   [ tyx, tyy, tyz,   0,   0,   0,   0,   0,   0,   0,   0,   0],
-							   [ tzx, tzy, tzz,   0,   0,   0,   0,   0,   0,   0,   0,   0],
-							   [   0,   0,   0, txx, txy, txz,   0,   0,   0,   0,   0,   0],
-							   [   0,   0,   0, tyx, tyy, tyz,   0,   0,   0,   0,   0,   0],
-							   [   0,   0,   0, tzx, tzy, tzz,   0,   0,   0,   0,   0,   0],
-							   [   0,   0,   0,   0,   0,   0, txx, txy, txz,   0,   0,   0],
-							   [   0,   0,   0,   0,   0,   0, tyx, tyy, tyz,   0,   0,   0],
-							   [   0,   0,   0,   0,   0,   0, tzx, tzy, tzz,   0,   0,   0],
-							   [   0,   0,   0,   0,   0,   0,   0,   0,   0, txx, txy, txz],
-							   [   0,   0,   0,   0,   0,   0,   0,   0,   0, tyx, tyy, tyz],
-							   [   0,   0,   0,   0,   0,   0,   0,   0,   0, tzx, tzy, tzz]])
-
-		L = self.length
-
-		x0 = ((x1+x2)/2) + 1
-		xm = (x1+x2)/2
-		y0 = ((y1+y2)/2) + 1
-		ym = (y1+y2)/2
-		z0 = ((z1+z2)/2) + 1
-		zm = (z1+z2)/2
-		dx = x0-xm
-		dy = y0-ym
-		dz = z0-zm
-		tzx = dz*y21-dy*z21
-		tzy = dx*z21-dz*x21
-		tzz = dy*x21-dx*y21
-		zL  = sqrt(tzx**2 + tzy**2 + tzz**2)
-		tzx = tzx/zL
-		tzy = tzy/zL
-		tzz = tzz/zL
-		
-		txx = x21/L
-		txy = y21/L
-		txz = z21/L
-		
-		tyx = tzy*txz-tzz*txy
-		tyy = tzz*txx-tzx*txz
-		tyz = tzx*txy-tzy*txx
 
 		self.T_elm = np.array([[ txx, txy, txz,   0,   0,   0,   0,   0,   0,   0,   0,   0],
 							   [ tyx, tyy, tyz,   0,   0,   0,   0,   0,   0,   0,   0,   0],
@@ -1472,6 +1666,67 @@ Subclass of Element.
 		self.M[11][11] = self.M[11][11]*((self.length**2)/12)
 
 
+	def calcEquivalentNodalForces(self,distForce,freeDOFs):
+		'''
+	Calculate the equivalent nodal forces from
+	a distributed load on element.
+	distForce 			   - force vector per element length
+	self.eqNodeForcesLocal - equivalent node forces in local
+							 reference frame
+	self.eqNodeForces	   - equivalent node forces in global
+							 reference frame
+	'''
+		F = np.dot(self.T_elm[:3,:3],distForce)
+		self.eqNodeForcesLocal = [0.]*12
+		# fx1 and fx2
+		self.eqNodeForcesLocal[0] = F[0]*self.length/2.			# fx1
+		self.eqNodeForcesLocal[6] = F[0]*self.length/2.			# fx2
+		# fy1 and fy2
+		if freeDOFs[1] == freeDOFs[7] == 1:
+			self.eqNodeForcesLocal[1] = F[1]*self.length/2.		# fy1
+			self.eqNodeForcesLocal[7] = F[1]*self.length/2.		# fy2
+		elif freeDOFs[1] == 1 and freeDOFs[7] == 0:
+			self.eqNodeForcesLocal[1] = F[1]*self.length*5./8.	# fy1
+			self.eqNodeForcesLocal[7] = F[1]*self.length*3./8.	# fy2
+		elif freeDOFs[1] == 0 and freeDOFs[7] == 1:
+			self.eqNodeForcesLocal[1] = F[1]*self.length*3./8.	# fy1
+			self.eqNodeForcesLocal[7] = F[1]*self.length*5./8.	# fy2
+		else:
+			print('\n\tElement', self.number, 'not restrained in y-direction?')
+		# fz1 and fz2
+		if freeDOFs[2] == freeDOFs[8] == 1:
+			self.eqNodeForcesLocal[2] = F[2]*self.length/2.		# fz1
+			self.eqNodeForcesLocal[8] = F[2]*self.length/2.		# fz2
+		elif freeDOFs[2] == 1 and freeDOFs[8] == 0:
+			self.eqNodeForcesLocal[2] = F[2]*self.length*5./8.	# fz1
+			self.eqNodeForcesLocal[8] = F[2]*self.length*3./8.	# fz2
+		elif freeDOFs[2] == 0 and freeDOFs[8] == 1:
+			self.eqNodeForcesLocal[2] = F[2]*self.length*3./8.	# fz1
+			self.eqNodeForcesLocal[8] = F[2]*self.length*5./8.	# fz2
+		else:
+			print('\n\tElement', self.number, 'not restrained in z-direction?')
+		# my1 and my2
+		if freeDOFs[4] == freeDOFs[10] == 1:
+			self.eqNodeForcesLocal[4]  =  F[2]*(self.length**2)/12.	# my1
+			self.eqNodeForcesLocal[10] = -F[2]*(self.length**2)/12.	# my2
+		elif freeDOFs[4] == 1 and freeDOFs[10] == 0:
+			self.eqNodeForcesLocal[4]  =  F[2]*(self.length**2)/8.	# my1
+		elif freeDOFs[4] == 0 and freeDOFs[10] == 1:
+			self.eqNodeForcesLocal[10] = -F[2]*(self.length**2)/8.	# my2
+		else:
+			pass
+		if freeDOFs[5] == freeDOFs[11] == 1:
+			self.eqNodeForcesLocal[5]  =  F[1]*(self.length**2)/12.	# mz1
+			self.eqNodeForcesLocal[11] = -F[1]*(self.length**2)/12.	# mz2
+		elif freeDOFs[5] == 1 and freeDOFs[10] == 0:
+			self.eqNodeForcesLocal[5]  =  F[1]*(self.length**2)/8.	# mz1
+		elif freeDOFs[5] == 0 and freeDOFs[10] == 1:
+			self.eqNodeForcesLocal[11] = -F[1]*(self.length**2)/8.	# mz2
+		else:
+			pass
+		self.eqNodeForces = np.linalg.inv(self.T_elm).dot(self.eqNodeForcesLocal)
+
+
 	def calcForces(self,u,sol):
 		'''
 	Calculate the internal element forces using
@@ -1485,6 +1740,19 @@ Subclass of Element.
 		self.solutions[sol]['elementforce'][0] = ((self.section.area*self.section.material.elastMod)/self.length)*(u_local[6]-u_local[0])
 		self.solutions[sol]['elementforce'][1:6] = nodeforce[1:6]
 		self.solutions[sol]['elementforce'][6:] = nodeforce[7:]
+
+		if hasattr(self,'eqNodeForcesLocal'):
+			self.solutions[sol]['elementforce'][0] += self.eqNodeForcesLocal[0]
+			self.solutions[sol]['elementforce'][1] -= self.eqNodeForcesLocal[1]
+			self.solutions[sol]['elementforce'][2] -= self.eqNodeForcesLocal[2]
+			self.solutions[sol]['elementforce'][3] -= self.eqNodeForcesLocal[3]
+			self.solutions[sol]['elementforce'][4] -= self.eqNodeForcesLocal[4]
+			self.solutions[sol]['elementforce'][5] -= self.eqNodeForcesLocal[5]
+			self.solutions[sol]['elementforce'][6] -= self.eqNodeForcesLocal[7]
+			self.solutions[sol]['elementforce'][7] -= self.eqNodeForcesLocal[8]
+			self.solutions[sol]['elementforce'][8] -= self.eqNodeForcesLocal[9]
+			self.solutions[sol]['elementforce'][9] -= self.eqNodeForcesLocal[10]
+			self.solutions[sol]['elementforce'][10] -= self.eqNodeForcesLocal[11]
 
 
 	def calcStrain(self,u,calcStrain,calcStress,sol): ### NOT READY
@@ -2052,8 +2320,13 @@ Class for hex 8-node 3D element.
 Has 3 active degrees of freedom per node.
 8 nodes gives 24 degrees of freedom total.
 '''
-	def __init__(self,number,sect,nodes,gaussQuad):
-		self.gaussPnts = gaussQuad.quad_p2
+	def __init__(self,number,sect,nodes,gaussQuad,reducedIntegration=False):
+		if reducedIntegration == True:
+			self.reducedIntegration = True
+			self.gaussPnts = gaussQuad.quad_p1
+		else:
+			self.reducedIntegration = False
+			self.gaussPnts = gaussQuad.quad_p2
 		super(HEX8N,self).__init__(number,sect,nodes)
 		self.EFS = [[1,1,1,0,0,0],]*8
 		self.nodeFreedomSignature()
@@ -2073,62 +2346,47 @@ Has 3 active degrees of freedom per node.
 				self.nodes[i].NFS[2] = 1
 
 
-	def calcStrainDisplacementMatrix(self,ksi,eta,zeta):
+	def calcStrainDisplacementMatrix(self,zeta,eta,ksi):
 		'''
 	Calculate the B-matrix given specific
 	shape function coordinates.
 	'''
-		dNf_dqc = np.array([[(-1.0+eta+zeta-eta*zeta)*0.125,
-							 (+1.0-eta-zeta+eta*zeta)*0.125,
-							 (+1.0+eta-zeta-eta*zeta)*0.125,
-							 (-1.0-eta+zeta+eta*zeta)*0.125,
-							 (-1.0+eta-zeta+eta*zeta)*0.125,
-							 (+1.0-eta+zeta-eta*zeta)*0.125,
-							 (+1.0+eta+zeta+eta*zeta)*0.125,
-							 (-1.0-eta-zeta-eta*zeta)*0.125],
-							[(-1.0+ksi+zeta-ksi*zeta)*0.125,
-							 (-1.0-ksi+zeta+ksi*zeta)*0.125,
-							 (+1.0+ksi-zeta-ksi*zeta)*0.125,
-							 (+1.0-ksi-zeta+ksi*zeta)*0.125,
-							 (-1.0+ksi-zeta+ksi*zeta)*0.125,
-							 (-1.0-ksi-zeta-ksi*zeta)*0.125,
-							 (+1.0+ksi+zeta+ksi*zeta)*0.125,
-							 (+1.0-ksi+zeta-ksi*zeta)*0.125],
-							[(-1.0+ksi+eta-ksi*eta)*0.125,
-							 (-1.0-ksi+eta+ksi*eta)*0.125,
-							 (-1.0-ksi-eta-ksi*eta)*0.125,
-							 (-1.0+ksi-eta+ksi*eta)*0.125,
-							 (+1.0-ksi-eta+ksi*eta)*0.125,
-							 (+1.0+ksi-eta-ksi*eta)*0.125,
-							 (+1.0+ksi+eta+ksi*eta)*0.125,
-							 (+1.0-ksi+eta-ksi*eta)*0.125]])
+		dNf_dqc = np.array([[-(1.-eta)*(1.-zeta)*0.125, -(1.-ksi)*(1.-zeta)*0.125, -(1.-ksi)*(1.-eta)*0.125],
+							[ (1.-eta)*(1.-zeta)*0.125, -(1.+ksi)*(1.-zeta)*0.125, -(1.+ksi)*(1.-eta)*0.125],
+							[ (1.+eta)*(1.-zeta)*0.125,  (1.+ksi)*(1.-zeta)*0.125, -(1.+ksi)*(1.+eta)*0.125],
+							[-(1.+eta)*(1.-zeta)*0.125,  (1.-ksi)*(1.-zeta)*0.125, -(1.-ksi)*(1.+eta)*0.125],
+							[-(1.-eta)*(1.+zeta)*0.125, -(1.-ksi)*(1.+zeta)*0.125,  (1.-ksi)*(1.-eta)*0.125],
+							[ (1.-eta)*(1.+zeta)*0.125, -(1.+ksi)*(1.+zeta)*0.125,  (1.+ksi)*(1.-eta)*0.125],
+							[ (1.+eta)*(1.+zeta)*0.125,  (1.+ksi)*(1.+zeta)*0.125,  (1.+ksi)*(1.+eta)*0.125],
+							[-(1.+eta)*(1.+zeta)*0.125,  (1.-ksi)*(1.+zeta)*0.125,  (1.-ksi)*(1.+eta)*0.125]])
 
-		J = dNf_dqc.dot(np.array([[self.nodes[0].coord[0][0],self.nodes[0].coord[1][0],self.nodes[0].coord[2][0]],
-								  [self.nodes[1].coord[0][0],self.nodes[1].coord[1][0],self.nodes[1].coord[2][0]],
-								  [self.nodes[2].coord[0][0],self.nodes[2].coord[1][0],self.nodes[2].coord[2][0]],
-								  [self.nodes[3].coord[0][0],self.nodes[3].coord[1][0],self.nodes[3].coord[2][0]],
-								  [self.nodes[4].coord[0][0],self.nodes[4].coord[1][0],self.nodes[4].coord[2][0]],
-								  [self.nodes[5].coord[0][0],self.nodes[5].coord[1][0],self.nodes[5].coord[2][0]],
-								  [self.nodes[6].coord[0][0],self.nodes[6].coord[1][0],self.nodes[6].coord[2][0]],
-								  [self.nodes[7].coord[0][0],self.nodes[7].coord[1][0],self.nodes[7].coord[2][0]]]))
-
+		J = np.zeros((3,3))
+		for i in range(3):
+			for j in range(3):
+				for a in range(8):
+					J[i][j] = J[i][j] + self.nodes[a].coord[i][0]*dNf_dqc[a][j]
 
 		detJ = J[0][0]*(J[1][1]*J[2][2]-J[2][1]*J[1][2]) + \
 			   J[0][1]*(J[2][1]*J[0][2]-J[0][1]*J[2][2]) + \
 			   J[0][2]*(J[0][1]*J[1][2]-J[0][2]*J[1][1])
-
+			
 		invdetJ = 1.0/detJ
-		invJ = np.array([[invdetJ*(J[1][1]*J[2][2]-J[2][1]*J[1][2]), 
-						  invdetJ*(J[1][0]*J[2][2]-J[2][0]*J[1][2]), 
-						  invdetJ*(J[1][0]*J[2][1]-J[2][0]*J[1][1])],
-						 [invdetJ*(J[2][1]*J[0][2]-J[0][1]*J[2][2]), 
+		invJ = np.array([[invdetJ*(J[1][1]*J[2][2]-J[2][1]*J[1][2]),
+						  invdetJ*(J[2][1]*J[0][2]-J[0][1]*J[2][2]),
+						  invdetJ*(J[0][1]*J[1][2]-J[0][2]*J[1][1])],
+						 [invdetJ*(J[1][0]*J[2][2]-J[2][0]*J[1][2]),
 						  invdetJ*(J[0][0]*J[2][2]-J[2][0]*J[0][2]),
-						  invdetJ*(J[2][0]*J[0][1]-J[2][1]*J[0][0])],
-						 [invdetJ*(J[0][1]*J[1][2]-J[0][2]*J[1][1]), 
-						  invdetJ*(J[0][2]*J[1][0]-J[1][2]*J[0][0]),
+						  invdetJ*(J[0][2]*J[1][0]-J[1][2]*J[0][0])],
+						 [invdetJ*(J[1][0]*J[2][1]-J[2][0]*J[1][1]), 
+						  invdetJ*(J[2][0]*J[0][1]-J[2][1]*J[0][0]), 
 						  invdetJ*(J[0][0]*J[1][1]-J[1][0]*J[0][1])]])
 
-		dNf_drc = invJ.dot(dNf_dqc)
+		dNf_drc = np.zeros((8,3))
+		for a in range(8):
+			for i in range(3):
+				for j in range(3):
+					dNf_drc[a][i] = dNf_drc[a][i] + dNf_dqc[a][j]*invJ[j][i]
+		dNf_drc = dNf_drc.T
 
 		B = [[],[],[],[],[],[]]
 		for l in range(8):
@@ -2188,8 +2446,8 @@ Has 3 active degrees of freedom per node.
 					w_k = self.gaussPnts[k][1]
 
 					[detJ,B] = self.calcStrainDisplacementMatrix(ksi,eta,zeta)
-					self.K = ((B.transpose().dot(self.section.E)).dot(B))*(w_i*w_j*w_k*detJ) + self.K
-
+					self.K = ((B.T.dot(self.section.E)).dot(B))*(w_i*w_j*w_k*detJ) + self.K
+			
 
 	def calcMassMatrix(self):
 		'''
@@ -2242,7 +2500,7 @@ Has 3 active degrees of freedom per node.
 				for k in range(gauss):
 					zeta = self.gaussPnts[k][0]
 
-					[detJ,B] = self.calcStrainDisplacementMatrix(ksi,eta,zeta)
+					[detJ,B] = self.calcStrainDisplacementMatrix(zeta,eta,ksi)
 					if calcStrain:
 						self.solutions[sol]['strain']['int_points'][h] = {'strain_tensor': B.dot(u), 
 												'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
@@ -2258,7 +2516,7 @@ Has 3 active degrees of freedom per node.
 			eta  = ksietazeta[j][1]
 			zeta = ksietazeta[j][2]
 
-			[detJ,B] = self.calcStrainDisplacementMatrix(ksi,eta,zeta)
+			[detJ,B] = self.calcStrainDisplacementMatrix(zeta,eta,ksi)
 
 			if calcStrain:
 				self.solutions[sol]['strain']['nodal'][j+1] = {'strain_tensor': B.dot(u), 
@@ -2360,7 +2618,7 @@ Has 3 active degrees of freedom per node.
 				self.nodes[i].NFS[2] = 1
 
 
-	def calcStrainDisplacementMatrix(self,ksi,eta,zeta):
+	def calcStrainDisplacementMatrix(self,zeta,eta,ksi):
 		'''
 	Calculate the B-matrix given specific
 	shape function coordinates.
@@ -2425,27 +2683,13 @@ Has 3 active degrees of freedom per node.
 							 (-((eta**2)-1)*(ksi+1))*0.25,
 							 (-((ksi**2)-1)*(eta+1))*0.25,
 							 ( ((eta**2)-1)*(ksi-1))*0.25]])
-
-		J = dNf_dqc.dot(np.array([[self.nodes[0].coord[0][0],self.nodes[0].coord[1][0],self.nodes[0].coord[2][0]],
-								  [self.nodes[1].coord[0][0],self.nodes[1].coord[1][0],self.nodes[1].coord[2][0]],
-								  [self.nodes[2].coord[0][0],self.nodes[2].coord[1][0],self.nodes[2].coord[2][0]],
-								  [self.nodes[3].coord[0][0],self.nodes[3].coord[1][0],self.nodes[3].coord[2][0]],
-								  [self.nodes[4].coord[0][0],self.nodes[4].coord[1][0],self.nodes[4].coord[2][0]],
-								  [self.nodes[5].coord[0][0],self.nodes[5].coord[1][0],self.nodes[5].coord[2][0]],
-								  [self.nodes[6].coord[0][0],self.nodes[6].coord[1][0],self.nodes[6].coord[2][0]],
-								  [self.nodes[7].coord[0][0],self.nodes[7].coord[1][0],self.nodes[7].coord[2][0]],
-								  [self.nodes[8].coord[0][0],self.nodes[8].coord[1][0],self.nodes[8].coord[2][0]],
-								  [self.nodes[9].coord[0][0],self.nodes[9].coord[1][0],self.nodes[9].coord[2][0]],
-								  [self.nodes[10].coord[0][0],self.nodes[10].coord[1][0],self.nodes[10].coord[2][0]],
-								  [self.nodes[11].coord[0][0],self.nodes[11].coord[1][0],self.nodes[11].coord[2][0]],
-								  [self.nodes[12].coord[0][0],self.nodes[12].coord[1][0],self.nodes[12].coord[2][0]],
-								  [self.nodes[13].coord[0][0],self.nodes[13].coord[1][0],self.nodes[13].coord[2][0]],
-								  [self.nodes[14].coord[0][0],self.nodes[14].coord[1][0],self.nodes[14].coord[2][0]],
-								  [self.nodes[15].coord[0][0],self.nodes[15].coord[1][0],self.nodes[15].coord[2][0]],
-								  [self.nodes[16].coord[0][0],self.nodes[16].coord[1][0],self.nodes[16].coord[2][0]],
-								  [self.nodes[17].coord[0][0],self.nodes[17].coord[1][0],self.nodes[17].coord[2][0]],
-								  [self.nodes[18].coord[0][0],self.nodes[18].coord[1][0],self.nodes[18].coord[2][0]],
-								  [self.nodes[19].coord[0][0],self.nodes[19].coord[1][0],self.nodes[19].coord[2][0]]]))
+		dNf_dqc = dNf_dqc.T
+		
+		J = np.zeros((3,3))
+		for i in range(3):
+			for j in range(3):
+				for a in range(20):
+					J[i][j] = J[i][j] + self.nodes[a].coord[i][0]*dNf_dqc[a][j]
 
 		detJ = J[0][0]*(J[1][1]*J[2][2]-J[2][1]*J[1][2]) + \
 			   J[0][1]*(J[2][1]*J[0][2]-J[0][1]*J[2][2]) + \
@@ -2462,7 +2706,7 @@ Has 3 active degrees of freedom per node.
 						  invdetJ*(J[0][2]*J[1][0]-J[1][2]*J[0][0]),
 						  invdetJ*(J[0][0]*J[1][1]-J[1][0]*J[0][1])]])
 
-		dNf_drc = invJ.dot(dNf_dqc)
+		dNf_drc = invJ.dot(dNf_dqc.T)
 
 		B = [[],[],[],[],[],[]]
 		for l in range(20):
@@ -2578,7 +2822,7 @@ Has 3 active degrees of freedom per node.
 				for k in range(gauss):
 					zeta = self.gaussPnts[k][0]
 
-					[detJ,B] = self.calcStrainDisplacementMatrix(ksi,eta,zeta)
+					[detJ,B] = self.calcStrainDisplacementMatrix(zeta,eta,ksi)
 					if calcStrain:
 						self.solutions[sol]['strain']['int_points'][h] = {'strain_tensor': B.dot(u), 
 												'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
@@ -2597,7 +2841,7 @@ Has 3 active degrees of freedom per node.
 			eta = ksietazeta[j][1]
 			zeta = ksietazeta[j][2]
 
-			[detJ,B] = self.calcStrainDisplacementMatrix(ksi,eta,zeta)
+			[detJ,B] = self.calcStrainDisplacementMatrix(zeta,eta,ksi)
 
 			if calcStrain:
 				self.solutions[sol]['strain']['nodal'][j+1] = {'strain_tensor': B.dot(u), 

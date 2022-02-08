@@ -3,7 +3,9 @@
 #  -----------
 #
 #	This is the camera module. It defines the camera object
-#	used for manipulating the view of the model.
+#	used for manipulating the view of the model. It was not
+#	written by me. I don't remember where I found it many
+#	many years ago.
 #
 
 

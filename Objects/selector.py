@@ -26,6 +26,8 @@ and choices (selection boxes) from user.
 		super(InputDialog, self).__init__()
 
 		self.setWindowTitle(title)
+		self.setWindowIcon(QtGui.QIcon('../Icons/icon_view_result.png'))
+
 		self.inputs = allInput['inputs']
 		self.current = allInput['current']
 		self.choices = allInput['choices']
@@ -233,10 +235,12 @@ FE-solver.
 	def __init__(self,allInput, newVariables):
 		super(InputSolFile, self).__init__()
 
+		self.setWindowTitle('New sol-file')
+		self.setWindowIcon(QtGui.QIcon('../Icons/icon_new_file.png'))
+
 		self.inputs = allInput['inputs']
 		self.current = allInput['current']
 		self.choices = allInput['choices']
-		self.setWindowTitle('New sol-file')
 		self.newVariables = newVariables
 
 		self.boldFont=QtGui.QFont()
@@ -246,7 +250,7 @@ FE-solver.
 		self.name_label = QtWidgets.QLabel('File name')
 		self.name_label.setAlignment(QtCore.Qt.AlignCenter)
 		self.name_line = QtWidgets.QLineEdit()
-		self.name_line.setMaxLength(24)
+		self.name_line.setMaxLength(48)
 		self.name_line.setPlaceholderText(self.inputs['Name'])
 
 		self.solution_label = QtWidgets.QLabel('Solution')
@@ -359,6 +363,8 @@ FE-solver.
 		blank_label.setAlignment(QtCore.Qt.AlignCenter)
 		node_elem_set_label = QtWidgets.QLabel('Node-/Elementsets')
 		node_elem_set_label.setAlignment(QtCore.Qt.AlignLeft)
+		num_modeshapes_label = QtWidgets.QLabel('Number of Eigenmodes')
+		num_modeshapes_label.setAlignment(QtCore.Qt.AlignLeft)
 		plot_label = QtWidgets.QLabel('Plt')
 		plot_label.setAlignment(QtCore.Qt.AlignRight)
 		plot_label.setFixedWidth(20)
@@ -403,7 +409,10 @@ FE-solver.
 		self.solution_layouts[self.sol_num]['solution_label'].setFont(self.boldFont)
 		self.solution_layouts[self.sol_num]['solution_label'].setFixedWidth(100)
 		self.solution_layouts[self.sol_num]['sublayout1'].addWidget(self.solution_layouts[self.sol_num]['solution_label'])
-		self.solution_layouts[self.sol_num]['sublayout1'].addWidget(node_elem_set_label)
+		if 'disp' not in self.choices[1][self.current['Solution']]:
+			self.solution_layouts[self.sol_num]['sublayout1'].addWidget(num_modeshapes_label)
+		else:
+			self.solution_layouts[self.sol_num]['sublayout1'].addWidget(node_elem_set_label)
 		self.solution_layouts[self.sol_num]['sublayout1'].addWidget(plot_label)
 		self.solution_layouts[self.sol_num]['sublayout1'].addWidget(text_label)
 		self.solution_layouts[self.sol_num]['layout'].addLayout(self.solution_layouts[self.sol_num]['sublayout1'])
@@ -425,8 +434,8 @@ FE-solver.
 				self.solution_layouts[self.sol_num]['Results']['velc']['line_edit'].setMaxLength(12)
 				self.solution_layouts[self.sol_num]['Results']['velc']['line_edit'].setPlaceholderText('1')
 				self.solution_layouts[self.sol_num]['Results']['velc']['checkbox_plot'] = QtWidgets.QCheckBox()
-				self.solution_layouts[self.sol_num]['Results']['velc']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
-				self.solution_layouts[self.sol_num]['Results']['velc']['checkbox_plot'].setEnabled(False)
+#				self.solution_layouts[self.sol_num]['Results']['velc']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
+#				self.solution_layouts[self.sol_num]['Results']['velc']['checkbox_plot'].setEnabled(False)
 				self.solution_layouts[self.sol_num]['Results']['velc']['checkbox_text'] = QtWidgets.QCheckBox()
 			elif result == 'accl':
 				self.solution_layouts[self.sol_num]['Results']['accl'] = {}
@@ -434,8 +443,8 @@ FE-solver.
 				self.solution_layouts[self.sol_num]['Results']['accl']['line_edit'].setMaxLength(12)
 				self.solution_layouts[self.sol_num]['Results']['accl']['line_edit'].setPlaceholderText('1')
 				self.solution_layouts[self.sol_num]['Results']['accl']['checkbox_plot'] = QtWidgets.QCheckBox()
-				self.solution_layouts[self.sol_num]['Results']['accl']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
-				self.solution_layouts[self.sol_num]['Results']['accl']['checkbox_plot'].setEnabled(False)
+#				self.solution_layouts[self.sol_num]['Results']['accl']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
+#				self.solution_layouts[self.sol_num]['Results']['accl']['checkbox_plot'].setEnabled(False)
 				self.solution_layouts[self.sol_num]['Results']['accl']['checkbox_text'] = QtWidgets.QCheckBox()
 			elif result == 'frf':
 				self.solution_layouts[self.sol_num]['Results']['frf'] = {}
@@ -443,8 +452,8 @@ FE-solver.
 				self.solution_layouts[self.sol_num]['Results']['frf']['line_edit'].setMaxLength(12)
 				self.solution_layouts[self.sol_num]['Results']['frf']['line_edit'].setPlaceholderText('1')
 				self.solution_layouts[self.sol_num]['Results']['frf']['checkbox_plot'] = QtWidgets.QCheckBox()
-				self.solution_layouts[self.sol_num]['Results']['frf']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
-				self.solution_layouts[self.sol_num]['Results']['frf']['checkbox_plot'].setEnabled(False)
+#				self.solution_layouts[self.sol_num]['Results']['frf']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
+#				self.solution_layouts[self.sol_num]['Results']['frf']['checkbox_plot'].setEnabled(False)
 				self.solution_layouts[self.sol_num]['Results']['frf']['checkbox_text'] = QtWidgets.QCheckBox()
 			elif result == 'nodf':
 				self.solution_layouts[self.sol_num]['Results']['nodf'] = {}
@@ -492,7 +501,7 @@ FE-solver.
 			elif result == 'dampratio':
 				self.solution_layouts[self.sol_num]['Results']['dampratio'] = {}
 				self.solution_layouts[self.sol_num]['Results']['dampratio']['line_edit'] = QtWidgets.QLineEdit()
-				self.solution_layouts[self.sol_num]['Results']['dampratio']['line_edit'].setMaxLength(24)
+				self.solution_layouts[self.sol_num]['Results']['dampratio']['line_edit'].setMaxLength(48)
 				self.solution_layouts[self.sol_num]['Results']['dampratio']['line_edit'].setPlaceholderText('0.02')
 				self.solution_layouts[self.sol_num]['Results']['dampratio']['checkbox_plot'] = QtWidgets.QCheckBox()
 				self.solution_layouts[self.sol_num]['Results']['dampratio']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
@@ -503,7 +512,7 @@ FE-solver.
 			else:
 				self.solution_layouts[self.sol_num]['Results']['forcetable'] = {}
 				self.solution_layouts[self.sol_num]['Results']['forcetable']['line_edit'] = QtWidgets.QLineEdit()
-				self.solution_layouts[self.sol_num]['Results']['forcetable']['line_edit'].setMaxLength(24)
+				self.solution_layouts[self.sol_num]['Results']['forcetable']['line_edit'].setMaxLength(48)
 				self.solution_layouts[self.sol_num]['Results']['forcetable']['line_edit'].setPlaceholderText('filename.tab')
 				self.solution_layouts[self.sol_num]['Results']['forcetable']['checkbox_plot'] = QtWidgets.QCheckBox()
 				self.solution_layouts[self.sol_num]['Results']['forcetable']['checkbox_plot'].setCheckState(QtCore.Qt.Checked)
@@ -657,6 +666,8 @@ of inertia.
 	def __init__(self, modified_section):
 		super(ModifyBeamSection, self).__init__()
 		self.setWindowTitle('Modify Beam Section')
+		self.setWindowIcon(QtGui.QIcon('../Icons/icon_beam_section.png'))
+
 		self.boldFont=QtGui.QFont()
 		self.boldFont.setBold(True)		
 
@@ -1282,10 +1293,10 @@ of inertia.
 		for m in range(6):
 			if str(self.labels[self.section_type][m].text()).strip() != '---':
 				if str(self.line_edits[self.section_type][m].text()) == '':
-					self.modified_section[section]['Cross section'][str(self.labels[self.section_type][m].text()).strip()] = \
+					self.modified_section[section]['Cross section'][str(self.labels[self.section_type][m].text()).strip().replace(':','')] = \
 																				float(self.line_edits[self.section_type][m].placeholderText())
 				else:
-					self.modified_section[section]['Cross section'][str(self.labels[self.section_type][m].text()).strip()] = \
+					self.modified_section[section]['Cross section'][str(self.labels[self.section_type][m].text()).strip().replace(':','')] = \
 																				float(self.line_edits[self.section_type][m].text())
 		print('\n\tSection modified ('+section+'):')
 		print('\t', self.modified_section[section])

@@ -225,16 +225,124 @@ specified nodeset.
 
 
 
-class Distributed(Load):	# NOT READY TO BE USED
+class Pressure(Load):	# NOT READY TO BE USED
 	'''
-Class for distributed load applied
-to a set of nodes.
+Class for pressure load applied
+to a set of plate elements.
 '''
-	def __init__(self,name,nodes,force,v1,v2,v3=0.0):
-		self.type = 'Distributed'
-		self.force = force
+	def __init__(self,name,nodes,pressure,v1,v2,v3=0.0):
+		self.type = 'Pressure'
+		self.pressure = pressure
 		self.vector = [[float(v1)],[float(v2)],[float(v3)]]
 		super(Pressure,self).__init__(name,nodes)
+
+
+
+
+class ForceDistributed(Load):
+	'''
+Class for distributed load applied
+to a set of beam elements.
+'''
+	def __init__(self,name,elementset,force,v1,v2,v3=0.0):
+		self.type = 'ForceDistributed'
+		self.force = force
+		self.elementset = elementset
+		self.vector = [[float(v1)],[float(v2)],[float(v3)]]
+		super(ForceDistributed,self).__init__(name,elementset)
+
+
+	def calcDegreeOfFreedomForces(self,nDOFs,NFMT,elements,fixedDOFs,MPCs):
+		'''
+	Apply the force contribution on each individual
+	degree of freedom separately.
+	self.F = force vector
+	nDOFs  = number of degrees of freedom (in FE-model)
+	NFMT   = node freedom map table
+	'''
+		self.F = np.zeros((nDOFs,1))
+
+		vectMag = sqrt(self.vector[0][0]**2 + self.vector[1][0]**2 + self.vector[2][0]**2)
+		distForce = [self.force*self.vector[0][0]/vectMag,
+					 self.force*self.vector[1][0]/vectMag,
+					 self.force*self.vector[2][0]/vectMag]
+
+		is2D = False
+		self.nodes = {}
+		for element in self.elementset:
+			if elements[element].type == 'BEAM2N2D':
+				elmDOFs = 6
+				is2D = True
+			else:
+				elmDOFs = 12
+			# check if node DOFs are free or not
+			freeDOFs = [0]*elmDOFs
+			# first check if both nodes are connected to other elements
+			for element2 in elements:
+				if element2 != element:
+					if elements[element2].nodes[0].number == elements[element].nodes[0].number or \
+								elements[element2].nodes[1].number == elements[element].nodes[0].number:
+						if elmDOFs == 6:
+							freeDOFs[0] = freeDOFs[1] = freeDOFs[2] = 1
+						if elmDOFs == 12:
+							freeDOFs[0] = freeDOFs[1] = freeDOFs[2] = freeDOFs[3] = freeDOFs[4] = freeDOFs[5] = 1
+					if elements[element2].nodes[0].number == elements[element].nodes[1].number or \
+								elements[element2].nodes[1].number == elements[element].nodes[1].number:
+						if elmDOFs == 6:
+							freeDOFs[3] = freeDOFs[4] = freeDOFs[5] = 1
+						if elmDOFs == 12:
+							freeDOFs[6] = freeDOFs[7] = freeDOFs[8] = freeDOFs[9] = freeDOFs[10] = freeDOFs[11] = 1
+			# if not, check if nodes are restrained by boundary conditions or constraints (and in which DOFs)
+			if 0 in freeDOFs:
+				n1_dofs = [NFMT[elements[element].nodes[0].number]+i for i in range(int(elmDOFs/2))]
+				for i, dof in enumerate(n1_dofs):
+					if dof in fixedDOFs:
+						freeDOFs[i] = 1
+					else:
+						for mpc in MPCs:
+							if dof in MPCs[mpc]:
+								freeDOFs[i] = 1
+				n2_dofs = [NFMT[elements[element].nodes[1].number]+i for i in range(int(elmDOFs/2))]
+				for i, dof in enumerate(n2_dofs):
+					if dof in fixedDOFs:
+						freeDOFs[i+int(elmDOFs/2)] = 1
+					else:
+						for mpc in MPCs:
+							if dof in MPCs[mpc]:
+								freeDOFs[i+int(elmDOFs/2)] = 1
+
+			elements[element].calcEquivalentNodalForces(distForce,freeDOFs)
+			if is2D:
+				if elements[element].nodes[0].number not in self.nodes:
+					self.nodes[elements[element].nodes[0].number] = elements[element].eqNodeForces[:3]
+				else:
+					self.nodes[elements[element].nodes[0].number] += elements[element].eqNodeForces[:3]
+				if elements[element].nodes[1].number not in self.nodes:
+					self.nodes[elements[element].nodes[1].number] = elements[element].eqNodeForces[3:]
+				else:
+					self.nodes[elements[element].nodes[1].number] += elements[element].eqNodeForces[3:]
+			else:
+				if elements[element].nodes[0].number not in self.nodes:
+					self.nodes[elements[element].nodes[0].number] = elements[element].eqNodeForces[:6]
+				else:
+					self.nodes[elements[element].nodes[0].number] += elements[element].eqNodeForces[:6]
+				if elements[element].nodes[1].number not in self.nodes:
+					self.nodes[elements[element].nodes[1].number] = elements[element].eqNodeForces[6:]
+				else:
+					self.nodes[elements[element].nodes[1].number] += elements[element].eqNodeForces[6:]
+
+		for node in self.nodes:
+			if is2D:
+				self.F[NFMT[node]] += self.nodes[node][0]
+				self.F[NFMT[node]+1] += self.nodes[node][1]
+				self.F[NFMT[node]+2] += self.nodes[node][2]
+			else:
+				self.F[NFMT[node]] += self.nodes[node][0]
+				self.F[NFMT[node]+1] += self.nodes[node][1]
+				self.F[NFMT[node]+2] += self.nodes[node][2]
+				self.F[NFMT[node]+3] += self.nodes[node][3]
+				self.F[NFMT[node]+4] += self.nodes[node][4]
+				self.F[NFMT[node]+5] += self.nodes[node][5]
 
 
 
