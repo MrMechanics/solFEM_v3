@@ -161,7 +161,11 @@ their individual boundary conditions, loads and constraints.
 		for element in self.elements:
 			if not hasattr(self.elements[element],'T_elm') and self.elements[element].type in ['BEAM2N2D', 'BEAM2N']:
 				self.elements[element].setOrientation()
-
+		# add cross section information to any Beam or Rod element where that is specified
+		for element in self.elements:
+			if 'CrossSection' in inputobj.sections[inputobj.elements[element]['section']]:
+				self.elements[element].crossSection = inputobj.sections[inputobj.elements[element]['section']]['CrossSection']
+			
 		# create an element set 0 which includes all Element objects listed in *.sol-file
 		# to be used as default mesh if mesh is not specified for a given solution
 		self.elementsets[0] = []
@@ -254,6 +258,10 @@ their individual boundary conditions, loads and constraints.
 				self.loads[key] = globals()[inputobj.loads[key]['type']](key, \
 							self.elementsets[inputobj.loads[key]['elementset']], inputobj.loads[key]['acceleration'], \
 							*inputobj.loads[key]['vector'])
+			elif inputobj.loads[key]['type'] == 'ForceDistributed':
+				self.loads[key] = globals()[inputobj.loads[key]['type']](key, \
+							self.elementsets[inputobj.loads[key]['elementset']], inputobj.loads[key]['force'], \
+							*inputobj.loads[key]['vector'])
 			elif inputobj.loads[key]['type'] == 'Torque':
 				self.loads[key] = globals()[inputobj.loads[key]['type']](key, \
 							self.nodesets[inputobj.loads[key]['nodeset']], inputobj.loads[key]['torque'], \
@@ -291,7 +299,6 @@ their individual boundary conditions, loads and constraints.
 			self.dampings[key] = globals()[inputobj.dampings[key]['type']](key, \
 						inputobj.dampings[key]['damping_ratio'])
 
-
 		# instantiate all Table objects listed in *.sol-file
 		# and assign each table to boundary, load, material or damping
 		for key in inputobj.tables:
@@ -317,7 +324,7 @@ their individual boundary conditions, loads and constraints.
 				self.dampings[target].table = self.tables[key]
 			else:
 				pass
-			
+
 
 		# assemble stiffness and mass matrices so they are ready
 		# for the solutions that need them

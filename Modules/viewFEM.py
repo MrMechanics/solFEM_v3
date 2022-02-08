@@ -107,6 +107,10 @@ is an OpenGL widget running inside this framework.
 		importfrom.setStatusTip('Import mesh from *.sol file')
 		importfrom.triggered.connect(self.importFrom)
 
+		export = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_export.png'),'Export', self)
+		export.setStatusTip('Export mesh to *.sol file')
+		export.triggered.connect(self.exportMesh)
+
 		savefile = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_save.png'),'Save', self)
 		savefile.setStatusTip('Save current session to *.mdl file')
 		savefile.triggered.connect(self.saveFile)
@@ -116,49 +120,97 @@ is an OpenGL widget running inside this framework.
 		quicksave.setStatusTip('Save current session to *.mdl file')
 		quicksave.triggered.connect(self.quickSaveFile)
 
-		camerahelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Camera', self)
+		camerahelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_origin_triad.png'),'Camera', self)
 		camerahelp.setStatusTip('Help screen for instructions on how to move the camera')
 		camerahelp.triggered.connect(self.cameraHelpScreen)
 
-		selecthelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Selecting', self)
+		selecthelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_select_nodes.png'),'Selecting', self)
 		selecthelp.setStatusTip('Help screen for instructions on how to select nodes and elements')
 		selecthelp.triggered.connect(self.selectHelpScreen)
 
-		meshhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Meshes', self)
+		meshhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_create_mesh.png'),'Meshes', self)
 		meshhelp.setStatusTip('Help screen for creating, importing and manipulating mesh')
 		meshhelp.triggered.connect(self.meshHelpScreen)
 
-		materialhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Materials', self)
+		materialhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_new_material.png'),'Materials', self)
 		materialhelp.setStatusTip('Help screen for creating and using materials')
 		materialhelp.triggered.connect(self.materialHelpScreen)
 
-		sectionhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Sections', self)
+		sectionhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_beam_section.png'),'Sections', self)
 		sectionhelp.setStatusTip('Help screen for creating and applying sections')
 		sectionhelp.triggered.connect(self.sectionHelpScreen)
 
-		solutionhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Solutions', self)
+		solutionhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_current_solution.png'),'Solutions', self)
 		solutionhelp.setStatusTip('Help screen for creating and setting up solutions')
 		solutionhelp.triggered.connect(self.solutionHelpScreen)
 
-		boundaryhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Boundary Conditions', self)
+		boundaryhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_boundary.png'),'Boundary Conditions', self)
 		boundaryhelp.setStatusTip('Help screen for creating and applying boundary conditions')
 		boundaryhelp.triggered.connect(self.boundaryHelpScreen)
 
-		constrainthelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Multipoint Constraints', self)
+		constrainthelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_touch_lock.png'),'Multipoint Constraints', self)
 		constrainthelp.setStatusTip('Help screen for creating and applying multipoint constraints')
 		constrainthelp.triggered.connect(self.constraintHelpScreen)
 
-		loadhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Loads', self)
+		loadhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_uniform_load.png'),'Loads', self)
 		loadhelp.setStatusTip('Help screen for creating and applying loads')
 		loadhelp.triggered.connect(self.loadHelpScreen)
 
-		solverhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Solver Files', self)
+		solverhelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_new_file.png'),'Solver Files', self)
 		solverhelp.setStatusTip('Help screen for creating and running solver files')
 		solverhelp.triggered.connect(self.solverHelpScreen)
 
-		resulthelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_question.png'),'Results', self)
+		resulthelp = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_current_results.png'),'Results', self)
 		resulthelp.setStatusTip('Help screen for loading and displaying results')
 		resulthelp.triggered.connect(self.resultHelpScreen)
+
+		tutorialROD2N2D = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_rod2_beam2.png'),'Tutorial 1', self)
+		tutorialROD2N2D.setStatusTip('Launch tutorial 1 in new window')
+		tutorialROD2N2D.triggered.connect(self.tutorialROD2N2DHelpScreen)
+
+		tutorialROD2N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_rod2_beam2.png'),'Tutorial 2', self)
+		tutorialROD2N.setStatusTip('Launch tutorial 2 in new window')
+		tutorialROD2N.triggered.connect(self.tutorialROD2NHelpScreen)
+
+		tutorialBEAM2N2D = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_rod2_beam2.png'),'Tutorial 3', self)
+		tutorialBEAM2N2D.setStatusTip('Launch tutorial 3 in new window')
+		tutorialBEAM2N2D.triggered.connect(self.tutorialBEAM2N2DHelpScreen)
+
+		tutorialBEAM2N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_rod2_beam2.png'),'Tutorial 4', self)
+		tutorialBEAM2N.setStatusTip('Launch tutorial 4 in new window')
+		tutorialBEAM2N.triggered.connect(self.tutorialBEAM2NHelpScreen)
+
+		tutorialTRI3N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_tri3.png'),'Tutorial 5', self)
+		tutorialTRI3N.setStatusTip('Launch tutorial 5 in new window')
+		tutorialTRI3N.triggered.connect(self.tutorialTRI3NHelpScreen)
+
+		tutorialTRI6N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_tri6.png'),'Tutorial 6', self)
+		tutorialTRI6N.setStatusTip('Launch tutorial 6 in new window')
+		tutorialTRI6N.triggered.connect(self.tutorialTRI6NHelpScreen)
+
+		tutorialQUAD4N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_quad4.png'),'Tutorial 7', self)
+		tutorialQUAD4N.setStatusTip('Launch tutorial 7 in new window')
+		tutorialQUAD4N.triggered.connect(self.tutorialQUAD4NHelpScreen)
+
+		tutorialQUAD8N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_quad8.png'),'Tutorial 8', self)
+		tutorialQUAD8N.setStatusTip('Launch tutorial 8 in new window')
+		tutorialQUAD8N.triggered.connect(self.tutorialQUAD8NHelpScreen)
+
+		tutorialTET4N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_tet4.png'),'Tutorial 9', self)
+		tutorialTET4N.setStatusTip('Launch tutorial 9 in new window')
+		tutorialTET4N.triggered.connect(self.tutorialTET4NHelpScreen)
+
+		tutorialTET10N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_tet10.png'),'Tutorial 10', self)
+		tutorialTET10N.setStatusTip('Launch tutorial 10 in new window')
+		tutorialTET10N.triggered.connect(self.tutorialTET10NHelpScreen)
+
+		tutorialHEX8N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_hex8.png'),'Tutorial 11', self)
+		tutorialHEX8N.setStatusTip('Launch tutorial 11 in new window')
+		tutorialHEX8N.triggered.connect(self.tutorialHEX8NHelpScreen)
+
+		tutorialHEX20N = QtWidgets.QAction(QtGui.QIcon('../Icons/pix_hex20.png'),'Tutorial 12', self)
+		tutorialHEX20N.setStatusTip('Launch tutorial 12 in new window')
+		tutorialHEX20N.triggered.connect(self.tutorialHEX20NHelpScreen)
 
 		selectnodes = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_select_nodes.png'),'Select Nodes', self)
 		selectnodes.setStatusTip('Select nodes')
@@ -212,6 +264,11 @@ is an OpenGL widget running inside this framework.
 		origin.setShortcut('O')
 		origin.setStatusTip('Show origin coordinate system')
 		origin.triggered.connect(self.showOrigin)
+		
+		meshtree = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),'Mesh Tree', self)
+		meshtree.setShortcut('H')
+		meshtree.setStatusTip('Toggle Mesh Tree On/Off')
+		meshtree.triggered.connect(self.showMeshTree)
 
 		meshview = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_current_mesh.png'),'Current Mesh...', self)
 		meshview.setStatusTip('Select what mesh to view')
@@ -265,6 +322,11 @@ is an OpenGL widget running inside this framework.
 		convert.setStatusTip('Convert elements from one type to another')
 		convert.triggered.connect(self.convertElements)
 
+		insert = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_insert_elements.png'),'Insert Elements', self)
+		insert.setShortcut('I')
+		insert.setStatusTip('Insert elements between selected nodes')
+		insert.triggered.connect(self.insertElements)
+
 		splitbeams = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_split_beam.png'),'Split Beams', self)
 		splitbeams.setStatusTip('Split beam elements into smaller elements')
 		splitbeams.triggered.connect(self.splitBeams)
@@ -277,17 +339,25 @@ is an OpenGL widget running inside this framework.
 		mesh.setStatusTip('Create a mesh of several elementsets')
 		mesh.triggered.connect(self.createMesh)
 
-		resizemesh = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_resize_mesh.png'),'Resize Mesh', self)
-		resizemesh.setStatusTip('Resize current mesh')
-		resizemesh.triggered.connect(self.resizeMesh)
+		resizeelements = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_resize_elements.png'),'Resize Elements', self)
+		resizeelements.setStatusTip('Resize selected elements')
+		resizeelements.triggered.connect(self.resizeElements)
 
 		getinfo = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_get_info.png'),'Node/Element Info', self)
 		getinfo.setStatusTip('Print out info about selected node/element')
 		getinfo.triggered.connect(self.getNodeElementInfo)
 
+		copynodes = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_copy_nodes.png'),'Copy Nodes', self)
+		copynodes.setStatusTip('Copy nodes and offset')
+		copynodes.triggered.connect(self.copyNodes)
+
 		copy = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_copy.png'),'Copy Elements', self)
 		copy.setStatusTip('Copy elements and offset')
 		copy.triggered.connect(self.copyElements)
+
+		mirrorcopy = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_mirror_copy.png'),'Mirror Elements', self)
+		mirrorcopy.setStatusTip('Mirror copy selected elements about x-, y- or z-plane')
+		mirrorcopy.triggered.connect(self.mirrorCopyElements)
 
 		move = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_move_elements.png'),'Move Elements', self)
 		move.setStatusTip('Move all elements in elementset by specified coordinates')
@@ -358,9 +428,13 @@ is an OpenGL widget running inside this framework.
 		touchlock.triggered.connect(self.applyTouchLockConstraint)
 
 		nodelock = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_point_lock.png'),'Node Lock', self)
-		nodelock.setStatusTip('Apply nodelock constraint between one node and one nodesets')
+		nodelock.setStatusTip('Apply nodelock constraint between one node and a set of nodes')
 		nodelock.triggered.connect(self.applyNodeLockConstraint)
-
+		
+		spiderlock = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_spider.png'),'Spider', self)
+		spiderlock.setStatusTip('Create a spider between one node and a set of nodes')
+		spiderlock.triggered.connect(self.createSpider)
+		
 		uniformload = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_uniform_load.png'),'Uniform Load', self)
 		uniformload.setStatusTip('Apply uniform load to nodeset')
 		uniformload.triggered.connect(self.applyUniformLoad)
@@ -368,9 +442,13 @@ is an OpenGL widget running inside this framework.
 		concentratedload = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_concentrated_load.png'),'Concentrated Load', self)
 		concentratedload.setStatusTip('Apply concentrated load to nodeset')
 		concentratedload.triggered.connect(self.applyConcentratedLoad)
+		
+		distributedload = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_distributed_load.png'),'Distributed Load', self)
+		distributedload.setStatusTip('Apply distributed load to elementset (beam elements only)')
+		distributedload.triggered.connect(self.applyDistributedLoad)
 
 		torqueload = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_torque_load.png'),'Torque Load', self)
-		torqueload.setStatusTip('Apply torque load to node')
+		torqueload.setStatusTip('Apply torque load to node (beam elements only)')
 		torqueload.triggered.connect(self.applyTorqueLoad)
 
 		gravityload = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_gravity_load.png'),'Gravity Load', self)
@@ -397,6 +475,10 @@ is an OpenGL widget running inside this framework.
 		scalefactor.setStatusTip('Set the scale factor for view of displacements')
 		scalefactor.triggered.connect(self.setScaleFactor)
 
+		scalediagram = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_scale_diagram.png'),'Scale Diagram', self)
+		scalediagram.setStatusTip('Adjust the scale for shear and bending moment diagrams')
+		scalediagram.triggered.connect(self.setShearBendingDiagram)
+
 		average = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_average.png'),'Average Stress/Strain', self)
 		average.setStatusTip('View average stresses and strains')
 		average.triggered.connect(self.viewAverage)
@@ -406,9 +488,17 @@ is an OpenGL widget running inside this framework.
 		animationspeed.triggered.connect(self.setAnimationSpeed)
 
 		animationonoff = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_start_pause.png'),'Play/Pause', self)
-		animationonoff.setShortcut('A')
+		animationonoff.setShortcut('P')
 		animationonoff.setStatusTip('Turn animation on or off')
 		animationonoff.triggered.connect(self.setAnimationOnOff)
+
+		previousmode = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_previous.png'),'Previous Mode', self)
+		previousmode.setStatusTip('Change to previous eigenmode')
+		previousmode.triggered.connect(self.previousEigenmode)
+
+		nextmode = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_next.png'),'Next Mode', self)
+		nextmode.setStatusTip('Change to next eigenmode')
+		nextmode.triggered.connect(self.nextEigenmode)
 
 		empty1 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
 		empty1.setEnabled(False)
@@ -425,6 +515,7 @@ is an OpenGL widget running inside this framework.
 		fileMenu = menubar.addMenu('&File')
 		fileMenu.addAction(newsession)
 		fileMenu.addAction(importfrom)
+		fileMenu.addAction(export)
 		fileMenu.addAction(openfile)
 		fileMenu.addAction(savefile)
 		fileMenu.addAction(quicksave)
@@ -440,6 +531,7 @@ is an OpenGL widget running inside this framework.
 		viewMenu.addAction(shaded)
 		viewMenu.addAction(nodesview)
 		viewMenu.addAction(origin)
+		viewMenu.addAction(meshtree)
 		highlightMenu = viewMenu.addMenu('&Highlight')
 		highlightMenu.addAction(highlightnode)
 		highlightMenu.addAction(highlightelement)
@@ -448,10 +540,10 @@ is an OpenGL widget running inside this framework.
 		meshMenu = menubar.addMenu('&Mesh')
 		meshMenu.addAction(meshview)
 		meshMenu.addAction(mesh)
-		meshMenu.addAction(resizemesh)
 		meshMenu.addAction(getinfo)
 		nodeMenu = meshMenu.addMenu('&Nodes')
 		nodeMenu.addAction(node)
+		nodeMenu.addAction(copynodes)
 		nodeMenu.addAction(movenodes)
 		nodeMenu.addAction(fusenodes)
 		nodeMenu.addAction(distance)
@@ -460,10 +552,13 @@ is an OpenGL widget running inside this framework.
 		elementMenu = meshMenu.addMenu('&Elements')
 		elementMenu.addAction(element)
 		elementMenu.addAction(extrude)
+		elementMenu.addAction(insert)
 		elementMenu.addAction(convert)
 		elementMenu.addAction(copy)
+		elementMenu.addAction(mirrorcopy)
 		elementMenu.addAction(move)
 		elementMenu.addAction(rotate)
+		elementMenu.addAction(resizeelements)
 		elementMenu.addAction(splitbeams)
 		elementMenu.addAction(beamorient)
 		elementMenu.addAction(elementset)
@@ -485,11 +580,13 @@ is an OpenGL widget running inside this framework.
 		constraintsMenu = solverMenu.addMenu('&Constraints')
 		constraintsMenu.addAction(touchlock)
 		constraintsMenu.addAction(nodelock)
+		constraintsMenu.addAction(spiderlock)
 		boundMenu = solverMenu.addMenu('&Boundaries')
 		boundMenu.addAction(displacement)
 		loadsMenu = solverMenu.addMenu('&Loads')
 		loadsMenu.addAction(uniformload)
 		loadsMenu.addAction(concentratedload)
+		loadsMenu.addAction(distributedload)
 		loadsMenu.addAction(torqueload)
 		loadsMenu.addAction(gravityload)
 		loadsMenu.addAction(dynamicload)
@@ -498,9 +595,12 @@ is an OpenGL widget running inside this framework.
 		resultMenu = menubar.addMenu('&Result')
 		resultMenu.addAction(resultview)
 		resultMenu.addAction(scalefactor)
+		resultMenu.addAction(scalediagram)
 		resultMenu.addAction(average)
 		aniMenu = resultMenu.addMenu('&Animation')
 		aniMenu.addAction(animationonoff)
+		aniMenu.addAction(previousmode)
+		aniMenu.addAction(nextmode)
 		aniMenu.addAction(animationspeed)
 		helpMenu = menubar.addMenu('&Help')
 		helpMenu.addAction(camerahelp)
@@ -514,6 +614,19 @@ is an OpenGL widget running inside this framework.
 		helpMenu.addAction(loadhelp)
 		helpMenu.addAction(solverhelp)
 		helpMenu.addAction(resulthelp)
+		tutorialMenu = menubar.addMenu('&Tutorials')
+		tutorialMenu.addAction(tutorialROD2N2D)
+		tutorialMenu.addAction(tutorialROD2N)
+		tutorialMenu.addAction(tutorialBEAM2N2D)
+		tutorialMenu.addAction(tutorialBEAM2N)
+		tutorialMenu.addAction(tutorialTRI3N)
+		tutorialMenu.addAction(tutorialTRI6N)
+		tutorialMenu.addAction(tutorialQUAD4N)
+		tutorialMenu.addAction(tutorialQUAD8N)
+		tutorialMenu.addAction(tutorialTET4N)
+		tutorialMenu.addAction(tutorialTET10N)
+		tutorialMenu.addAction(tutorialHEX8N)
+		tutorialMenu.addAction(tutorialHEX20N)
 
 		main_toolbar1 = QtWidgets.QToolBar('Main Toolbar Upper')
 		main_toolbar1.setIconSize(QtCore.QSize(24,24))
@@ -534,11 +647,12 @@ is an OpenGL widget running inside this framework.
 		main_toolbar1.addAction(highlightelement)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
-		main_toolbar1.addAction(node)
-		main_toolbar1.addAction(fusenodes)
+		main_toolbar1.addAction(mesh)
 		main_toolbar1.addAction(element)
 		main_toolbar1.addAction(extrude)
+		main_toolbar1.addAction(insert)
 		main_toolbar1.addAction(convert)
+		main_toolbar1.addAction(resizeelements)
 		main_toolbar1.addAction(beamorient)
 		main_toolbar1.addAction(splitbeams)
 		main_toolbar1.addSeparator()
@@ -566,9 +680,11 @@ is an OpenGL widget running inside this framework.
 		main_toolbar1.addAction(dynamicload)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
+		main_toolbar1.addAction(average)
 		main_toolbar1.addAction(scalefactor)
-		main_toolbar1.addAction(animationonoff)
-		main_toolbar1.addAction(animationspeed)
+		main_toolbar1.addAction(scalediagram)
+		main_toolbar1.addAction(newsolfile)
+		main_toolbar1.addAction(runsolver)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
 
@@ -591,13 +707,14 @@ is an OpenGL widget running inside this framework.
 		main_toolbar2.addAction(highlightelementset)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
-		main_toolbar2.addAction(mesh)
-		main_toolbar2.addAction(resizemesh)
+		main_toolbar2.addAction(node)
+		main_toolbar2.addAction(fusenodes)
+		main_toolbar2.addAction(copynodes)
 		main_toolbar2.addAction(movenodes)
 		main_toolbar2.addAction(copy)
+		main_toolbar2.addAction(mirrorcopy)
 		main_toolbar2.addAction(move)
 		main_toolbar2.addAction(rotate)
-		main_toolbar2.addAction(empty2)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
 		main_toolbar2.addAction(distance)
@@ -611,21 +728,22 @@ is an OpenGL widget running inside this framework.
 		main_toolbar2.addSeparator()
 		main_toolbar2.addAction(eigenmodes)
 		main_toolbar2.addAction(modal)
-#		main_toolbar2.addAction(empty3)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
 		main_toolbar2.addAction(displacement)
-		main_toolbar2.addAction(empty5)
+		main_toolbar2.addAction(spiderlock)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
+		main_toolbar2.addAction(distributedload)
 		main_toolbar2.addAction(torqueload)
 		main_toolbar2.addAction(gravityload)
+		main_toolbar2.addSeparator()
+		main_toolbar2.addSeparator()
+		main_toolbar2.addAction(previousmode)
+		main_toolbar2.addAction(nextmode)
+		main_toolbar2.addAction(animationonoff)
+		main_toolbar2.addAction(animationspeed)
 		main_toolbar2.addAction(empty1)
-		main_toolbar2.addSeparator()
-		main_toolbar2.addSeparator()
-		main_toolbar2.addAction(average)
-		main_toolbar2.addAction(newsolfile)
-		main_toolbar2.addAction(runsolver)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
 
@@ -690,7 +808,7 @@ is an OpenGL widget running inside this framework.
 		self.setCentralWidget(parentWidget)
 
 		self.centerWindow()
-		self.resize(1250,650)
+		self.resize(1300,650)
 
 
 	def centerWindow(self):
@@ -759,6 +877,30 @@ is an OpenGL widget running inside this framework.
 		self.help = HelpScreen('solver')
 	def resultHelpScreen(self):
 		self.help = HelpScreen('results')
+	def tutorialROD2N2DHelpScreen(self):
+		self.help = HelpScreen('tutorial_ROD2N2D')
+	def tutorialROD2NHelpScreen(self):
+		self.help = HelpScreen('tutorial_ROD2N')
+	def tutorialBEAM2N2DHelpScreen(self):
+		self.help = HelpScreen('tutorial_BEAM2N2D')
+	def tutorialBEAM2NHelpScreen(self):
+		self.help = HelpScreen('tutorial_BEAM2N')
+	def tutorialTRI3NHelpScreen(self):
+		self.help = HelpScreen('tutorial_TRI3N')
+	def tutorialTRI6NHelpScreen(self):
+		self.help = HelpScreen('tutorial_TRI6N')
+	def tutorialQUAD4NHelpScreen(self):
+		self.help = HelpScreen('tutorial_QUAD4N')
+	def tutorialQUAD8NHelpScreen(self):
+		self.help = HelpScreen('tutorial_QUAD8N')
+	def tutorialTET4NHelpScreen(self):
+		self.help = HelpScreen('tutorial_TET4N')
+	def tutorialTET10NHelpScreen(self):
+		self.help = HelpScreen('tutorial_TET10N')
+	def tutorialHEX8NHelpScreen(self):
+		self.help = HelpScreen('tutorial_HEX8N')
+	def tutorialHEX20NHelpScreen(self):
+		self.help = HelpScreen('tutorial_HEX20N')
 
 
 	def clearModel(self):
@@ -812,6 +954,9 @@ is an OpenGL widget running inside this framework.
 			self.new_file_import['file'] = filename
 			self.viewer.update()
 		elif filename[-4:] == '.bdf':
+			self.new_file_import['file'] = filename
+			self.viewer.update()
+		elif filename[-4:] == '.inp':
 			self.new_file_import['file'] = filename
 			self.viewer.update()
 		elif filename[-4:] == '.mdl':
@@ -875,6 +1020,42 @@ is an OpenGL widget running inside this framework.
 			pickle.dump((tmpmodel,), open(modelfile+'.mdl', 'wb'))
 		else:
 			self.saveFile()
+
+
+	def exportMesh(self):
+		'''
+	Export current mesh to a *.sol file with
+	the same name as the mesh.
+	'''
+		filename = str(QtWidgets.QFileDialog.getSaveFileName(self, 'Save file', './')[0])
+		solfile = ''
+		if filename[-4:] == '.sol':
+			self.current_savefile = filename
+			filename = filename[:-4]
+		for i in range(len(filename)):
+			if filename[-i-1] == '/' or filename[-i-1] == '\\':
+				solfile = str(filename[-i:])
+				break
+		if os.path.exists(filename+'.sol'):
+			print('\n\tOverwriting *.sol file '+solfile+'.sol\n')
+		fobj = open(filename+'.sol','w')
+		fobj.write('#\n#\n#\n')
+		nodes = self.model.meshes[self.viewer.currentMesh].nodes
+		for node in nodes:
+			fobj.write('NODE, '+str(nodes[node].number)+', '+ \
+								str(nodes[node].coord[0][0])+', '+ \
+								str(nodes[node].coord[1][0])+', '+ \
+								str(nodes[node].coord[2][0])+'\n')
+		fobj.write('#\n#\n#\n')
+		elements = self.model.meshes[self.viewer.currentMesh].elements
+		for element in elements:
+			fobj.write('ELEMENT, '+str(elements[element].type)+', '+ \
+								   str(elements[element].number)+', 0')
+			for node in elements[element].nodes:
+				fobj.write(', '+str(node.number))
+			fobj.write('\n')
+		fobj.write('#\n#\n#\n')
+		fobj.close()
 
 
 	def newSolFile(self):
@@ -1025,6 +1206,20 @@ is an OpenGL widget running inside this framework.
 							if result in self.model.selected_nodes[node].solutions[solution]:
 								print('\tNodeforce [FX, FY, FZ, MX, MY, MZ, MAGN]')
 								print('\t', self.model.selected_nodes[node].solutions[solution][result])
+						elif result == 'stress':
+							if 'avg_stress' in self.model.selected_nodes[node].solutions[solution]:
+								print('\tAverage stress [VonMises, MaxPrincipal, MinPrincipal, MaxShear]')
+								print('\t', [self.model.selected_nodes[node].solutions[solution]['avg_stress']['VonMises'],
+											 self.model.selected_nodes[node].solutions[solution]['avg_stress']['MaxPrinc'],
+											 self.model.selected_nodes[node].solutions[solution]['avg_stress']['MinPrinc'],
+											 self.model.selected_nodes[node].solutions[solution]['avg_stress']['MaxShear']])
+						elif result == 'strain':
+							if 'avg_strain' in self.model.selected_nodes[node].solutions[solution]:
+								print('\tAverage strain [VonMises, MaxPrincipal, MinPrincipal, MaxShear]')
+								print('\t', [self.model.selected_nodes[node].solutions[solution]['avg_strain']['VonMises'],
+											 self.model.selected_nodes[node].solutions[solution]['avg_strain']['MaxPrinc'],
+											 self.model.selected_nodes[node].solutions[solution]['avg_strain']['MinPrinc'],
+											 self.model.selected_nodes[node].solutions[solution]['avg_strain']['MaxShear']])
 						else:
 							pass
 		elif len(self.model.selected_elements) == 1:
@@ -1059,10 +1254,12 @@ is an OpenGL widget running inside this framework.
 						else:
 							pass
 				print('\tElement section:', self.model.selected_elements[element].section)
-				if hasattr(self.model.selected_elements[element], 'orientation'):
-					print('\tElement orientation:', self.model.selected_elements[element].orientation['x-vec'],
-													self.model.selected_elements[element].orientation['y-vec'],
-													self.model.selected_elements[element].orientation['z-vec'])
+#				if hasattr(self.model.selected_elements[element], 'crossSection'):
+#					print('\tElement cross section:', self.model.selected_elements[element].crossSection)
+#				if hasattr(self.model.selected_elements[element], 'orientation'):
+#					print('\tElement orientation:', self.model.selected_elements[element].orientation['x-vec'],
+#													self.model.selected_elements[element].orientation['y-vec'],
+#													self.model.selected_elements[element].orientation['z-vec'])
 		else:
 			print('\n\tPlease select the node or element you wish')
 			print('\tto print out the information about.')
@@ -1167,9 +1364,9 @@ is an OpenGL widget running inside this framework.
 								selectResult['current']['Result'] = result
 								selectResult['current']['Subresult'] = 'magnitude'
 							elif (result == 'nodeforce') and ('plot' in self.model.results[newResults].solutions[solution].results[result]):
-								selectResult['choices'][1][solution]['nodeforce'] = ['magnitude']
+								selectResult['choices'][1][solution]['nodeforce'] = ['Force', 'Moment']
 								selectResult['current']['Result'] = result
-								selectResult['current']['Subresult'] = 'magnitude'
+								selectResult['current']['Subresult'] = 'Force'
 							elif (result == 'elementforce') and ('plot' in self.model.results[newResults].solutions[solution].results[result]):
 								selectResult['choices'][1][solution]['elementforce'] = ['FX', 'FY', 'FZ', 'MX', 'MY', 'MZ']
 								selectResult['current']['Result'] = result
@@ -1254,26 +1451,59 @@ is an OpenGL widget running inside this framework.
 		self.selectionWidget.show()
 
 
-	def resizeMesh(self):
+	def resizeElements(self):
 		'''
-	Scales up or down the size of the mesh based
-	on a scalar provided by the user using dialog box.
+	Scales up or down the size of the selected 
+	elements based on a scalar provided by the 
+	user using dialog box.
 	'''
 		if self.viewer.currentMesh != 'None':
-			text, ok = QtWidgets.QInputDialog.getText(self, 'Resize Mesh', 'Resize the current\nmesh by a factor of:')
+			text, ok = QtWidgets.QInputDialog.getText(self, 'Resize Elements', 'Resize the selected\nelements by a factor of:')
 			if ok:
 				try:
-					float(str(text))
-				except ValueError:
-					print('\n\tThe factor must be a number. Mesh was not resized.')
-				else:
 					factor = float(str(text))
+				except ValueError:
+					print('\n\tThe factor must be a number. Elements were not resized.')
+				else:
 					mesh = self.model.meshes[self.viewer.currentMesh]
 					print('\n\tResizing mesh...', end=' ')
-					for node in mesh.nodes:
+					nodes = []
+					for element in self.model.selected_elements:
+						for node in mesh.elements[element].nodes:
+							if node.number not in nodes:
+								nodes.append(node.number)
+					coord_min = [mesh.nodes[nodes[ 0]].coord[0][0],
+								 mesh.nodes[nodes[ 0]].coord[1][0],
+								 mesh.nodes[nodes[ 0]].coord[2][0]]
+					coord_max = [mesh.nodes[nodes[-1]].coord[0][0],
+								 mesh.nodes[nodes[-1]].coord[1][0],
+								 mesh.nodes[nodes[-1]].coord[2][0]]
+					for node in nodes:
+						if mesh.nodes[node].coord[0][0] < coord_min[0]:
+							coord_min[0] = mesh.nodes[node].coord[0][0]
+						if mesh.nodes[node].coord[1][0] < coord_min[1]:
+							coord_min[1] = mesh.nodes[node].coord[1][0]
+						if mesh.nodes[node].coord[2][0] < coord_min[2]:
+							coord_min[2] = mesh.nodes[node].coord[2][0]
+						if mesh.nodes[node].coord[0][0] > coord_max[0]:
+							coord_max[0] = mesh.nodes[node].coord[0][0]
+						if mesh.nodes[node].coord[1][0] > coord_max[1]:
+							coord_max[1] = mesh.nodes[node].coord[1][0]
+						if mesh.nodes[node].coord[2][0] > coord_max[2]:
+							coord_max[2] = mesh.nodes[node].coord[2][0]
+					center = [(coord_max[0]+coord_min[0])/2.,(coord_max[1]+coord_min[1])/2.,(coord_max[2]+coord_min[2])/2.]
+					for node in nodes:
+						mesh.nodes[node].coord[0][0] -= center[0]
 						mesh.nodes[node].coord[0][0] *= factor
+						mesh.nodes[node].coord[0][0] += center[0]
+						mesh.nodes[node].coord[1][0] -= center[1]
 						mesh.nodes[node].coord[1][0] *= factor
+						mesh.nodes[node].coord[1][0] += center[1]
+						mesh.nodes[node].coord[2][0] -= center[2]
 						mesh.nodes[node].coord[2][0] *= factor
+						mesh.nodes[node].coord[2][0] += center[2]
+					self.model.selected_nodes.clear()
+					self.model.nodesSelected = False
 					print('finished.')
 					x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
 					x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
@@ -1383,11 +1613,26 @@ is an OpenGL widget running inside this framework.
 												mesh.elements[element].nodes[node] = mesh.nodes[fused_nodes[node_combo][0]]
 												confirm_to_be_deleted.append(fused_nodes[node_combo][1])
 						print('\tDeleting node(s):', end=' ')
+						deleted = []
 						for node in to_be_deleted:
 							if node in confirm_to_be_deleted:
-								del mesh.nodes[node]
-								print(node, end=' ')
-						print(' ')
+								if node in mesh.nodes:
+									del mesh.nodes[node]
+									deleted.append(node)
+#									print(node, end=' ')
+#						print(' ')
+
+#						print('\n\tCopying nodes:', end=' ')
+						if len(deleted) > 8:
+							for node in sorted(deleted)[:8]:
+								print(str(node)+', ', end='')
+							print('...')
+						else:
+							print(str(sorted(deleted)[0]), end='')
+							for node in sorted(deleted)[1:]:
+								print(', '+str(node), end='')
+							print('\n')
+
 						self.model.selected_nodes.clear()
 						self.model.nodesSelected = False
 						self.model.buildDisplayList(mesh)
@@ -1433,6 +1678,75 @@ is an OpenGL widget running inside this framework.
 			print('\n\tNo mesh currently selected.')
 
 
+	def insertElements(self):
+		'''
+	Inserts new elements between the nodes
+	selected by user.
+	'''
+		if self.viewer.currentMesh != 'None':
+			mesh = self.model.meshes[self.viewer.currentMesh]
+			if len(self.model.selected_nodes) == 2:
+				nodes = [0,0]
+				for i, node in enumerate(self.model.selected_nodes):
+					nodes[i] = node
+				if len(mesh.elements) == 0:
+					num = 1
+				else:
+					num = max(mesh.elements)+1
+				mesh.elements[num] = Element(num,None,[mesh.nodes[nodes[0]],mesh.nodes[nodes[1]]])
+				mesh.elements[num].type = 'BEAM2N'
+				print('\n\tNew element number:', num)
+				print('\tNodes:', nodes)
+			elif len(self.model.selected_nodes) == 3:
+				nodes = [0,0,0]
+				for i, node in enumerate(self.model.selected_nodes):
+					nodes[i] = node
+				if mesh.nodes[nodes[1]].coord[0][0] < mesh.nodes[nodes[0]].coord[0][0]:
+					nodes[0], nodes[1] = nodes[1], nodes[0]
+				if mesh.nodes[nodes[2]].coord[0][0] < mesh.nodes[nodes[0]].coord[0][0]:
+					nodes[0], nodes[2] = nodes[2], nodes[0]
+				c0 = np.array([mesh.nodes[nodes[0]].coord[0][0],mesh.nodes[nodes[0]].coord[1][0],mesh.nodes[nodes[0]].coord[2][0]])
+				c1 = np.array([mesh.nodes[nodes[1]].coord[0][0],mesh.nodes[nodes[1]].coord[1][0],mesh.nodes[nodes[1]].coord[2][0]])
+				c2 = np.array([mesh.nodes[nodes[2]].coord[0][0],mesh.nodes[nodes[2]].coord[1][0],mesh.nodes[nodes[2]].coord[2][0]])
+				if np.cross((c1-c0),(c2-c0))[2] <= 0.:
+					nodes[2], nodes[1] = nodes[1], nodes[2]
+				if len(mesh.elements) == 0:
+					num = 1
+				else:
+					num = max(mesh.elements)+1
+				mesh.elements[num] = Element(num,None,[mesh.nodes[nodes[0]],mesh.nodes[nodes[1]],mesh.nodes[nodes[2]]])
+				mesh.elements[num].type = 'TRI3N'
+				print('\n\tNew element number:', num)
+				print('\tNodes:', nodes)
+			elif len(self.model.selected_nodes) == 4:
+				nodes = [0,0,0,0]
+				for i, node in enumerate(self.model.selected_nodes):
+					nodes[i] = node
+				c0 = np.array([mesh.nodes[nodes[0]].coord[0][0],mesh.nodes[nodes[0]].coord[1][0],mesh.nodes[nodes[0]].coord[2][0]])
+				c1 = np.array([mesh.nodes[nodes[1]].coord[0][0],mesh.nodes[nodes[1]].coord[1][0],mesh.nodes[nodes[1]].coord[2][0]])
+				c2 = np.array([mesh.nodes[nodes[2]].coord[0][0],mesh.nodes[nodes[2]].coord[1][0],mesh.nodes[nodes[2]].coord[2][0]])
+				c3 = np.array([mesh.nodes[nodes[3]].coord[0][0],mesh.nodes[nodes[3]].coord[1][0],mesh.nodes[nodes[3]].coord[2][0]])
+				if (c3-c0).dot(np.cross((c1-c0),(c2-c0))) < 0.:
+					nodes[2], nodes[3] = nodes[3], nodes[2]
+				if len(mesh.elements) == 0:
+					num = 1
+				else:
+					num = max(mesh.elements)+1
+				mesh.elements[num] = Element(num,None,[mesh.nodes[nodes[0]],mesh.nodes[nodes[1]],
+													   mesh.nodes[nodes[2]],mesh.nodes[nodes[3]]])
+				mesh.elements[num].type = 'TET4N'
+				print('\n\tNew element number:', num)
+				print('\tNodes:', nodes)			
+			else:
+				print('\n\tNeed to write functionality for inserting')
+				print('\tmultiple elements at once.')
+
+			self.model.selected_nodes.clear()
+			self.model.nodesSelected = False
+			self.model.buildDisplayList(mesh)
+			self.new_mesh_view = {'Mesh': self.viewer.currentMesh}
+			self.viewer.update()
+
 	def convertElements(self):
 		'''
 	Converts one type of elements into another
@@ -1465,13 +1779,13 @@ is an OpenGL widget running inside this framework.
 					elif elm_type[0] == 'TRI3N':
 						newConversion['choices'][1] = ['TRI6N']
 					elif elm_type[0] == 'ROD2N':
-						newConversion['choices'][1] = ['BEAM2N']
+						newConversion['choices'][1] = ['BEAM2N', 'BEAM2N2D', 'ROD2N2D']
 					elif elm_type[0] == 'BEAM2N':
-						newConversion['choices'][1] = ['ROD2N']
+						newConversion['choices'][1] = ['BEAM2N2D', 'ROD2N', 'ROD2N2D']
 					elif elm_type[0] == 'ROD2N2D':
-						newConversion['choices'][1] = ['BEAM2N2D']
+						newConversion['choices'][1] = ['BEAM2N', 'BEAM2N2D', 'ROD2N']
 					elif elm_type[0] == 'BEAM2N2D':
-						newConversion['choices'][1] = ['ROD2N2D']
+						newConversion['choices'][1] = ['BEAM2N', 'ROD2N', 'ROD2N2D']
 					else:
 						print('Unknown element type: '+elm_type[0])
 					newConversion['current'] = {'Element type': newConversion['choices'][1][0]}
@@ -1582,7 +1896,7 @@ is an OpenGL widget running inside this framework.
 			subresult = self.viewer.currentDisplayList['subresult']
 			currentMesh = self.viewer.currentDisplayList['mesh']
 			if result == 'modeshapes':
-				print('\n\tNo hiding elements when result is modeshapes')
+				print('\n\tNo hiding elements when result is modeshapes.')
 			else:
 				hide = self.model.selected_elements.keys()
 				nodes = {}
@@ -1595,6 +1909,12 @@ is an OpenGL widget running inside this framework.
 								nodes[node.number] = node
 				self.model.meshes['tmpmesh'] = Mesh(nodes,elements)
 				self.model.meshes['tmpmesh'].is3D = True
+
+				self.model.meshes['tmpmesh'].solutions = currentMesh.solutions
+				self.model.meshes['tmpmesh'].viewScope = currentMesh.viewScope
+				self.model.meshes['tmpmesh'].viewRadius = currentMesh.viewRadius
+				self.model.meshes['tmpmesh'].displayLists = {'solutions': {}}
+
 				self.model.buildDisplayList(self.model.meshes['tmpmesh'],[solution,result,subresult])
 				self.model.selected_elements.clear()
 				self.model.selected_nodes.clear()
@@ -1678,14 +1998,18 @@ is an OpenGL widget running inside this framework.
 				self.viewer.update()
 
 
-	def renumberNodes(self):
+	def renumberNodes(self,first_number=False):
 		'''
 	Renumbers the selected nodes.
 	'''
 		if self.viewer.currentMesh == None:
 			print('\n\tNo mesh currently selected.')
 		else:
-			text, ok = QtWidgets.QInputDialog.getText(self, 'Renumber Nodes', 'First node number:')
+			if first_number == False:
+				text, ok = QtWidgets.QInputDialog.getText(self, 'Renumber Nodes', 'First node number:')
+			else:
+				text = first_number
+				ok = True
 			if ok:
 				if str(text).isdigit():
 					firstNumber = int(text)
@@ -1718,14 +2042,18 @@ is an OpenGL widget running inside this framework.
 					print('\n\tThat is not an acceptable node number.')
 
 
-	def renumberElements(self):
+	def renumberElements(self,first_number=False):
 		'''
 	Renumbers the selected elements.
 	'''
 		if self.viewer.currentMesh == None:
 			print('\n\tNo mesh currently selected.')
 		else:
-			text, ok = QtWidgets.QInputDialog.getText(self, 'Renumber Elements', 'First element number:')
+			if first_number == False:
+				text, ok = QtWidgets.QInputDialog.getText(self, 'Renumber Elements', 'First element number:')
+			else:
+				text = first_number
+				ok = True
 			if ok:
 				if str(text).isdigit():
 					newNumber = int(text)
@@ -1751,6 +2079,66 @@ is an OpenGL widget running inside this framework.
 					print('\n\tThat is not an acceptable element number.')
 
 
+	def copyNodes(self):
+		'''
+	Copies the selected nodes and offsets
+	their location by a vector specified by user.
+	'''
+		if self.model.nodesSelected == False:
+			print('\n\tNo nodes selected.')
+		else:
+			text, ok = QtWidgets.QInputDialog.getText(self, 'Copy node(s)', 'Offset by vector:', \
+														text=str(2*self.model.meshes[self.viewer.currentMesh].viewRadius)+', 0., 0.')
+			if ok:
+				try:
+					vector = [float(x.strip()) for x in text.split(',')]
+				except ValueError:
+					print('\n\tWrong input given for offset vector. Must be specified')
+					print('\twith three numbers separated by comma, example: 1., 0., 0.')
+				else:
+					if len(vector) != 3:
+						print('\n\tWrong input given for offset vector. Must be specified')
+						print('\twith three numbers separated by comma, example: 1., 0., 0.')
+					else:
+						mesh = self.model.meshes[self.viewer.currentMesh]
+						# copy nodes and move with offset vector
+						new_nodes = {}
+						copied_nodes = []
+						for node in self.model.selected_nodes:
+							if mesh.nodes[node].number not in copied_nodes:
+								copied_nodes.append(mesh.nodes[node].number)
+								node_num = max(mesh.nodes)+1
+								mesh.nodes[node_num] = Node(node_num,deepcopy(mesh.nodes[node].coord[0][0])+vector[0],
+																	 deepcopy(mesh.nodes[node].coord[1][0])+vector[1],
+																	 deepcopy(mesh.nodes[node].coord[2][0])+vector[2])
+								new_nodes[mesh.nodes[node].number] = node_num
+							
+						print('\n\tCopying nodes:', end=' ')
+						if len(self.model.selected_nodes) > 8:
+							for node in sorted(self.model.selected_nodes)[:8]:
+								print(str(node)+', ', end='')
+							print('...')
+						else:
+							print(str(sorted(self.model.selected_nodes)[0]), end='')
+							for node in sorted(self.model.selected_nodes)[1:]:
+								print(', '+str(node), end='')
+							print('\n')
+						self.model.selected_nodes.clear()
+						self.model.nodesSelected = False
+						
+						x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+						x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+						y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+						y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+						z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+						z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+						mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+						mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )					
+						self.model.buildDisplayList(mesh)
+						self.new_mesh_view = {'Mesh': self.viewer.currentMesh}
+						self.viewer.update()
+
+
 	def copyElements(self):
 		'''
 	Copies the selected elements and offsets
@@ -1759,7 +2147,8 @@ is an OpenGL widget running inside this framework.
 		if self.model.elementsSelected == False:
 			print('\n\tNo elements selected.')
 		else:
-			text, ok = QtWidgets.QInputDialog.getText(self, 'Copy element(s)', 'Offset by vector:')
+			text, ok = QtWidgets.QInputDialog.getText(self, 'Copy element(s)', 'Offset by vector:', \
+														text=str(2*self.model.meshes[self.viewer.currentMesh].viewRadius)+', 0., 0.')
 			if ok:
 				try:
 					vector = [float(x.strip()) for x in text.split(',')]
@@ -1767,32 +2156,156 @@ is an OpenGL widget running inside this framework.
 					print('\n\tWrong input given for offset vector. Must be specified')
 					print('\twith three numbers separated by comma, example: 1., 0., 0.')
 				else:
+					if len(vector) != 3:
+						print('\n\tWrong input given for offset vector. Must be specified')
+						print('\twith three numbers separated by comma, example: 1., 0., 0.')
+					else:
+						mesh = self.model.meshes[self.viewer.currentMesh]
+						# first copy nodes and move with offset vector
+						new_nodes = {}
+						copied_nodes = []
+						element_nodes = {}
+						for element in self.model.selected_elements:
+							
+							element_nodes[mesh.elements[element].number] = []
+							for node in mesh.elements[element].nodes:
+								if node.number not in copied_nodes:
+									copied_nodes.append(node.number)
+									node_num = max(mesh.nodes)+1
+									mesh.nodes[node_num] = Node(node_num,deepcopy(node.coord[0][0])+vector[0],
+																		 deepcopy(node.coord[1][0])+vector[1],
+																		 deepcopy(node.coord[2][0])+vector[2])
+									new_nodes[node.number] = node_num
+									element_nodes[mesh.elements[element].number].append(mesh.nodes[node_num])
+								else:
+									element_nodes[mesh.elements[element].number].append(mesh.nodes[new_nodes[node.number]])
+							
+						# then copy the elements and map them to the
+						# already copied nodes
+						for element in self.model.selected_elements:
+							elm_num = max(mesh.elements)+1
+							mesh.elements[elm_num] = Element(elm_num,None,element_nodes[mesh.elements[element].number])
+							mesh.elements[elm_num].type = mesh.elements[element].type
+
+						print('\n\tCopying elements:', end=' ')
+						if len(self.model.selected_elements) > 8:
+							for element in sorted(self.model.selected_elements)[:8]:
+								print(str(element)+', ', end='')
+							print('...')
+						else:
+							print(str(sorted(self.model.selected_elements)[0]), end='')
+							for element in sorted(self.model.selected_elements)[1:]:
+								print(', '+str(element), end='')
+							print('\n')
+						self.model.selected_elements.clear()
+						self.model.elementsSelected = False
+						
+						x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+						x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+						y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+						y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+						z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+						z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+						mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+						mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )					
+						self.model.buildDisplayList(mesh)
+						self.new_mesh_view = {'Mesh': self.viewer.currentMesh}
+						self.viewer.update()
+
+
+	def mirrorCopyElements(self):
+		'''
+	Copies the selected elements and offsets
+	their location by a vector specified by user.
+	'''
+		if self.model.elementsSelected == False:
+			print('\n\tNo elements selected.')
+		else:
+			text, ok = QtWidgets.QInputDialog.getText(self, 'Mirror element(s)', 'About plane (ex. x-y):', text='x-y')
+			if ok:
+				plane = str(text)
+				if plane not in ['x-y', 'X-Y', 'y-x', 'Y-X',
+								 'x-z', 'X-Z', 'z-x', 'Z-X',
+								 'y-z', 'Y-Z', 'z-y', 'Z-Y']:
+					print('\n\tWrong input for plane to mirror elements about.')
+					print('\tMust be either x-y, x-z or y-z.')
+				else:
+					x = y = z = 1
+					if plane in ['x-y', 'X-Y', 'y-x', 'Y-X']:
+						z = -1
+						tet4_reshuffle = [1,0,2,3] # OK
+						tet10_reshuffle = [1,0,2,3,4,6,5,8,7,9] # OK
+						hex8_reshuffle = [3,2,1,0,7,6,5,4] # OK
+						hex20_reshuffle = [3,2,1,0,7,6,5,4,10,9,8,11,15,14,13,12,18,17,16,19] # OK
+					elif plane in ['x-z', 'X-Z', 'z-x', 'Z-X']:
+						y = -1
+						tet4_reshuffle = [1,0,2,3] # OK
+						tet10_reshuffle = [1,0,2,3,4,6,5,8,7,9] # OK
+						hex8_reshuffle = [4,5,6,7,0,1,2,3] # OK
+						hex20_reshuffle = [4,5,6,7,0,1,2,3,16,17,18,19,12,13,14,15,8,9,10,11] # OK
+						tri3_reshuffle = [1,0,2] # OK
+						tri6_reshuffle = [1,0,2,3,5,4] # OK
+						quad4_reshuffle = [3,2,1,0] # OK
+						quad8_reshuffle = [6,5,4,3,2,1,0,7] # OK
+					else:
+						x = -1
+						tet4_reshuffle = [1,0,2,3] # OK
+						tet10_reshuffle = [1,0,2,3,4,6,5,8,7,9] # OK
+						hex8_reshuffle = [1,0,3,2,5,4,7,6] # OK
+						hex20_reshuffle = [1,0,3,2,5,4,7,6,8,11,10,9,13,12,15,14,16,19,18,17] # OK
+						tri3_reshuffle = [1,0,2] # OK
+						tri6_reshuffle = [1,0,2,3,5,4] # OK
+						quad4_reshuffle = [1,0,3,2] # OK
+						quad8_reshuffle = [2,1,0,7,6,5,4,3] # OK
 					mesh = self.model.meshes[self.viewer.currentMesh]
-					# first copy nodes and move with offset vector
+					# first copy nodes and mirror with plane specified
 					new_nodes = {}
 					copied_nodes = []
 					element_nodes = {}
 					for element in self.model.selected_elements:
-						
+						if mesh.elements[element].type in ['BEAM2N2D', 'ROD2N2D', 'QUAD4N', 'QUAD8N', 'TRI3N', 'TRI6N'] and plane in ['x-y', 'X-Y']:
+							print('\n\tCannot mirror copy 2D elements about x-y plane.')
+							break
 						element_nodes[mesh.elements[element].number] = []
 						for node in mesh.elements[element].nodes:
 							if node.number not in copied_nodes:
 								copied_nodes.append(node.number)
 								node_num = max(mesh.nodes)+1
-								mesh.nodes[node_num] = Node(node_num,node.coord[0][0]+vector[0],
-																	 node.coord[1][0]+vector[1],
-																	 node.coord[2][0]+vector[2])
+								mesh.nodes[node_num] = Node(node_num,deepcopy(node.coord[0][0])*x,
+																	 deepcopy(node.coord[1][0])*y,
+																	 deepcopy(node.coord[2][0])*z)
 								new_nodes[node.number] = node_num
 								element_nodes[mesh.elements[element].number].append(mesh.nodes[node_num])
 							else:
 								element_nodes[mesh.elements[element].number].append(mesh.nodes[new_nodes[node.number]])
-						
+							
 					# then copy the elements and map them to the
 					# already copied nodes
 					for element in self.model.selected_elements:
+						if mesh.elements[element].type in ['BEAM2N2D', 'ROD2N2D', 'QUAD4N', 'QUAD8N', 'TRI3N', 'TRI6N'] and plane in ['x-y', 'X-Y']:
+							break
 						elm_num = max(mesh.elements)+1
 						mesh.elements[elm_num] = Element(elm_num,None,element_nodes[mesh.elements[element].number])
 						mesh.elements[elm_num].type = mesh.elements[element].type
+						# reshuffle nodes because they were mirrored
+						if mesh.elements[elm_num].type == 'TET4N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in tet4_reshuffle]
+						elif mesh.elements[elm_num].type == 'TET10N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in tet10_reshuffle]
+						elif mesh.elements[elm_num].type == 'HEX8N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in hex8_reshuffle]
+						elif mesh.elements[elm_num].type == 'HEX20N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in hex20_reshuffle]
+						elif mesh.elements[elm_num].type == 'TRI3N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in tri3_reshuffle]
+						elif mesh.elements[elm_num].type == 'TRI6N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in tri6_reshuffle]
+						elif mesh.elements[elm_num].type == 'QUAD4N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in quad4_reshuffle]
+						elif mesh.elements[elm_num].type == 'QUAD8N':
+							mesh.elements[elm_num].nodes = [mesh.elements[elm_num].nodes[x] for x in quad8_reshuffle]
+						else:
+							pass
 
 					print('\n\tCopying elements:', end=' ')
 					if len(self.model.selected_elements) > 8:
@@ -1806,7 +2319,7 @@ is an OpenGL widget running inside this framework.
 						print('\n')
 					self.model.selected_elements.clear()
 					self.model.elementsSelected = False
-					
+						
 					x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
 					x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
 					y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
@@ -1826,10 +2339,10 @@ is an OpenGL widget running inside this framework.
 	elementset in direction set by user.
 	'''
 		moveElm = {}
-		moveElm['inputs'] = {'Elementset': '1', 'x-direction': '0.', 'y-direction': '0.', 'z-direction': '0.'}
+		moveElm['inputs'] = {'x-direction': '0.', 'y-direction': '0.', 'z-direction': '0.'}
 		moveElm['choices'] = [ [], [] ]
 		moveElm['current'] = {}
-		moveElm['inOrder'] = ['Elementset', 'x-direction', 'y-direction', 'z-direction']
+		moveElm['inOrder'] = ['x-direction', 'y-direction', 'z-direction']
 		self.new_position = {}
 		self.selectionWidget = InputDialog(moveElm, 'Move Elements', self.new_position)
 		self.selectionWidget.window_closed.connect(self.viewer.update)
@@ -1842,10 +2355,10 @@ is an OpenGL widget running inside this framework.
 	elementset as directed by user.
 	'''
 		rotateElm = {}
-		rotateElm['inputs'] = {'Elementset': '1', 'Rotation axis node 1': '1', 'Rotation axis node 2': '2', 'Angle': '90'}
+		rotateElm['inputs'] = {'Rotation axis node 1\n(uses only this if 2D elements)': '1', 'Rotation axis node 2': '2', 'Angle': '90'}
 		rotateElm['choices'] = [ [], [] ]
 		rotateElm['current'] = {}
-		rotateElm['inOrder'] = ['Elementset', 'Rotation axis node 1', 'Rotation axis node 2', 'Angle']
+		rotateElm['inOrder'] = ['Rotation axis node 1\n(uses only this if 2D elements)', 'Rotation axis node 2', 'Angle']
 		self.new_rotation = {}
 		self.selectionWidget = InputDialog(rotateElm, 'Rotate Elements', self.new_rotation)
 		self.selectionWidget.window_closed.connect(self.viewer.update)
@@ -1856,25 +2369,26 @@ is an OpenGL widget running inside this framework.
 		'''
 	Measure the distance between two selected nodes.
 	'''
-		if len(self.model.selected_nodes.keys()) == 2:
-			[node1, node2] = self.model.selected_nodes.keys()
-			distance = np.sqrt((self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[0][0] - \
-								self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[0][0])**2 + \
-							   (self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[1][0] - \
-								self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[1][0])**2 + \
-							   (self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[2][0] - \
-								self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[2][0])**2)
-			print('\n\tNode number:', node1)
-			print('\tCoord:', str(self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[0][0]) \
-								+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[1][0]) \
-								+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[2][0]))
-			print('\n\tNode number:', node2)
-			print('\tCoord:', str(self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[0][0]) \
-								+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[1][0]) \
-								+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[2][0]))
-			print('\n\tDistance between nodes '+str(node2)+' and '+str(node1)+': '+str(distance))
-		else:
-			print('\n\tTo measure distance, select two nodes.')
+		if self.viewer.currentMesh != 'None':
+			if len(self.model.selected_nodes.keys()) == 2:
+				[node1, node2] = self.model.selected_nodes.keys()
+				distance = np.sqrt((self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[0][0] - \
+									self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[0][0])**2 + \
+								   (self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[1][0] - \
+									self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[1][0])**2 + \
+								   (self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[2][0] - \
+									self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[2][0])**2)
+				print('\n\tNode number:', node1)
+				print('\tCoord:', str(self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[0][0]) \
+									+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[1][0]) \
+									+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node1].coord[2][0]))
+				print('\n\tNode number:', node2)
+				print('\tCoord:', str(self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[0][0]) \
+									+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[1][0]) \
+									+', '+str(self.model.meshes[self.viewer.currentMesh].nodes[node2].coord[2][0]))
+				print('\n\tDistance between nodes '+str(node2)+' and '+str(node1)+': '+str(distance))
+			else:
+				print('\n\tTo measure distance, select two nodes.')
 
 
 	def createNodeset(self):
@@ -1883,7 +2397,10 @@ is an OpenGL widget running inside this framework.
 	and nodeset number as specified by user in
 	dialog box.
 	'''
-		text, ok = QtWidgets.QInputDialog.getText(self, 'Create Nodeset', 'Nodeset number:')
+		next_nodeset = 1
+		if len(self.model.nodesets) > 0:
+			next_nodeset = max(self.model.nodesets)+1
+		text, ok = QtWidgets.QInputDialog.getText(self, 'Create Nodeset', 'Nodeset number:', text=str(next_nodeset))
 		if ok and (len(self.model.selected_nodes) != 0):
 			if str(text).isdigit():
 				self.model.nodesets[int(text)] = {}
@@ -1912,7 +2429,10 @@ is an OpenGL widget running inside this framework.
 	viewer and elementset number as specified by user
 	in dialog box.
 	'''
-		text, ok = QtWidgets.QInputDialog.getText(self, 'Create Elementset', 'Elementset number:')
+		next_elementset = 1
+		if len(self.model.elementsets) > 0:
+			next_elementset = max(self.model.elementsets)+1
+		text, ok = QtWidgets.QInputDialog.getText(self, 'Create Elementset', 'Elementset number:', text=str(next_elementset))
 		if ok and (len(self.model.selected_elements) != 0):
 			if str(text).isdigit():
 				self.model.elementsets[int(text)] = {}
@@ -2107,7 +2627,7 @@ is an OpenGL widget running inside this framework.
 						if solution[9:].isdigit():
 							if int(solution[9:])+1 > solnum:
 								solnum = int(solution[9:])+1
-			newDynamic['inputs'] = {'Name': 'solution-'+str(solnum), 'Results': 'disp, velc, accl, frf, modes'}
+			newDynamic['inputs'] = {'Name': 'solution-'+str(solnum), 'Results': 'disp, velc, accl, frf'}
 			newDynamic['choices'] = [ ['Mesh'], [] ]
 			for mesh in self.model.meshes:
 				newDynamic['choices'][1].append(mesh)
@@ -2120,6 +2640,65 @@ is an OpenGL widget running inside this framework.
 		else:
 			print('\n\tNo meshes to select. Cannot create solution without mesh.')
 
+
+
+	def createSpider(self):
+		'''
+	Creates a rigid spider of beam elements
+	between one node and a set of nodes.
+	'''
+		if len(self.model.selected_nodes) != 1:
+			print('\n\tOne specific node must be selected.')
+		else:
+			if self.model.nodesets == 0:
+				print('\n\tNo nodesets to create spider with.')
+			else:
+				spider_nodeset = 1
+				if len(self.model.nodesets) > 0:
+					spider_nodeset = max(self.model.nodesets)
+				text, ok = QtWidgets.QInputDialog.getText(self, 'Create Spider from Nodeset', 'Nodeset number:', text=str(spider_nodeset))
+				if ok and str(text).isdigit():
+					nodeset = int(text)
+					if nodeset not in self.model.nodesets:
+						print('\n\tNodeset', nodeset, 'does not exist.')
+					else:
+						if self.viewer.currentMesh == 'None':
+							print('\n\tNo mesh currently selected.')
+						else:
+							mesh = self.model.meshes[self.viewer.currentMesh]
+							node1 = list(self.model.selected_nodes.keys())[0]
+							print('\n\tCreating spider from nodeset', nodeset, 'and node', node1)
+							if 'unobtanium' not in self.model.materials:
+								self.model.materials['unobtanium'] = {'Elasticity': 42e12,
+																	  'Poisson ratio': 0.35,
+																	  'Density': 69e-15}
+							if 'unobtanium' not in self.model.sections:
+								self.model.sections['unobtanium'] = {'Number': len(self.model.sections),
+																	 'Area (Rod or Beam)': 1.,
+																	 'Izz (Beam)': 0.08333333333333333,
+																	 'Iyy (Beam 3D)': 0.08333333333333333,
+																	 'Material': 'unobtanium'}
+							for node in self.model.nodesets[int(text)]:
+								elm_num = 1
+								if len(mesh.elements) != 0:
+									elm_num = max(mesh.elements)+1
+								mesh.elements[elm_num] = Element(elm_num,'unobtanium',[mesh.nodes[node1],mesh.nodes[node]])
+								mesh.elements[elm_num].type = 'BEAM2N'
+
+							self.model.selected_nodes.clear()
+							self.model.nodesSelected = False
+
+							x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+							x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+							y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+							y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+							z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+							z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+							mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+							mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )					
+							self.model.buildDisplayList(mesh)
+							self.new_mesh_view = {'Mesh': self.viewer.currentMesh}
+							self.viewer.update()
 
 
 	def applyTouchLockConstraint(self):
@@ -2358,6 +2937,55 @@ is an OpenGL widget running inside this framework.
 			print('\n\tNo meshes to select.')
 
 
+	def applyDistributedLoad(self):
+		'''
+	Apply distributed load to solution by selecting
+	mesh and solution, and writing in load properties
+	in dialog box.
+	'''
+		if len(self.model.meshes) != 0:
+			if len(self.model.elementsets) != 0:
+				newLoad = {}
+				loadnum = 1
+				for mesh in self.model.meshes:
+					for solution in self.model.meshes[mesh].solutions:
+						for load in self.model.meshes[mesh].solutions[solution]['Loads']:
+							if load[:11] == 'distr_load-':
+								if load[11:].isdigit():
+									if int(load[11:])+1 > loadnum:
+										loadnum = int(load[10:])+1
+				newLoad['inputs'] = {'Name': 'distr_load-'+str(loadnum),
+									 'Elementset': str(max(self.model.elementsets.keys())),
+									 'Force/Length': '0.',
+									 'x-vector': '0.',
+									 'y-vector': '-1.',
+									 'z-vector': '0.'}
+				newLoad['choices'] = [ ['Mesh', 'Solution'], {} ]
+				newLoad['current'] = {'Mesh': None, 'Solution': None}
+				noSolutions = True
+				for mesh in	self.model.meshes:
+					if len(self.model.meshes[mesh].solutions) != 0:
+						noSolutions = False
+						newLoad['choices'][1][mesh] = []
+						newLoad['current']['Mesh'] = mesh
+						for solution in self.model.meshes[mesh].solutions:
+							newLoad['choices'][1][mesh].append(solution)
+							newLoad['current']['Solution'] = solution
+				if noSolutions:
+					print('\n\tNo solutions to select from.')
+				else:
+					newLoad['inOrder'] = ['Name', 'Mesh', 'Solution', 'Elementset',
+										  'Force/Length', 'x-vector', 'y-vector', 'z-vector']
+					self.new_load = {'Type': 'ForceDistributed'}
+					self.selectionWidget = InputDialog(newLoad, 'New Distributed Load', self.new_load)
+					self.selectionWidget.window_closed.connect(self.viewer.update)
+					self.selectionWidget.show()
+			else:
+				print('\n\tNo elementsets to apply loads to.')
+		else:
+			print('\n\tNo meshes to select.')
+
+
 	def applyTorqueLoad(self):
 		'''
 	Apply torqe load to specified nodeset.
@@ -2444,7 +3072,7 @@ is an OpenGL widget running inside this framework.
 					newLoad['inOrder'] = ['Name', 'Mesh', 'Solution', 'Elementset',
 										  'Acceleration', 'x-vector', 'y-vector', 'z-vector']
 					self.new_load = {'Type': 'Gravity'}
-					self.selectionWidget = InputDialog(newLoad, 'New Uniform Load', self.new_load)
+					self.selectionWidget = InputDialog(newLoad, 'New Gravity Load', self.new_load)
 					self.selectionWidget.window_closed.connect(self.viewer.update)
 					self.selectionWidget.show()
 			else:
@@ -2623,7 +3251,8 @@ is an OpenGL widget running inside this framework.
 						for elm in self.model.elementsets[int(text)]:
 							self.model.selected_elements[elm] = self.model.elementsets[int(text)][elm]
 							for node in self.model.selected_elements[elm].nodes:
-								self.model.selected_nodes[node.number] = self.viewer.currentDisplayList['mesh'].nodes[node.number]
+								if node.number in self.viewer.currentDisplayList['mesh'].nodes:
+									self.model.selected_nodes[node.number] = self.viewer.currentDisplayList['mesh'].nodes[node.number]
 						self.model.selectedElementsDisplay(self.viewer.currentDisplayList['mesh'])
 						print('\n\tElementset '+str(text)+':')
 						toprint = self.model.selected_elements.keys()
@@ -2764,22 +3393,58 @@ is an OpenGL widget running inside this framework.
 			self.viewer.viewOrigin = False
 		self.viewer.update()
 
+	def showMeshTree(self):
+		'''
+	Hides or shows the Mesh Tree.
+	'''
+		if self.viewer.viewMeshTree == False:
+			self.viewer.viewMeshTree = True
+		else:
+			self.viewer.viewMeshTree = False
+		self.viewer.update()
+
 	def setScaleFactor(self):
 		text, ok = QtWidgets.QInputDialog.getText(self, 'New scale factor', 'Scale factor:')
 		if ok:
-			print('\n\tCurrent scale factor:', self.model.scale_factor)
-			self.model.scale_factor = float(text)
-		if self.viewer.currentDisplayList['mesh'] != None:
-			if self.viewer.currentDisplayList['solution'] != 'None':
-				solution = self.current_results['Solution']
-				result = self.current_results['Result']
-				subresult = self.current_results['Subresult']
-				newResults = None
-				for newResults in self.model.results:
-					if solution in self.model.results[newResults].solutions:
-						print('\tNew scale factor', self.model.scale_factor)
-						self.model.buildDisplayList(self.viewer.currentDisplayList['mesh'],[solution, result, subresult])
-						break
+			try:
+				print('\n\tCurrent scale factor:', self.model.scale_factor)
+				self.model.scale_factor = float(text)
+			except ValueError:
+				print('\n\tScale factor must be a float.')
+			else:
+				if self.viewer.currentDisplayList['mesh'] != None:
+					if self.viewer.currentDisplayList['solution'] != 'None':
+						solution = self.current_results['Solution']
+						result = self.current_results['Result']
+						subresult = self.current_results['Subresult']
+						newResults = None
+						for newResults in self.model.results:
+							if solution in self.model.results[newResults].solutions:
+								print('\tNew scale factor', self.model.scale_factor)
+								self.model.buildDisplayList(self.viewer.currentDisplayList['mesh'],[solution, result, subresult])
+								break
+		self.viewer.viewNewResults = True
+		self.viewer.update()
+
+	def setShearBendingDiagram(self):
+		text, ok = QtWidgets.QInputDialog.getText(self, 'New shear or bending diagram scale', 'Shear/Bending diagram scale:')
+		if ok:
+			try:
+				self.model.scaleShearBendDiagram = float(text)
+			except ValueError:
+				print('\n\tScale factor must be a float.')
+			else:
+				if self.viewer.currentDisplayList['mesh'] != None:
+					if self.viewer.currentDisplayList['solution'] != 'None':
+						solution = self.current_results['Solution']
+						result = self.current_results['Result']
+						subresult = self.current_results['Subresult']
+						newResults = None
+						for newResults in self.model.results:
+							if solution in self.model.results[newResults].solutions:
+								print('\n\tShear/Bending diagrams now scaled by:', self.model.scaleShearBendDiagram)
+								self.model.buildDisplayList(self.viewer.currentDisplayList['mesh'],[solution, result, subresult])
+								break
 		self.viewer.viewNewResults = True
 		self.viewer.update()
 
@@ -2789,6 +3454,48 @@ is an OpenGL widget running inside this framework.
 		else:
 			self.viewer.viewAverage = True
 		self.viewer.update()
+
+	def previousEigenmode(self):
+		if self.viewer.currentDisplayList['result'] == 'modeshapes':
+			modelresults = ''
+			for res in self.model.results:
+				if self.viewer.currentDisplayList['solution'] in self.model.results[res].solutions:
+					modelresults = res
+					break
+			if modelresults != '':
+				n = len(self.model.results[modelresults].solutions[self.viewer.currentDisplayList['solution']].eigenfrequencies)
+				m = int(self.viewer.currentDisplayList['subresult'][4:])
+				if m > 1:
+					self.current_results = {}
+					self.current_results['Solution'] = self.viewer.currentDisplayList['solution']
+					self.current_results['Result'] = self.viewer.currentDisplayList['result']
+					self.current_results['Subresult'] = 'mode'+str(m-1)
+					self.viewer.viewNewResults = True
+					self.viewer.viewLoadingMessage = True
+					self.viewer.update()
+				else:
+					print('\n\tMode 1 is the first eigenmode.')
+
+	def nextEigenmode(self):
+		if self.viewer.currentDisplayList['result'] == 'modeshapes':
+			modelresults = ''
+			for res in self.model.results:
+				if self.viewer.currentDisplayList['solution'] in self.model.results[res].solutions:
+					modelresults = res
+					break
+			if modelresults != '':
+				n = len(self.model.results[modelresults].solutions[self.viewer.currentDisplayList['solution']].eigenfrequencies)
+				m = int(self.viewer.currentDisplayList['subresult'][4:])
+				if m < n:
+					self.current_results = {}
+					self.current_results['Solution'] = self.viewer.currentDisplayList['solution']
+					self.current_results['Result'] = self.viewer.currentDisplayList['result']
+					self.current_results['Subresult'] = 'mode'+str(m+1)
+					self.viewer.viewNewResults = True
+					self.viewer.viewLoadingMessage = True
+					self.viewer.update()
+				else:
+					print('\n\tMode', n, 'is the last eigenmode available.')
 
 	def setAnimationOnOff(self):
 		if self.viewer.viewAnimate == True:
@@ -2800,7 +3507,10 @@ is an OpenGL widget running inside this framework.
 	def setAnimationSpeed(self):
 		text, ok = QtWidgets.QInputDialog.getText(self, 'New animation speed', 'Time between frames (s):')
 		if ok:
-			self.viewer.viewAnimationSpeed = float(text)
+#			self.viewer.viewAnimationSpeed = float(text)
+			self.viewer.viewAnimationSpeed = [float(text)+(float(text)*0.5**2)*math.sin((pi*i)/12) for i in range(7)]
+			self.viewer.viewAnimationSpeed = self.viewer.viewAnimationSpeed[::-1]
+			self.viewer.viewAnimationSpeed += self.viewer.viewAnimationSpeed[:0:-1]
 			print('\n\tNew frame to frame time for animation:', text)
 
 	def btnViewMeshAction(self):
@@ -2809,6 +3519,8 @@ is an OpenGL widget running inside this framework.
 		self.viewer.viewMesh = True
 		self.viewer.viewGeometry = self.viewer.viewBoundaries = self.viewer.viewConstraints = \
 			self.viewer.viewLoads = self.viewer.viewSolutions = self.viewer.viewResults = False
+#		glClearColor(0.33, 0.43, 0.33, 1.0)
+#		glClearDepth(1.0)
 		self.viewer.update()
 		
 	def btnViewConstraintAction(self):
@@ -2849,6 +3561,8 @@ is an OpenGL widget running inside this framework.
 		self.viewer.viewResults = True
 		self.viewer.viewGeometry = self.viewer.viewMesh = self.viewer.viewBoundaries = \
 			self.viewer.viewConstraints = self.viewer.viewLoads = self.viewer.viewSolutions = False
+#		glClearColor(0.336, 0.447, 0.588, 1.0)
+#		glClearDepth(1.0)
 		self.viewer.update()
 
 
@@ -2889,10 +3603,13 @@ animations, loads, etc.
 		self.viewShaded = False
 		self.viewAverage = False
 		self.viewWireframe = True
+		self.viewMeshTree = True
 		self.viewAnimate = True
-		self.viewAnimationSpeed = 0.1
 		self.viewFrame = 0
 		self.veiwFrameRising = True
+		self.viewAnimationSpeed = [0.05+(0.005**2)*math.sin((pi*i)/12) for i in range(7)]
+		self.viewAnimationSpeed = self.viewAnimationSpeed[::-1]
+		self.viewAnimationSpeed += self.viewAnimationSpeed[:0:-1]
 
 		self.activeCTRL = False
 		self.activeSHIFT = False
@@ -3005,13 +3722,18 @@ animations, loads, etc.
 			self.currentMesh = self.gui.new_mesh_view['Mesh']
 			self.currentSolution = 'None'
 			self.gui.new_mesh_view.clear()
+			pos = deepcopy(self.camera.position)
+			trg = deepcopy(self.camera.target)
 			self.gui.centerModel()
 			self.camera.reset()
 			self.gui.centerModel()
+			self.camera.position = pos
+			self.camera.target = trg			
 			self.update()
 
 		if len(self.gui.new_solution_view) != 0:
 			self.currentDisplayList['mesh'] = self.model.meshes[self.gui.new_solution_view['Mesh']]
+			self.currentMesh = self.gui.new_solution_view['Mesh']
 			self.currentDisplayList['solution'] = self.gui.new_solution_view['Solution']
 			self.currentDisplayList['result'] = 'None'
 			self.currentDisplayList['subresult'] = 'None'
@@ -3021,6 +3743,7 @@ animations, loads, etc.
 			self.viewSolutions = True
 			self.model.elementsSelected = False
 			self.currentSolution = self.gui.new_solution_view['Solution']
+			self.currentResults = 'None'
 			self.gui.new_solution_view.clear()
 			self.update()
 
@@ -3085,7 +3808,7 @@ animations, loads, etc.
 			self.gui.new_conversion.clear()
 			
 		if len(self.gui.new_orientation) != 0:
-			self.model.elementOrientation()
+			self.model.elementOrientation(True)
 			self.gui.new_orientation.clear()
 
 		if self.viewNewResults == True and len(self.gui.current_results) > 0:
@@ -3114,36 +3837,38 @@ animations, loads, etc.
 				self.model.displayLists[solution][result] = {}
 				self.model.displayLists[solution][result][subresult] = {}
 			if hasNoDisplayList:
+				if newResults != 'None':
+					if solution in self.model.results[newResults].solutions:
+						self.model.buildDisplayList(self.model.results[newResults].solutions[solution].mesh,[solution,result,subresult])
+			if newResults != 'None':
 				if solution in self.model.results[newResults].solutions:
-					self.model.buildDisplayList(self.model.results[newResults].solutions[solution].mesh,[solution,result,subresult])
-			if solution in self.model.results[newResults].solutions:
-				if self.model.results[newResults].solutions[solution].type == 'ModalDynamic':
-					node = int(subresult.split()[1])
-					sol = self.model.results[newResults].solutions[solution]
-					if result == 'displacement':
-						for dof in sol.displacement[node]:
-							plt.plot(sol.t,sol.displacement[node][dof],label=subresult+': '+dof)
-							plt.xlabel('time (s)')
-					elif result == 'velocity':
-						for dof in sol.velocity[node]:
-							plt.plot(sol.t,sol.velocity[node][dof],label=subresult+': '+dof)
-							plt.xlabel('time (s)')
-					elif result == 'acceleration':
-						for dof in sol.acceleration[node]:
-							plt.plot(sol.t,sol.acceleration[node][dof],label=subresult+': '+dof)
-							plt.xlabel('time (s)')
-					elif result == 'frf_accel':
-						for dof in sol.frf_accel[node]:
-							plt.plot(sol.f,sol.frf_accel[node][dof]['MAGN'],label=subresult+': '+dof)
-							plt.xlabel('freq (hz)')
-					else:
-						print ('\n\tUnknown type of result for ModalDynamic solution:', result)
-					plt.ylabel(result)
-					if result == 'displacement':
-						plt.ylabel('displacement\n(relative to base if acceleration load)')
-					plt.title('ModalDynamics: '+solution)
-					plt.legend()
-					plt.show()
+					if self.model.results[newResults].solutions[solution].type == 'ModalDynamic':
+						node = int(subresult.split()[1])
+						sol = self.model.results[newResults].solutions[solution]
+						if result == 'displacement':
+							for dof in sol.displacement[node]:
+								plt.plot(sol.t,sol.displacement[node][dof],label=subresult+': '+dof)
+								plt.xlabel('time (s)')
+						elif result == 'velocity':
+							for dof in sol.velocity[node]:
+								plt.plot(sol.t,sol.velocity[node][dof],label=subresult+': '+dof)
+								plt.xlabel('time (s)')
+						elif result == 'acceleration':
+							for dof in sol.acceleration[node]:
+								plt.plot(sol.t,sol.acceleration[node][dof],label=subresult+': '+dof)
+								plt.xlabel('time (s)')
+						elif result == 'frf_accel':
+							for dof in sol.frf_accel[node]:
+								plt.plot(sol.f,sol.frf_accel[node][dof]['MAGN'],label=subresult+': '+dof)
+								plt.xlabel('freq (hz)')
+						else:
+							print ('\n\tUnknown type of result for ModalDynamic solution:', result)
+						plt.ylabel(result)
+						if result == 'displacement':
+							plt.ylabel('displacement\n(relative to base if acceleration load)')
+						plt.title('ModalDynamics: '+solution)
+						plt.legend()
+						plt.show()
 			self.gui.updateDisplayList(False,False,True)
 			self.gui.statusBar().showMessage('  RESULTS  ')
 			self.viewResults = True
@@ -3160,29 +3885,30 @@ animations, loads, etc.
 						 -(self.currentDisplayList['view scope']['max'][2]+self.currentDisplayList['view scope']['min'][2])/2.)
 
 		if self.viewOrigin == True:
-			if 'orientation' not in self.currentDisplayList['mesh'].displayLists:
-				self.currentDisplayList['mesh'].displayLists['orientation'] = glGenLists(1)
-				glNewList(self.currentDisplayList['mesh'].displayLists['orientation'], GL_COMPILE)
-				glLineWidth(5.0)
-				glColor(1.0, 0.0, 0.0)
-				glBegin(GL_LINES)
-				glVertex(0.,0.,0.)
-				glVertex(0.15*self.currentDisplayList['view radius'], 0., 0.)
-				glEnd()
-				glColor(0.0, 1.0, 0.0)
-				glBegin(GL_LINES)
-				glVertex(0.,0.,0.)
-				glVertex(0.,0.15*self.currentDisplayList['view radius'], 0.)
-				glEnd()
-				glColor(0.0, 0.0, 1.0)
-				glBegin(GL_LINES)
-				glVertex(0.,0.,0.)
-				glVertex(0., 0., 0.15*self.currentDisplayList['view radius'])
-				glEnd()
-				glEndList()
-			if self.currentDisplayList['displaylist']['orientation'] == None: 
-				self.currentDisplayList['displaylist']['orientation'] = self.currentDisplayList['mesh'].displayLists['orientation']
-			glCallList(self.currentDisplayList['mesh'].displayLists['orientation'])
+			glLineWidth(5.0)
+			glColor(1.0, 0.0, 0.0)
+			glBegin(GL_LINES)
+			glVertex(0.,0.,0.)
+			glVertex(0.15*self.currentDisplayList['view radius'], 0., 0.)
+			glEnd()
+			glColor(0.0, 1.0, 0.0)
+			glBegin(GL_LINES)
+			glVertex(0.,0.,0.)
+			glVertex(0.,0.15*self.currentDisplayList['view radius'], 0.)
+			glEnd()
+			glColor(0.0, 0.0, 1.0)
+			glBegin(GL_LINES)
+			glVertex(0.,0.,0.)
+			glVertex(0., 0., 0.15*self.currentDisplayList['view radius'])
+			glEnd()
+			if self.currentMesh != 'None':
+				if 'orientation' not in self.currentDisplayList['mesh'].displayLists:
+					self.currentDisplayList['mesh'].displayLists['orientation'] = glGenLists(1)
+					glNewList(self.currentDisplayList['mesh'].displayLists['orientation'], GL_COMPILE)
+					glEndList()
+				if self.currentDisplayList['displaylist']['orientation'] == None: 
+					self.currentDisplayList['displaylist']['orientation'] = self.currentDisplayList['mesh'].displayLists['orientation']
+				glCallList(self.currentDisplayList['mesh'].displayLists['orientation'])
 
 
 		if self.viewGeometry:
@@ -3380,20 +4106,23 @@ animations, loads, etc.
 			
 		elif self.viewMesh:
 			if self.currentMesh == None:
-				self.drawMeshTree()
+				if self.viewMeshTree:
+					self.drawMeshTree()
 			else:
-				self.drawMeshTree(self.currentDisplayList['mesh'])
+				if self.viewMeshTree:
+					self.drawMeshTree(self.currentDisplayList['mesh'])
 
 		elif self.viewBoundaries or self.viewConstraints or self.viewLoads or self.viewSolutions:
 			if self.currentMesh == None:
-				self.drawMeshTree()
+				if self.viewMeshTree:
+					self.drawMeshTree()
 			else:
-				self.drawMeshTree(self.currentDisplayList['mesh'])
+				if self.viewMeshTree:
+					self.drawMeshTree(self.currentDisplayList['mesh'])
 			if self.currentDisplayList['solution'] != 'None':
 				self.writeInfo(self.currentDisplayList['solution'])
 
 		elif self.viewResults:
-
 			if self.viewAverage and self.currentDisplayList['avg_max_val'] != None:
 				if self.currentDisplayList['result'] != 'modeshapes':
 					if self.currentDisplayList['subresult'] in ['FY', 'FZ']:
@@ -3425,9 +4154,9 @@ animations, loads, etc.
 				self.drawRectangle()
 
 		if self.viewAnimate == True and self.currentDisplayList['result'] == 'modeshapes':
-			if self.viewFrame == 6:
+			if self.viewFrame == 12:
 				self.veiwFrameRising = False
-				self.viewFrame = 5
+				self.viewFrame = 11
 			elif self.viewFrame == 0:
 				self.veiwFrameRising = True
 				self.viewFrame = 1
@@ -3436,7 +4165,7 @@ animations, loads, etc.
 					self.viewFrame += 1
 				else:
 					self.viewFrame -= 1
-			time.sleep(self.viewAnimationSpeed)
+			time.sleep(self.viewAnimationSpeed[self.viewFrame])
 			self.update()
 
 		if self.viewLoadingMessage == True:
@@ -3642,17 +4371,43 @@ animations, loads, etc.
 	with nodes, elements, section assignments,
 	solutions, boundaries, constraints and loads.
 	'''
+		inset = 350
+		if mesh != None and not hasattr(mesh,'is3D'):
+			for solution in self.model.meshes[self.currentMesh].solutions:
+				length = len(solution)+len(self.model.meshes[self.currentMesh].solutions[solution]['Type'])
+				if length > 25:
+					inset = 400
+				length = 1
+				for boundary in self.model.meshes[self.currentMesh].solutions[solution]['Boundaries']:
+					length = len(boundary)+len(self.model.meshes[self.currentMesh].solutions[solution]['Boundaries'][boundary]['Type'])
+				for constraint in self.model.meshes[self.currentMesh].solutions[solution]['Constraints']:
+					len2 = len(constraint)+len(self.model.meshes[self.currentMesh].solutions[solution]['Constraints'][constraint]['Type'])
+					if len2 > length:
+						length = len2
+				for load in self.model.meshes[self.currentMesh].solutions[solution]['Loads']:
+					len2 = len(load)+len(self.model.meshes[self.currentMesh].solutions[solution]['Loads'][load]['Type'])
+					if len2 > length:
+						length = len2
+				if length > 32:
+					inset = 540
+				elif length > 24:
+					inset = 480
+				elif length > 16:
+					inset = 420
+				else:
+					pass
 		h = (self.height/2.)-180
-		w = self.width-350
+		w = self.width-inset
 		glColor3f(1., 1., 1.)
 		if mesh == None:
 			self.renderText(w, h, 'No mesh selected', QtGui.QFont( 'helvetica', 14 ))
 		elif hasattr(mesh,'is3D') or self.currentMesh == 'None':
 			self.renderText(w, h, 'Mesh from results:', QtGui.QFont( 'helvetica', 14 ))
 			self.renderText(w, h+20, 'Copy into a new mesh', QtGui.QFont( 'helvetica', 14 ))
-			self.renderText(w, h+40, 'by creating an element set', QtGui.QFont( 'helvetica', 14 ))
-			self.renderText(w, h+60, 'in order to use in a new', QtGui.QFont( 'helvetica', 14 ))
-			self.renderText(w, h+80, 'finite element analysis.', QtGui.QFont( 'helvetica', 14 ))
+			self.renderText(w, h+40, 'by creating an element', QtGui.QFont( 'helvetica', 14 ))
+			self.renderText(w, h+60, 'set of this mesh in', QtGui.QFont( 'helvetica', 14 ))
+			self.renderText(w, h+80, 'order to use in a new', QtGui.QFont( 'helvetica', 14 ))
+			self.renderText(w, h+100, 'finite element analysis.', QtGui.QFont( 'helvetica', 14 ))
 		elif len(self.model.meshes[self.currentMesh].elements) == 0:
 			self.renderText(w, h, 'Mesh ['+self.currentMesh+']', QtGui.QFont( 'helvetica', 14 ))
 		else:
@@ -3698,7 +4453,7 @@ animations, loads, etc.
 				else:
 					sol_num -= 1
 					h += 20
-					self.renderText(w, h, '       |--'+solution+' ('+mesh.solutions[solution]['Type']+')', QtGui.QFont( 'helvetica', 14 ))
+					self.renderText(w, h, '       |-- '+solution+' ('+mesh.solutions[solution]['Type']+')', QtGui.QFont( 'helvetica', 14 ))
 					h += 20
 					self.renderText(w, h, '       |    |-- boundaries', QtGui.QFont( 'helvetica', 14 ))
 					if len(mesh.solutions[solution]['Boundaries']) != 0:
@@ -3725,51 +4480,67 @@ animations, loads, etc.
 	for the contour plot rendered. Displacements,
 	Stresses, Strains or Nodeforces.
 	'''
-		disp_colors = [ (0.0, 0.0, 1.0),  # blue
-						(0.0, 0.5, 1.0),  # ocean
-						(0.0, 1.0, 1.0),  # cyan
-						(0.0, 1.0, 0.5),  # turqoise
-						(0.0, 1.0, 0.0),  # green
-						(0.5, 1.0, 0.0),  # spring green
-						(1.0, 1.0, 0.0),  # yellow
-						(1.0, 0.5, 0.0),  # orange
-						(1.0, 0.0, 0.0) ] # red
+		disp_colors = [ (  0.0,   0.0,   1.0), # blue
+						(  0.0, 0.333,   1.0),  
+						(  0.0, 0.666,   1.0),  
+						(  0.0,   1.0,   1.0),  
+						(  0.0,   1.0, 0.666),  
+						(  0.0,   1.0, 0.333),
+						(  0.0,   1.0,   0.0), # green
+						(0.333,   1.0,   0.0),  
+						(0.666,   1.0,   0.0),  
+						(  1.0,   1.0,   0.0),  
+						(  1.0, 0.666,   0.0),  
+						(  1.0, 0.333,   0.0),
+						(  1.0,   0.0,   0.0) ] # red
 		if shear_bend[0]:
 			sc = (0.8, 0.4, 0.1)
-			disp_colors = [ sc, sc, sc, sc, sc, sc, sc, sc, sc ]
+			disp_colors = [ sc, sc, sc, sc, sc, sc, sc, sc, sc, sc, sc, sc, sc ]
 		if shear_bend[1]:
 			bc = (0.5, 0.1, 0.5)
-			disp_colors = [ bc, bc, bc, bc, bc, bc, bc, bc, bc ]
+			disp_colors = [ bc, bc, bc, bc, bc, bc, bc, bc, bc, bc, bc, bc, bc ]
 		glColor3f(disp_colors[0][0], disp_colors[0][1], disp_colors[0][2])
-		glRectf(self.width-80, (self.height/2.)+180, self.width-40, (self.height/2.)+140)
+		glRectf(self.width-80, (self.height/2.)+180, self.width-40, (self.height/2.)+150)
 		glColor3f(disp_colors[1][0], disp_colors[1][1], disp_colors[1][2])
-		glRectf(self.width-80, (self.height/2.)+140, self.width-40, (self.height/2.)+100)
+		glRectf(self.width-80, (self.height/2.)+150, self.width-40, (self.height/2.)+120)
 		glColor3f(disp_colors[2][0], disp_colors[2][1], disp_colors[2][2])
-		glRectf(self.width-80, (self.height/2.)+100, self.width-40, (self.height/2.)+ 60)
+		glRectf(self.width-80, (self.height/2.)+120, self.width-40, (self.height/2.)+ 90)
 		glColor3f(disp_colors[3][0], disp_colors[3][1], disp_colors[3][2])
-		glRectf(self.width-80, (self.height/2.)+ 60, self.width-40, (self.height/2.)+ 20)
+		glRectf(self.width-80, (self.height/2.)+ 90, self.width-40, (self.height/2.)+ 60)
 		glColor3f(disp_colors[4][0], disp_colors[4][1], disp_colors[4][2])
-		glRectf(self.width-80, (self.height/2.)+ 20, self.width-40, (self.height/2.)- 20)
+		glRectf(self.width-80, (self.height/2.)+ 60, self.width-40, (self.height/2.)- 30)
 		glColor3f(disp_colors[5][0], disp_colors[5][1], disp_colors[5][2])
-		glRectf(self.width-80, (self.height/2.)- 20, self.width-40, (self.height/2.)- 60)
+		glRectf(self.width-80, (self.height/2.)- 30, self.width-40, (self.height/2.)-  0)
 		glColor3f(disp_colors[6][0], disp_colors[6][1], disp_colors[6][2])
-		glRectf(self.width-80, (self.height/2.)- 60, self.width-40, (self.height/2.)-100)
+		glRectf(self.width-80, (self.height/2.)-  0, self.width-40, (self.height/2.)- 30)
 		glColor3f(disp_colors[7][0], disp_colors[7][1], disp_colors[7][2])
-		glRectf(self.width-80, (self.height/2.)-100, self.width-40, (self.height/2.)-140)
+		glRectf(self.width-80, (self.height/2.)- 30, self.width-40, (self.height/2.)- 60)
 		glColor3f(disp_colors[8][0], disp_colors[8][1], disp_colors[8][2])
-		glRectf(self.width-80, (self.height/2.)-140, self.width-40, (self.height/2.)-180)
+		glRectf(self.width-80, (self.height/2.)- 60, self.width-40, (self.height/2.)- 90)
+		glColor3f(disp_colors[9][0], disp_colors[9][1], disp_colors[9][2])
+		glRectf(self.width-80, (self.height/2.)- 90, self.width-40, (self.height/2.)-120)
+		glColor3f(disp_colors[10][0], disp_colors[10][1], disp_colors[10][2])
+		glRectf(self.width-80, (self.height/2.)-120, self.width-40, (self.height/2.)-150)
+		glColor3f(disp_colors[11][0], disp_colors[11][1], disp_colors[11][2])
+		glRectf(self.width-80, (self.height/2.)-150, self.width-40, (self.height/2.)-180)
+		glColor3f(disp_colors[12][0], disp_colors[12][1], disp_colors[12][2])
+		glRectf(self.width-80, (self.height/2.)-180, self.width-40, (self.height/2.)-210)
 
 		# values
 		glColor3f(1., 1., 1.)
-		self.renderText(self.width-190, (self.height/2.)-155, '%6.3E' % (max_val), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)-115, '%6.3E' % (min_val+(max_val-min_val)*7./8.), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)- 75, '%6.3E' % (min_val+(max_val-min_val)*6./8.), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)- 35, '%6.3E' % (min_val+(max_val-min_val)*5./8.), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)+  5, '%6.3E' % (min_val+(max_val-min_val)*4./8.), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)+ 45, '%6.3E' % (min_val+(max_val-min_val)*3./8.), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)+ 85, '%6.3E' % (min_val+(max_val-min_val)*2./8.), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)+125, '%6.3E' % (min_val+(max_val-min_val)*1./8.), QtGui.QFont( 'helvetica', 14 ) )
-		self.renderText(self.width-190, (self.height/2.)+165, '%6.3E' % (min_val), QtGui.QFont( 'helvetica', 14 ) )
+		self.renderText(self.width-190, (self.height/2.)-185, '%6.3E' % (max_val), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)-155, '%6.3E' % (min_val+(max_val-min_val)*11./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)-125, '%6.3E' % (min_val+(max_val-min_val)*10./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)- 95, '%6.3E' % (min_val+(max_val-min_val)*9./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)- 65, '%6.3E' % (min_val+(max_val-min_val)*8./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)- 35, '%6.3E' % (min_val+(max_val-min_val)*7./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)-  5, '%6.3E' % (min_val+(max_val-min_val)*6./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)+ 25, '%6.3E' % (min_val+(max_val-min_val)*5./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)+ 55, '%6.3E' % (min_val+(max_val-min_val)*4./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)+ 85, '%6.3E' % (min_val+(max_val-min_val)*3./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)+115, '%6.3E' % (min_val+(max_val-min_val)*2./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)+145, '%6.3E' % (min_val+(max_val-min_val)*1./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, (self.height/2.)+175, '%6.3E' % (min_val), QtGui.QFont( 'helvetica', 13 ) )
 
 
 	def writeInfo(self,solution,result=None,subresult=None,info=None):
@@ -3826,6 +4597,7 @@ or .sol-files.
 		self.selected_elements = {}
 		self.selectOption = 'Nodes'
 
+		self.scaleShearBendDiagram = 1.
 		self.scale_factor = 20.
 		self.displayLists = {}
 
@@ -3947,6 +4719,7 @@ or .sol-files.
 			mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
 			self.buildDisplayList(mesh)
 			self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+			self.elementOrientation()
 			self.gui.viewer.update()
 			
 		elif self.gui.new_deletion['Delete...'] == 'Nodeset':
@@ -4080,29 +4853,38 @@ or .sol-files.
 			mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
 			self.buildDisplayList(mesh)
 			self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+			self.elementOrientation()
 			self.gui.viewer.update()
 
 
-	def moveSelectedNodes(self):
+	def moveSelectedNodes(self,x=None,y=None,z=None):
 		'''
 	Moves the selected nodes in direction and
 	distance given by user input.
 	'''
 		mesh = self.meshes[self.gui.viewer.currentMesh]
 		try:
-			float(self.gui.new_node_movement['x-direction'])
-			float(self.gui.new_node_movement['y-direction'])
-			float(self.gui.new_node_movement['z-direction'])
+			if x == None:
+				float(self.gui.new_node_movement['x-direction'])
+				float(self.gui.new_node_movement['y-direction'])
+				float(self.gui.new_node_movement['z-direction'])
 		except ValueError:
 			print('\n\tx-, y- and z-direction specified must be a number.')		
 		else:
-			x_dir = float(self.gui.new_node_movement['x-direction'])
-			y_dir = float(self.gui.new_node_movement['y-direction'])
-			z_dir = float(self.gui.new_node_movement['z-direction'])
+			if x == None:
+				x_dir = float(self.gui.new_node_movement['x-direction'])
+				y_dir = float(self.gui.new_node_movement['y-direction'])
+				z_dir = float(self.gui.new_node_movement['z-direction'])
+			else:
+				x_dir = x
+				y_dir = y
+				z_dir = z
 			for node in self.selected_nodes:
 				mesh.nodes[node].coord[0][0] += x_dir
 				mesh.nodes[node].coord[1][0] += y_dir
 				mesh.nodes[node].coord[2][0] += z_dir
+			self.nodesSelected = False
+			self.selected_nodes.clear()
 
 			x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
 			x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
@@ -4114,6 +4896,7 @@ or .sol-files.
 			mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
 			self.buildDisplayList(mesh)
 			self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+			self.elementOrientation()
 			self.gui.viewer.update()
 
 
@@ -4129,17 +4912,17 @@ or .sol-files.
 				if int(self.gui.new_elements['Node 1']) in mesh.nodes:
 					nodes.append(mesh.nodes[int(self.gui.new_elements['Node 1'])])
 				else:
-					print('First node '+self.gui.new_elements['Node 1']+' does not exist, creating new one.')
+					print('\n\tFirst node '+self.gui.new_elements['Node 1']+' does not exist, creating new one.')
 			else:
-				print('First node '+self.gui.new_elements['Node 1']+' is not a valid node number.')
+				print('\n\tFirst node '+self.gui.new_elements['Node 1']+' is not a valid node number.')
 		if self.gui.new_elements['Node 2'] != '' and len(nodes) != 0:
 			if self.gui.new_elements['Node 2'].isdigit():
 				if int(self.gui.new_elements['Node 2']) in mesh.nodes:
 					nodes.append(mesh.nodes[int(self.gui.new_elements['Node 2'])])
 				else:
-					print('Second node '+self.gui.new_elements['Node 2']+' does not exist, creating new one.')
+					print('\n\tSecond node '+self.gui.new_elements['Node 2']+' does not exist, creating new one.')
 			else:
-				print('Second node '+self.gui.new_elements['Node 2']+' is not a valid node number.')
+				print('\n\tSecond node '+self.gui.new_elements['Node 2']+' is not a valid node number.')
 
 		element_number = 1
 		if len(mesh.elements) != 0:
@@ -4159,24 +4942,24 @@ or .sol-files.
 					is_3D = True
 			element_size = float(self.gui.new_elements['Element size'])
 
-			node_number = 1
-			if len(mesh.nodes) != 0:
-				node_number = max(mesh.nodes) +1
 			start_point = [0.,0.,0.]
 			direction   = [1.,0.,0.]
 			angle = 0.
+			node_number = 1
+			if len(mesh.nodes) != 0:
+				node_number = max(mesh.nodes) +1
+				start_point = [0.,0.,2.0*mesh.viewRadius]
 
 			if len(nodes) == 1:
-				if self.gui.new_elements['Element type'] not in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D', 'QUAD4N']:
-					start_point = [nodes[0].coord[0][0], nodes[0].coord[1][0], nodes[0].coord[2][0]]
-					if len(mesh.nodes) != 0:
-						node_number = max(mesh.nodes)
-					else:
-						node_number = nodes[0].number
-					nodes.append(Node(node_number+1, start_point[0]+element_size*direction[0], start_point[1], start_point[2]))
+				start_point = [nodes[0].coord[0][0], nodes[0].coord[1][0], nodes[0].coord[2][0]]
+				if len(mesh.nodes) != 0:
+					node_number = max(mesh.nodes)
+				else:
+					node_number = nodes[0].number
+				nodes.append(Node(node_number+1, start_point[0]+element_size*direction[0], start_point[1], start_point[2]))
 
 			elif len(nodes) == 2:
-				if self.gui.new_elements['Element type'] not in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D', 'QUAD4N']:
+				if self.gui.new_elements['Element type'] not in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D']:
 					start_point = [nodes[0].coord[0][0],nodes[0].coord[1][0],nodes[0].coord[2][0]]
 					if len(mesh.nodes) != 0:
 						node_number = max(mesh.nodes)
@@ -4196,7 +4979,6 @@ or .sol-files.
 			else:
 				nodes.append(Node(node_number,	 start_point[0],			  start_point[1], start_point[2]))
 				nodes.append(Node(node_number+1, start_point[0]+element_size, start_point[1], start_point[2]))				
-
 
 			if self.gui.new_elements['Element type'] == 'BEAM2N':
 				print('\n\tNew BEAM2N element...')
@@ -4352,79 +5134,45 @@ or .sol-files.
 			print('\tNew element:', element_number)
 			print('\tElement nodes:', [mesh.elements[element_number].nodes[x].number for x in \
 															range(len(mesh.elements[element_number].nodes))])
-
-			x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
-			x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
-			y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
-			y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
-			z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
-			z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+			x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes)
+			x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes)
+			y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes)
+			y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes)
+			z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes)
+			z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes)
 			mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
 			mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
 			self.buildDisplayList(mesh)
 			self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+			self.elementOrientation()
 			for mesh in self.meshes:
 				self.checkForSection(self.meshes[mesh])
 			self.gui.viewer.update()
 
 
-	def elementOrientation(self):
+	def elementOrientation(self,newOrientation=False):
 		'''
 	Applies an orientation to the selected
 	elements with input from user. Only applies
 	to BEAM2N and BEAM2N2D elements.
 	'''
-		mesh = self.meshes[self.gui.viewer.currentMesh]
-		if 'orientation' not in mesh.displayLists:
-			mesh.displayLists['orientation'] = glGenLists(1)
-		glNewList(mesh.displayLists['orientation'], GL_COMPILE)
-		glLineWidth(5.0)
-		glColor(1.0, 0.0, 0.0)
-		glBegin(GL_LINES)
-		glVertex(0.,0.,0.)
-		glVertex(0.15*self.gui.viewer.currentDisplayList['view radius'], 0., 0.)
-		glEnd()
-		glColor(0.0, 1.0, 0.0)
-		glBegin(GL_LINES)
-		glVertex(0.,0.,0.)
-		glVertex(0.,0.15*self.gui.viewer.currentDisplayList['view radius'], 0.)
-		glEnd()
-		glColor(0.0, 0.0, 1.0)
-		glBegin(GL_LINES)
-		glVertex(0.,0.,0.)
-		glVertex(0., 0., 0.15*self.gui.viewer.currentDisplayList['view radius'])
-		glEnd()
-		for element in mesh.elements:
-			if mesh.elements[element].type in ['BEAM2N', 'BEAM2N2D']:
-				if element in self.selected_elements:
-					x = np.array([float(x.strip()) for x in self.gui.new_orientation['x-vector'].split(',')])
-					y = np.array([float(y.strip()) for y in self.gui.new_orientation['y-vector'].split(',')])
+		if self.gui.viewer.currentMesh != 'None':
+			mesh = self.meshes[self.gui.viewer.currentMesh]
+			if 'orientation' not in mesh.displayLists:
+				mesh.displayLists['orientation'] = glGenLists(1)
+			glNewList(mesh.displayLists['orientation'], GL_COMPILE)
+			for element in mesh.elements:
+				if mesh.elements[element].type in ['BEAM2N', 'BEAM2N2D']:
+					if element in self.selected_elements and newOrientation:
+						x = np.array([float(x.strip()) for x in self.gui.new_orientation['x-vector'].split(',')])
+						y = np.array([float(y.strip()) for y in self.gui.new_orientation['y-vector'].split(',')])
 
-					x21 = mesh.elements[element].nodes[1].coord[0][0]-mesh.elements[element].nodes[0].coord[0][0]
-					y21 = mesh.elements[element].nodes[1].coord[1][0]-mesh.elements[element].nodes[0].coord[1][0]
-					z21 = mesh.elements[element].nodes[1].coord[2][0]-mesh.elements[element].nodes[0].coord[2][0]
-
-					mesh.elements[element].length = sqrt(x21**2 + y21**2 + z21**2)
-
-					x1 = mesh.elements[element].nodes[0].coord[0][0]
-					x2 = mesh.elements[element].nodes[1].coord[0][0]
-					y1 = mesh.elements[element].nodes[0].coord[1][0]
-					y2 = mesh.elements[element].nodes[1].coord[1][0]
-					z1 = mesh.elements[element].nodes[0].coord[2][0]
-					z2 = mesh.elements[element].nodes[1].coord[2][0]
-
-					if x21 < 0. and x[0] < 0.:
-						xv = np.array([x21, y21, z21])
-					elif x21 > 0. and x[0] > 0.:
-						xv = np.array([x21, y21, z21])
-					else:
-						# if node order not alligned with beam orientation,
-						# switch nodes 1 and 2 to allign them
-						mesh.elements[element].nodes[0], mesh.elements[element].nodes[1] = mesh.elements[element].nodes[1], mesh.elements[element].nodes[0]
 						x21 = mesh.elements[element].nodes[1].coord[0][0]-mesh.elements[element].nodes[0].coord[0][0]
 						y21 = mesh.elements[element].nodes[1].coord[1][0]-mesh.elements[element].nodes[0].coord[1][0]
 						z21 = mesh.elements[element].nodes[1].coord[2][0]-mesh.elements[element].nodes[0].coord[2][0]
-						xv = np.array([x21, y21, z21])
+
+						mesh.elements[element].length = sqrt(x21**2 + y21**2 + z21**2)
+
 						x1 = mesh.elements[element].nodes[0].coord[0][0]
 						x2 = mesh.elements[element].nodes[1].coord[0][0]
 						y1 = mesh.elements[element].nodes[0].coord[1][0]
@@ -4432,55 +5180,74 @@ or .sol-files.
 						z1 = mesh.elements[element].nodes[0].coord[2][0]
 						z2 = mesh.elements[element].nodes[1].coord[2][0]
 
-					xu = xv/mesh.elements[element].length
-					yu = y/np.sqrt(y[0]**2+y[1]**2+y[2]**2)
-					if xu.dot(yu) in [-1.,1.]:
-						print('\n\tWARNING!!! Element', mesh.elements[element].number)
-						print('\ty-vector cannot be the same as vector from node 1 to node 2.')
-						print('\tChanging it to be perpendicular to x-vector')
-						y = np.array([np.random.rand(),np.random.rand(),np.random.rand()]) 
-					n1_offset = np.array([x1,y1,z1]) + y
-					n2_offset = np.array([x2,y2,z2]) + y
-					n_offset = n1_offset + 0.5*(n2_offset-n1_offset)
-					ov = n_offset - np.array([x1,y1,z1])
-					yv = ov - np.dot(ov,xu)*xu
-					mag = sqrt(yv[0]**2 + yv[1]**2 + yv[2]**2)
-					if mag == 0.:
-						yu = yv
-					else:
-						yu = yv/mag
-					if mesh.elements[element].type == 'BEAM2N2D':
-						zu = np.array([0.,0.,1.])
-						yu = np.cross(zu, xu)
-					else:
-						zu = np.cross(xu, yu)
-					mesh.elements[element].orientation = {'x-vec': xu, 'y-vec': yu, 'z-vec': zu}
+						if x21 < 0. and x[0] < 0.:
+							xv = np.array([x21, y21, z21])
+						elif x21 > 0. and x[0] > 0.:
+							xv = np.array([x21, y21, z21])
+						else:
+							# if node order not alligned with beam orientation,
+							# switch nodes 1 and 2 to allign them
+							mesh.elements[element].nodes[0], mesh.elements[element].nodes[1] = mesh.elements[element].nodes[1], mesh.elements[element].nodes[0]
+							x21 = mesh.elements[element].nodes[1].coord[0][0]-mesh.elements[element].nodes[0].coord[0][0]
+							y21 = mesh.elements[element].nodes[1].coord[1][0]-mesh.elements[element].nodes[0].coord[1][0]
+							z21 = mesh.elements[element].nodes[1].coord[2][0]-mesh.elements[element].nodes[0].coord[2][0]
+							xv = np.array([x21, y21, z21])
+							x1 = mesh.elements[element].nodes[0].coord[0][0]
+							x2 = mesh.elements[element].nodes[1].coord[0][0]
+							y1 = mesh.elements[element].nodes[0].coord[1][0]
+							y2 = mesh.elements[element].nodes[1].coord[1][0]
+							z1 = mesh.elements[element].nodes[0].coord[2][0]
+							z2 = mesh.elements[element].nodes[1].coord[2][0]
 
-				if hasattr(mesh.elements[element],'orientation'):
-					xu = mesh.elements[element].orientation['x-vec']
-					yu = mesh.elements[element].orientation['y-vec']
-					zu = mesh.elements[element].orientation['z-vec']
-					x0 = (mesh.elements[element].nodes[1].coord[0][0] + mesh.elements[element].nodes[0].coord[0][0])/2. + yu[0]*0.01*mesh.elements[element].length
-					y0 = (mesh.elements[element].nodes[1].coord[1][0] + mesh.elements[element].nodes[0].coord[1][0])/2. + yu[1]*0.01*mesh.elements[element].length
-					z0 = (mesh.elements[element].nodes[1].coord[2][0] + mesh.elements[element].nodes[0].coord[2][0])/2. + yu[2]*0.01*mesh.elements[element].length
-					scale = 0.15*self.gui.viewer.currentDisplayList['view radius']
-					glColor(1.0, 0.0, 0.0)
-					glBegin(GL_LINES)
-					glVertex(x0,y0,z0)
-					glVertex(x0+xu[0]*scale,y0+xu[1]*scale,z0+xu[2]*scale)
-					glEnd()
-					glColor(0.0, 1.0, 0.0)
-					glBegin(GL_LINES)
-					glVertex(x0,y0,z0)
-					glVertex(x0+yu[0]*scale,y0+yu[1]*scale,z0+yu[2]*scale)
-					glEnd()
-					glColor(0.0, 0.0, 1.0)
-					glBegin(GL_LINES)
-					glVertex(x0,y0,z0)
-					glVertex(x0+zu[0]*scale,y0+zu[1]*scale,z0+zu[2]*scale)
-					glEnd()
-		glEndList()
-		self.gui.viewer.currentDisplayList['displaylist']['orientation'] = mesh.displayLists['orientation']
+						xu = xv/mesh.elements[element].length
+						yu = y/np.sqrt(y[0]**2+y[1]**2+y[2]**2)
+						if xu.dot(yu) in [-1.,1.]:
+							print('\n\tWARNING!!! Element', mesh.elements[element].number)
+							print('\ty-vector cannot be the same as vector from node 1 to node 2.')
+							print('\tChanging it to be perpendicular to x-vector')
+							y = np.array([np.random.rand(),np.random.rand(),np.random.rand()]) 
+						n1_offset = np.array([x1,y1,z1]) + y
+						n2_offset = np.array([x2,y2,z2]) + y
+						n_offset = n1_offset + 0.5*(n2_offset-n1_offset)
+						ov = n_offset - np.array([x1,y1,z1])
+						yv = ov - np.dot(ov,xu)*xu
+						mag = sqrt(yv[0]**2 + yv[1]**2 + yv[2]**2)
+						if mag == 0.:
+							yu = yv
+						else:
+							yu = yv/mag
+						if mesh.elements[element].type == 'BEAM2N2D':
+							zu = np.array([0.,0.,1.])
+							yu = np.cross(zu, xu)
+						else:
+							zu = np.cross(xu, yu)
+						mesh.elements[element].orientation = {'x-vec': xu, 'y-vec': yu, 'z-vec': zu}
+
+					if hasattr(mesh.elements[element],'orientation'):
+						xu = mesh.elements[element].orientation['x-vec']
+						yu = mesh.elements[element].orientation['y-vec']
+						zu = mesh.elements[element].orientation['z-vec']
+						x0 = (mesh.elements[element].nodes[1].coord[0][0] + mesh.elements[element].nodes[0].coord[0][0])/2. + yu[0]*0.01*mesh.elements[element].length
+						y0 = (mesh.elements[element].nodes[1].coord[1][0] + mesh.elements[element].nodes[0].coord[1][0])/2. + yu[1]*0.01*mesh.elements[element].length
+						z0 = (mesh.elements[element].nodes[1].coord[2][0] + mesh.elements[element].nodes[0].coord[2][0])/2. + yu[2]*0.01*mesh.elements[element].length
+						scale = 0.15*mesh.elements[element].length
+						glColor(1.0, 0.0, 0.0)
+						glBegin(GL_LINES)
+						glVertex(x0,y0,z0)
+						glVertex(x0+xu[0]*scale,y0+xu[1]*scale,z0+xu[2]*scale)
+						glEnd()
+						glColor(0.0, 1.0, 0.0)
+						glBegin(GL_LINES)
+						glVertex(x0,y0,z0)
+						glVertex(x0+yu[0]*scale,y0+yu[1]*scale,z0+yu[2]*scale)
+						glEnd()
+						glColor(0.0, 0.0, 1.0)
+						glBegin(GL_LINES)
+						glVertex(x0,y0,z0)
+						glVertex(x0+zu[0]*scale,y0+zu[1]*scale,z0+zu[2]*scale)
+						glEnd()
+			glEndList()
+			self.gui.viewer.currentDisplayList['displaylist']['orientation'] = mesh.displayLists['orientation']
 
 
 	def elementConversion(self):
@@ -4635,6 +5402,7 @@ or .sol-files.
 
 		self.buildDisplayList(mesh)
 		self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+		self.elementOrientation()
 		self.gui.viewer.update()
 		print('finished.')
 
@@ -5122,6 +5890,7 @@ or .sol-files.
 		mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
 		self.buildDisplayList(mesh)
 		self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+		self.elementOrientation()
 		for mesh in self.meshes:
 			self.checkForSection(self.meshes[mesh])
 		self.gui.viewer.update()
@@ -5141,50 +5910,27 @@ or .sol-files.
 	'''
 		if self.gui.viewer.currentMesh == 'None':
 			print('\n\tNo mesh currently selected.')
-			print('\tNo elements moved.')
-		elif self.gui.new_position['Elementset'].isdigit():
+		elif self.elementsSelected:
+			mesh = self.meshes[self.gui.viewer.currentMesh]
 			try:
-				int(self.gui.new_position['Elementset'])
-				float(self.gui.new_position['x-direction'])
-				float(self.gui.new_position['y-direction'])
-				float(self.gui.new_position['z-direction'])
+				x = float(self.gui.new_position['x-direction'])
+				y = float(self.gui.new_position['y-direction'])
+				z = float(self.gui.new_position['z-direction'])
 			except ValueError:
-				print('\n\tElement set must be an integer, and directions must be floats')
+				print('\n\tx, y and z directions must be floats')
 			else:
-				if int(self.gui.new_position['Elementset']) in self.elementsets:
-					moved_nodes = []
-					for element in self.elementsets[int(self.gui.new_position['Elementset'])]:
-						for node in range(len(self.meshes[self.gui.viewer.currentMesh].elements[element].nodes)):
-							if self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].number in moved_nodes:
-								pass
-							else:
-								moved_nodes.append(self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].number)
-								self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[0][0] += \
-																						float(self.gui.new_position['x-direction'])
-								self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[1][0] += \
-																						float(self.gui.new_position['y-direction'])
-								self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[2][0] += \
-																						float(self.gui.new_position['z-direction'])
-					x_max = max(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[0][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-					x_min = min(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[0][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-					y_max = max(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[1][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-					y_min = min(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[1][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-					z_max = max(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[2][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-					z_min = min(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[2][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-					self.meshes[self.gui.viewer.currentMesh].viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
-					self.meshes[self.gui.viewer.currentMesh].viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
-					self.buildDisplayList(self.meshes[self.gui.viewer.currentMesh])
-					self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
-					print('\n\tElements in elementset '+self.gui.new_position['Elementset']+' moved:')
-					print('\tx-direction: ', float(self.gui.new_position['x-direction']))
-					print('\ty-direction: ', float(self.gui.new_position['y-direction']))
-					print('\tz-direction: ', float(self.gui.new_position['z-direction']))
-				else:
-					print('\n\tNo elementset by that number.')
-					print('\tNo elements moved.')
+				self.selected_nodes.clear()
+				for element in self.selected_elements:
+					for node in self.selected_elements[element].nodes:
+						if node.number not in self.selected_nodes:
+							self.selected_nodes[node.number] = node
+				self.nodesSelected = True
+				self.moveSelectedNodes(x, y, z)
+				self.elementsSelected = False
+				self.selected_elements.clear()
+				self.gui.viewer.update()
 		else:
-			print('\n\tThat is not a valid elementset number.')
-			print('\tNo elements moved.')
+			print('\n\tNo elements currently selected.')
 
 
 	def rotateElements(self):
@@ -5195,58 +5941,115 @@ or .sol-files.
 		if self.gui.viewer.currentMesh == 'None':
 			print('\n\tNo mesh currently selected.')
 			print('\tNo elements moved.')
-		elif self.gui.new_rotation['Elementset'].isdigit():
-			if self.gui.new_rotation['Rotation axis node 1'].isdigit() and self.gui.new_rotation['Rotation axis node 2'].isdigit():
-				node1 = int(self.gui.new_rotation['Rotation axis node 1'])
-				node1_coord = [self.meshes[self.gui.viewer.currentMesh].nodes[node1].coord[0][0],
-							   self.meshes[self.gui.viewer.currentMesh].nodes[node1].coord[1][0],
-							   self.meshes[self.gui.viewer.currentMesh].nodes[node1].coord[2][0]]
-				node2 = int(self.gui.new_rotation['Rotation axis node 2'])
-				node2_coord = [self.meshes[self.gui.viewer.currentMesh].nodes[node2].coord[0][0],
-							   self.meshes[self.gui.viewer.currentMesh].nodes[node2].coord[1][0],
-							   self.meshes[self.gui.viewer.currentMesh].nodes[node2].coord[2][0]]
+		elif self.elementsSelected:
+			try:
+				node1 = int(self.gui.new_rotation['Rotation axis node 1\n(uses only this if 2D elements)'])
 				angle = np.radians(float(self.gui.new_rotation['Angle']))
-				if node1 in self.meshes[self.gui.viewer.currentMesh].nodes and node2 in self.meshes[self.gui.viewer.currentMesh].nodes:
-					if int(self.gui.new_rotation['Elementset']) in self.elementsets:
+			except ValueError:
+				print('\n\tRotation axis node 1 must be an integer')
+				print('\tand the angle must be float.')
+			else:
+				is2d = False
+				for element in self.selected_elements:
+					if self.selected_elements[element].type in ['ROD2N2D', 'BEAM2N2D', 'TRI3N', 'TRI6N', 'QUAD4N', 'QUAD8N']:
+						is2d = True
+						break
+
+				mesh = self.meshes[self.gui.viewer.currentMesh]
+				if is2d:
+					if node1 in mesh.nodes:
+						node1_coord = [mesh.nodes[node1].coord[0][0],
+									   mesh.nodes[node1].coord[1][0],
+									   mesh.nodes[node1].coord[2][0]]
+						node2_coord = [mesh.nodes[node1].coord[0][0],
+									   mesh.nodes[node1].coord[1][0],
+									   mesh.nodes[node1].coord[2][0]+1]
 						moved_nodes = []
-						for element in self.elementsets[int(self.gui.new_rotation['Elementset'])]:
-							for node in range(len(self.meshes[self.gui.viewer.currentMesh].elements[element].nodes)):
-								if self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].number in moved_nodes:
+						for element in self.selected_elements:
+							for node in range(len(mesh.elements[element].nodes)):
+								if mesh.elements[element].nodes[node].number in moved_nodes:
 									pass
 								else:
-									moved_nodes.append(self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].number)
-									point0 = [self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[0][0],
-											  self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[1][0],
-											  self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[2][0]]
+									moved_nodes.append(mesh.elements[element].nodes[node].number)
+									point0 = [mesh.elements[element].nodes[node].coord[0][0],
+											  mesh.elements[element].nodes[node].coord[1][0],
+											  mesh.elements[element].nodes[node].coord[2][0]]
 									point1 = rotatePointAboutAxis(point0,node1_coord,node2_coord,angle)
-									self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[0][0] = point1[0]
-									self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[1][0] = point1[1]
-									self.meshes[self.gui.viewer.currentMesh].elements[element].nodes[node].coord[2][0] = point1[2]
+									mesh.elements[element].nodes[node].coord[0][0] = point1[0]
+									mesh.elements[element].nodes[node].coord[1][0] = point1[1]
+									mesh.elements[element].nodes[node].coord[2][0] = point1[2]
 
-						x_max = max(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[0][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-						x_min = min(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[0][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-						y_max = max(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[1][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-						y_min = min(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[1][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-						z_max = max(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[2][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-						z_min = min(self.meshes[self.gui.viewer.currentMesh].nodes[i].coord[2][0] for i in self.meshes[self.gui.viewer.currentMesh].nodes )
-						self.meshes[self.gui.viewer.currentMesh].viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
-						self.meshes[self.gui.viewer.currentMesh].viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
-						self.buildDisplayList(self.meshes[self.gui.viewer.currentMesh])
+						x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+						x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+						y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+						y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+						z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+						z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+						mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+						mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+						self.buildDisplayList(mesh)
 						self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
-						print('\n\tElements in elementset '+self.gui.new_rotation['Elementset']+' rotated around axis',end=' ')
-						print('\t', node1_coord, node2_coord, float(self.gui.new_rotation['Angle']), 'degrees.')
+						self.elementOrientation()
+						self.gui.viewer.update()
+						print('\n\tElements', end=' ')
+						for i, element in enumerate(self.selected_elements):
+							print(str(element)+', ', end='')
+							if i > 7:
+								break
+						print('... rotated around node', node1_coord, float(self.gui.new_rotation['Angle']), 'degrees.')
 					else:
-						print('\n\tNo elementset by that number.')
-						print('\tNo elements moved.')
+						print('\n\tNo node by that number:', node1)
+				
 				else:
-					print('\n\tNo node(s) by that number:', node1, node2)
-					print('\tNo elements moved.')
-			else:
-				print('\n\tThat is not a valid node number.')
-				print('\tNo elements moved.')
+					try:
+						node2 = int(self.gui.new_rotation['Rotation axis node 2'])
+					except ValueError:
+						print('\n\tRotation axis node 2 must be an integer')
+					else:
+						if node1 in mesh.nodes and node2 in mesh.nodes:
+							node1_coord = [mesh.nodes[node1].coord[0][0],
+										   mesh.nodes[node1].coord[1][0],
+										   mesh.nodes[node1].coord[2][0]]
+							node2_coord = [mesh.nodes[node2].coord[0][0],
+										   mesh.nodes[node2].coord[1][0],
+										   mesh.nodes[node2].coord[2][0]]
+							moved_nodes = []
+							for element in self.selected_elements:
+								for node in range(len(mesh.elements[element].nodes)):
+									if mesh.elements[element].nodes[node].number in moved_nodes:
+										pass
+									else:
+										moved_nodes.append(mesh.elements[element].nodes[node].number)
+										point0 = [mesh.elements[element].nodes[node].coord[0][0],
+												  mesh.elements[element].nodes[node].coord[1][0],
+												  mesh.elements[element].nodes[node].coord[2][0]]
+										point1 = rotatePointAboutAxis(point0,node1_coord,node2_coord,angle)
+										mesh.elements[element].nodes[node].coord[0][0] = point1[0]
+										mesh.elements[element].nodes[node].coord[1][0] = point1[1]
+										mesh.elements[element].nodes[node].coord[2][0] = point1[2]
+
+							x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+							x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+							y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+							y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+							z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+							z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+							mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+							mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+							self.buildDisplayList(mesh)
+							self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+							self.elementOrientation()
+							self.gui.viewer.update()
+							print('\n\tElements', end=' ')
+							for i, element in enumerate(self.selected_elements):
+								print(str(element)+', ', end='')
+								if i > 7:
+									break
+							print('... rotated around axis', node1_coord, node2_coord, float(self.gui.new_rotation['Angle']), 'degrees.')
+						else:
+							print('\n\tNo node(s) by that number:', node1, node2)
 		else:
-			print('\n\tThat is not a valid elementset number.')
-			print('\tNo elements moved.')
+			print('\n\tNo elements selected.')
 
 
 	def importMesh(self,filename):
@@ -5260,112 +6063,411 @@ or .sol-files.
 			mesh = ConvertMesh(filename,'.bdf')
 			mesh.writeSol(filename[:-4])
 			filename = filename[:-4]+'.sol'
+		if filename[-4:] == '.inp':
+			print('\n\tConverting inp-file to sol-file for import ...')
+			mesh = ConvertMesh(filename,'.inp')
+			mesh.writeSol(filename[:-4])
+			filename = filename[:-4]+'.sol'
 		try:
 			if filename[-4:] == '.sol':
 				fobj = open(filename, 'r')
-
 		except OSError as e:
 			print('\n\n  *** ERROR!!!', e)
-
 		else:
 			for i in range(len(filename)):
 				if filename[-i-1] == '/' or filename[-i-1] == '\\':
 					filename = filename[-i:-4]
 					break
-			print('\n\tImporting nodes and elements from', filename+'.sol')
-			tmpnodes = {}
+			print('\n\tImporting mesh from', filename+'.sol')
+			
+			# find first node and element number
+			# for renumbering if one or no solutions
+			first_node = 1
+			first_element = 1
+			for mesh_num in self.meshes:
+				if len(self.meshes[mesh_num].nodes) > 0:
+					if first_node < max(self.meshes[mesh_num].nodes):
+						first_node = max(self.meshes[mesh_num].nodes)+1
+				if len(self.meshes[mesh_num].elements) > 0:
+					if first_element < max(self.meshes[mesh_num].elements):
+						first_element = max(self.meshes[mesh_num].elements)+1
+
+			meshes = {}
+
+			solutions = {}
+			currentsol = 'none'
+			elementsets = {}
+			nodesets = {}
+			boundaries = {}
+			constraints = {}
+			loads = {}
+
+			materials = {}
+			sections = {}
+			beamorients = {}
+
 			nodes = {}
-			tmpelements = {}
 			elements = {}
+
 			for eachLine in fobj:
-
-				if(eachLine[0] == '#'):
+				tmpline = [x.strip() for x in eachLine.split(',')]
+				if tmpline[0][0] == '#':
 					pass
-				elif(eachLine[0:4] == 'NODE'):
-					tmpNode = []
-					tmpStr = ''
-					k = 0
-					for i in eachLine:
-						if i == ' ':
-							pass
-						elif i == ',':
-							if k == 0:
-								tmpStr = ''
-							elif k == 1:
-								tmpNode.append(int(tmpStr))
-								tmpStr = ''
+				# solutions
+				elif tmpline[0] == 'SOLUTION':
+					solutions[tmpline[1]] = {'Type': tmpline[2],
+											 'Boundaries': {},
+											 'Constraints': {},
+											 'Loads': {},
+											 'Results': []}
+					currentsol = tmpline[1]
+				elif tmpline[0] == 'MESHES':
+					meshname = filename+'-'+str(len(meshes)+1)
+					meshes[meshname] = [int(x) for x in tmpline[1:]]
+					if currentsol != 'none':
+						solutions[currentsol]['mesh'] = meshname
+				elif tmpline[0] == 'BOUNDARIES':
+					if currentsol != 'none':
+						solutions[currentsol]['Boundaries'][tmpline[1]] = {}
+				elif tmpline[0] == 'CONSTRAINTS':
+					if currentsol != 'none':
+						solutions[currentsol]['Constraints'][tmpline[1]] = {}
+				elif tmpline[0] == 'LOADS':
+					if currentsol != 'none':
+						solutions[currentsol]['Loads'][tmpline[1]] = {}
+#				elif tmpline[0] == 'DAMPINGS':
+#					if currentsol != 'none':
+#						solutions[currentsol]['Dampings'][tmpline[1]] = {}
+				# results
+				elif tmpline[0] == 'RESULTS':
+					currentsol = tmpline[1]
+				elif tmpline[0] == 'DISPLACEMENT':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('disp')
+				elif tmpline[0] == 'NODEFORCE':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('nodf')
+				elif tmpline[0] == 'ELEMENTFORCE':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('elmf')
+				elif tmpline[0] == 'STRESS':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('strs')
+				elif tmpline[0] == 'STRAIN':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('strn')
+				elif tmpline[0] == 'MODESHAPES':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('modes')
+				elif tmpline[0] == 'ACCELERATION':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('accl')
+				elif tmpline[0] == 'VELOCITY':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('velc')
+				elif tmpline[0] == 'FRF_ACCEL':
+					if currentsol != 'none':
+						solutions[currentsol]['Results'].append('frf')
+				# nodesets
+				elif tmpline[0] == 'SET_NODES':
+					setnum = int(tmpline[1])
+					nodesets[setnum] = {}
+					tmpnodeset = tmpline[2:]
+					for n in tmpnodeset:
+						try:
+							nodesets[setnum][int(n)] = True
+						except ValueError:
+							m = n.split('-')
+							for i in range(int(m[1])-int(m[0])+1):
+								nodesets[setnum][int(m[0])+i] = True
+				# elementsets
+				elif tmpline[0] == 'SET_ELEMENTS':
+					setnum = int(tmpline[1])
+					elementsets[setnum] = {}
+					tmpelementset = tmpline[2:]
+					for n in tmpelementset:
+						try:
+							elementsets[setnum][int(n)] = True
+						except ValueError:
+							m = n.split('-')
+							for i in range(int(m[1])-int(m[0])+1):
+								elementsets[setnum][int(m[0])+i] = True
+				# materials
+				elif tmpline[0] == 'MATERIAL':
+					materials[tmpline[2]] = {'Elasticity': float(tmpline[3]),
+											 'Poisson ratio': float(tmpline[4])}
+					if len(tmpline) > 5:
+						materials[tmpline[2]]['Density'] = float(tmpline[5])
+					else:
+						materials[tmpline[2]]['Density'] = 1.
+				elif tmpline[0] == 'SECTION':
+					sections['sect-'+tmpline[2]] = {'Number': int(tmpline[2]),
+													'Material': tmpline[3]}
+					if tmpline[1] in ['RodSect', 'BeamSect']:
+						sections['sect-'+tmpline[2]]['Area (Rod or Beam)'] = float(tmpline[4])
+						if tmpline[1] == 'BeamSect':
+							sections['sect-'+tmpline[2]]['Izz (Beam)'] = float(tmpline[5])
+						if len(tmpline) > 6 and tmpline[5] != 'CrossSection':
+							sections['sect-'+tmpline[2]]['Iyy (Beam 3D)'] = float(tmpline[5])
+						if 'CrossSection' in tmpline:
+							cs_index = tmpline.index('CrossSection')
+							if 'Rectangle' in tmpline:
+								sections['sect-'+tmpline[2]]['Cross section'] = { 'Type': 'Rectangle',
+																				  'width, w': float(tmpline[cs_index+2]),
+																				  'height, h': float(tmpline[cs_index+3]),
+																				  'inner width, iw': float(tmpline[cs_index+4]),
+																				  'inner height, ih': float(tmpline[cs_index+5]) }
+							elif 'Circle' in tmpline:
+								sections['sect-'+tmpline[2]]['Cross section'] = { 'Type': 'Circle',
+																		 		  'radius, r': float(tmpline[cs_index+2]),
+																		 		  'inner radius, ir': float(tmpline[cs_index+3]) }
+							elif 'I-Beam' in tmpline:
+								sections['sect-'+tmpline[2]]['Cross section'] = { 'Type': 'I-Beam',
+																				  'top width, tw': float(tmpline[cs_index+2]),
+																				  'top thickness, tt': float(tmpline[cs_index+3]),
+																				  'middle thickness, mt': float(tmpline[cs_index+4]),
+																				  'bottom width, bw': float(tmpline[cs_index+5]),
+																				  'bottom thickness, bt': float(tmpline[cs_index+6]),
+																				  'height, h': float(tmpline[cs_index+7])}
+							elif 'C-Beam' in tmpline:
+								sections['sect-'+tmpline[2]]['Cross section'] = { 'Type': 'C-Beam',
+																				  'top width, tw': float(tmpline[cs_index+2]),
+																				  'top thickness, tt': float(tmpline[cs_index+3]),
+																				  'middle thickness, mt': float(tmpline[cs_index+4]),
+																				  'bottom width, bw': float(tmpline[cs_index+5]),
+																				  'bottom thickness, bt': float(tmpline[cs_index+6]),
+																				  'height, h': float(tmpline[cs_index+7])}
+							elif 'T-Beam' in tmpline:
+								sections['sect-'+tmpline[2]]['Cross section'] = { 'Type': 'T-Beam',
+																				  'top width, tw': float(tmpline[cs_index+2]),
+																				  'top thickness, tt': float(tmpline[cs_index+3]),
+																				  'middle thickness, mt': float(tmpline[cs_index+4]),
+																				  'height, h': float(tmpline[cs_index+5])}
+							elif 'L-Beam' in tmpline:
+								sections['sect-'+tmpline[2]]['Cross section'] = { 'Type': 'L-Beam',
+																				  'side thickness, st': float(tmpline[cs_index+2]),
+																				  'bottom width, bw': float(tmpline[cs_index+3]),
+																				  'bottom thickness, bt': float(tmpline[cs_index+4]),
+																				  'height, h': float(tmpline[cs_index+5])}
 							else:
-								tmpNode.append(float(tmpStr))
-								tmpStr = ''
-							k += 1
-						elif i == '\n':
-							tmpNode.append(float(tmpStr))
-							break
-						else:
-							tmpStr += i
-					tmpnodes[tmpNode[0]] = {'coord':tmpNode[1:]}
+								print('\n\tUnknown cross section type for section sect-', tmpline[2])
+					elif tmpline[1] in ['PlaneSect', 'PlateSect']:
+						sections['sect-'+tmpline[2]]['Thickness (2D)'] = float(tmpline[4])
+					else:
+						pass
+				# maybe later
+				elif tmpline[0] == 'BEAMORIENT':
+					pass
+				elif tmpline[0] == 'DAMPING':
+					pass
+				elif tmpline[0] == 'TABLE':
+					pass
+				# boundaries
+				elif tmpline[0] == 'BOUNDARY':
+					for sol in solutions:
+						if tmpline[2] in solutions[sol]['Boundaries']:
+							solutions[sol]['Boundaries'][tmpline[2]] = {'Type': tmpline[1],
+																		'Nodeset': tmpline[3],
+																		'DOFs': [int(x) for x in tmpline[5:]]}
+							if tmpline[1] == 'Displacement':
+								solutions[sol]['Boundaries'][tmpline[2]]['Displacement'] = tmpline[4]
+				# constraints
+				elif tmpline[0] == 'CONSTRAINT':
+					for sol in solutions:
+						if tmpline[2] in solutions[sol]['Constraints']:
+							solutions[sol]['Constraints'][tmpline[2]] = {'Type': tmpline[1],
+																		 'Nodeset1': tmpline[3],
+																		 'Nodeset2': tmpline[4]}
+							if tmpline[1] == 'TouchLock':
+								solutions[sol]['Constraints'][tmpline[2]]['Tolerance'] = tmpline[5]
+								solutions[sol]['Constraints'][tmpline[2]]['DOFs'] = [int(x) for x in tmpline[6:]]
+							else:
+								solutions[sol]['Constraints'][tmpline[2]]['DOFs'] = [int(x) for x in tmpline[5:]]
+				# loads
+				elif tmpline[0] == 'LOAD':
+					for sol in solutions:
+						if tmpline[2] in solutions[sol]['Loads']:
+							solutions[sol]['Loads'][tmpline[2]] = {'Type': tmpline[1],
+																   'x-vector': tmpline[5],
+																   'y-vector': tmpline[6]}
+							if len(tmpline) > 7:
+								solutions[sol]['Loads'][tmpline[2]]['z-vector'] = tmpline[7]
+							else:
+								solutions[sol]['Loads'][tmpline[2]]['z-vector'] = 0.
+							if tmpline[1] in ['Force','ForceConcentrated','ForceDynamic','Acceleration']:
+								solutions[sol]['Loads'][tmpline[2]]['Force'] = tmpline[4]
+								solutions[sol]['Loads'][tmpline[2]]['Nodeset'] = tmpline[3]
+							if tmpline[1] == 'Torque':
+								solutions[sol]['Loads'][tmpline[2]]['Torque'] = tmpline[4]
+								solutions[sol]['Loads'][tmpline[2]]['Nodeset'] = tmpline[3]
+							if tmpline[1] == 'ForceDistributed':
+								solutions[sol]['Loads'][tmpline[2]]['Force/Length'] = tmpline[4]
+								solutions[sol]['Loads'][tmpline[2]]['Elementset'] = tmpline[3]
+							if tmpline[1] == 'Gravity':
+								solutions[sol]['Loads'][tmpline[2]]['Acceleration'] = tmpline[4]
+								solutions[sol]['Loads'][tmpline[2]]['Elementset'] = tmpline[3]
+							if tmpline[1] == 'ForceDistributed':
+								solutions[sol]['Loads'][tmpline[2]]['Force'] = tmpline[4]
+								solutions[sol]['Loads'][tmpline[2]]['Elementset'] = tmpline[3]
+							else:
+								pass								
 
-				elif(eachLine[0:7] == 'ELEMENT'):
-					tmpElm = []
-					tmpStr = ''
-					k = 0
-					for i in eachLine:
-						if i == ' ':
-							pass
-						elif i == ',':
-							if k == 0:
-								tmpStr = ''
-							elif k == 1:
-								tmpElm.append(tmpStr)
-								tmpStr = ''
-							elif k == 2:
-								tmpElm.append(int(tmpStr))
-								tmpStr = ''
-							elif k == 3:
-								tmpElm.append(int(tmpStr))
-								tmpStr = ''
-							else:
-								tmpElm.append(int(tmpStr))
-								tmpStr = ''
-							k += 1
-						elif i == '\n':
-							tmpElm.append(int(tmpStr))
-							break
-						else:
-							tmpStr += i
-					tmpelements[tmpElm[1]] = {'type':tmpElm[0],
-											  'section':tmpElm[2],
-											  'nodes':tmpElm[3:]}
+				elif tmpline[0] == 'NODE':
+					nodes[int(tmpline[1])] = Node(int(tmpline[1]),float(tmpline[2]),float(tmpline[3]))
+					if len(tmpline) > 4:
+						nodes[int(tmpline[1])].coord[2][0] = float(tmpline[4])
+
+				elif tmpline[0] == 'ELEMENT':
+					elmnodes = [nodes[int(x)] for x in tmpline[4:]]
+					elmsect = 'sect-'+tmpline[3]
+					if elmsect not in sections:
+						elmsect = None
+					elements[int(tmpline[2])] = Element(int(tmpline[2]),elmsect,elmnodes)
+					elements[int(tmpline[2])].type = tmpline[1]
 				else:
 					pass
 
-			for key in tmpnodes:
-				nodes[key] = Node(key,*tmpnodes[key]['coord'])
-			for key in tmpelements:
-				for node in range(len(tmpelements[key]['nodes'])):
-					tmpelements[key]['nodes'][node] = \
-						nodes[tmpelements[key]['nodes'][node]]
-			for key in tmpelements:
-				elements[key] = Element(key,None,tmpelements[key]['nodes'])
-				elements[key].type = tmpelements[key]['type']
+			# create elementset 999 with all elements
+			elementsets[999] = {}
+			for element in elements:
+				elementsets[999][elements[element].number] = elements[element]
+			# if not 'mesh' in solution add mesh
+			if len(meshes) == 0:
+				meshes[filename] = [999]
+			for sol in solutions:
+				if 'mesh' not in solutions[sol]:
+					solutions[sol]['mesh'] = filename
 
-			print('\tCreating mesh:', filename, '...')
+			# insert nodes and elements into
+			# nodesets and elementsets
+			for nset in nodesets:
+				for node in nodesets[nset]:
+					if node in nodes:
+						nodesets[nset][node] = nodes[node]
+			for elmset in elementsets:
+				for elm in elementsets[elmset]:
+					if elm in elements:
+						elementsets[elmset][elm] = elements[elm]
+
+			for nodeset in nodesets:
+				self.nodesets[nodeset] = nodesets[nodeset]
+			for elementset in elementsets:
+				self.elementsets[elementset] = elementsets[elementset]
+			for material in materials:
+				self.materials[material] = materials[material]
+			for section in sections:
+				self.sections[section] = sections[section]
+
 			filename = str(filename)
-			self.meshes[filename] = Mesh(nodes,elements)
-			self.meshes[filename].nodesets = {}
-			self.meshes[filename].elementsets = {}
-			self.meshes[filename].materials = {}
-			self.meshes[filename].solutions = {}
-			x_max = max(self.meshes[filename].nodes[i].coord[0][0] for i in self.meshes[filename].nodes )
-			x_min = min(self.meshes[filename].nodes[i].coord[0][0] for i in self.meshes[filename].nodes )
-			y_max = max(self.meshes[filename].nodes[i].coord[1][0] for i in self.meshes[filename].nodes )
-			y_min = min(self.meshes[filename].nodes[i].coord[1][0] for i in self.meshes[filename].nodes )
-			z_max = max(self.meshes[filename].nodes[i].coord[2][0] for i in self.meshes[filename].nodes )
-			z_min = min(self.meshes[filename].nodes[i].coord[2][0] for i in self.meshes[filename].nodes )
-			self.meshes[filename].viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
-			self.meshes[filename].viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
-			self.meshes[filename].displayLists = {'solutions': {}}
-			self.buildDisplayList(self.meshes[filename])
+			print('\tCreating new mesh(es): ', end='')
+			for meshname in meshes:
+				print(meshname+', ', end='')
+				meshnodes = {}
+				meshelements = {}
+				for elmset in meshes[meshname]:
+					for elm in elementsets[elmset]:
+						if elm not in meshelements:
+							meshelements[elm] = elements[elm]
+							for node in elements[elm].nodes:
+								if node.number not in meshnodes:
+									meshnodes[node.number] = node
+				self.meshes[meshname] = Mesh(meshnodes,meshelements)
+				self.meshes[meshname].nodesets = {}
+				self.meshes[meshname].elementsets = {}
+				self.meshes[meshname].materials = {}
+				self.meshes[meshname].solutions = {}
+				self.meshes[meshname].displayLists = {'solutions': {}}
+				for sol in solutions:
+					if solutions[sol]['mesh'] == meshname:
+						self.meshes[meshname].solutions[sol] = solutions[sol]
+						self.meshes[meshname].displayLists['solutions'][sol] = {'boundaries': {},
+																				'constraints': {},
+																				'loads': {}}
+				x_max = max(self.meshes[meshname].nodes[i].coord[0][0] for i in self.meshes[meshname].nodes )
+				x_min = min(self.meshes[meshname].nodes[i].coord[0][0] for i in self.meshes[meshname].nodes )
+				y_max = max(self.meshes[meshname].nodes[i].coord[1][0] for i in self.meshes[meshname].nodes )
+				y_min = min(self.meshes[meshname].nodes[i].coord[1][0] for i in self.meshes[meshname].nodes )
+				z_max = max(self.meshes[meshname].nodes[i].coord[2][0] for i in self.meshes[meshname].nodes )
+				z_min = min(self.meshes[meshname].nodes[i].coord[2][0] for i in self.meshes[meshname].nodes )
+				self.meshes[meshname].viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+				self.meshes[meshname].viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+				self.buildDisplayList(self.meshes[meshname])
+				self.gui.new_mesh_view = {'Mesh': meshname}
+				self.elementOrientation()
+				for solution in self.meshes[meshname].solutions:
+					sol = self.meshes[meshname].solutions[solution]
+					for boundary in sol['Boundaries']:
+						self.gui.new_boundary = {'Mesh':		 meshname,
+												 'Name':		 boundary,
+												 'Solution':	 solution,
+												 'Type':		 sol['Boundaries'][boundary]['Type'],
+												 'Nodeset':		 sol['Boundaries'][boundary]['Nodeset'],
+												 'Displacement': sol['Boundaries'][boundary]['Displacement'],
+												 'DOFs':		 str(sol['Boundaries'][boundary]['DOFs'])[1:-1] }
+						self.applyBoundary()
+						self.gui.new_boundary.clear()
+					for constraint in sol['Constraints']:
+						self.gui.new_constraint = {'Mesh':		meshname,
+												   'Name':	 	constraint,
+												   'Solution':	solution,
+												   'Type':	 	sol['Constraints'][constraint]['Type'],
+												   'Nodeset1':	sol['Constraints'][constraint]['Nodeset1'],
+												   'Nodeset2':	sol['Constraints'][constraint]['Nodeset2'],
+												   'DOFs':		sol['Constraints'][constraint]['DOFs'] }
+						if 'Tolerance' in sol['Constraints'][constraint]:
+							self.gui.new_constraint['Tolerance'] = sol['Constraints'][constraint]['Tolerance']
+						self.applyConstraint()
+						self.gui.new_constraint.clear()
+					for load in sol['Loads']:
+						self.gui.new_load = {'Mesh':	 meshname,
+											 'Name':	 load,
+											 'Solution': solution,
+											 'Type':	 sol['Loads'][load]['Type'],
+											 'x-vector': sol['Loads'][load]['x-vector'],
+											 'y-vector': sol['Loads'][load]['y-vector'],
+											 'z-vector': sol['Loads'][load]['z-vector'] }
+						if 'Nodeset' in sol['Loads'][load]:
+							self.gui.new_load['Nodeset'] = sol['Loads'][load]['Nodeset']
+						if 'Elementset' in sol['Loads'][load]:
+							self.gui.new_load['Elementset'] = sol['Loads'][load]['Elementset']
+						if 'Force' in sol['Loads'][load]:
+							self.gui.new_load['Force'] = sol['Loads'][load]['Force']
+						if 'Force/Length' in sol['Loads'][load]:
+							self.gui.new_load['Force/Length'] = sol['Loads'][load]['Force/Length']
+						if 'Torque' in sol['Loads'][load]:
+							self.gui.new_load['Torque'] = sol['Loads'][load]['Torque']
+							self.gui.new_load['mx-vector'] = sol['Loads'][load]['x-vector']
+							self.gui.new_load['my-vector'] = sol['Loads'][load]['y-vector']
+							self.gui.new_load['mz-vector'] = sol['Loads'][load]['z-vector']
+						if 'Acceleration' in sol['Loads'][load]:
+							self.gui.new_load['Acceleration'] = sol['Loads'][load]['Acceleration']
+						self.applyLoad()
+						self.gui.new_load.clear()
+
+				if len(meshes) == 1:
+					if len(self.meshes) > 1:
+						if len(solutions) == 0:
+							self.gui.viewer.currentMesh = meshname
+							self.selected_nodes = {}
+							for n in self.meshes[meshname].nodes:
+								self.selected_nodes[n] = self.meshes[meshname].nodes[n]
+							self.nodesSelected = True
+							if first_node in self.selected_nodes:
+								first_node = max(self.selected_nodes)+1
+							self.gui.renumberNodes(first_node)
+							self.selected_nodes.clear()
+							self.nodesSelected = False
+							self.selected_elements = {}
+							for e in self.meshes[meshname].elements:
+								self.selected_elements[e] = self.meshes[meshname].elements
+							self.elementsSelected = True
+							if first_element in self.selected_elements:
+								first_element = max(self.selected_elements)+1
+							self.gui.renumberElements(first_element)						
+							self.selected_elements.clear()
+							self.elementsSelected = False
+
+#			print('...')
 		for mesh in self.meshes:
 			self.checkForSection(self.meshes[mesh])
 
@@ -5394,6 +6496,7 @@ or .sol-files.
 		for mesh in self.meshes:
 			self.buildDisplayList(self.meshes[mesh])	
 			self.gui.new_mesh_view = {'Mesh': mesh}
+			self.elementOrientation()
 			for solution in self.meshes[mesh].solutions:
 				sol = self.meshes[mesh].solutions[solution]
 				for boundary in sol['Boundaries']:
@@ -5432,6 +6535,13 @@ or .sol-files.
 						self.gui.new_load['Elementset'] = sol['Loads'][load]['Elementset']
 					if 'Force' in sol['Loads'][load]:
 						self.gui.new_load['Force'] = sol['Loads'][load]['Force']
+					if 'Force/Length' in sol['Loads'][load]:
+						self.gui.new_load['Force/Length'] = sol['Loads'][load]['Force/Length']
+					if 'Torque' in sol['Loads'][load]:
+						self.gui.new_load['Torque'] = sol['Loads'][load]['Torque']
+						self.gui.new_load['mx-vector'] = sol['Loads'][load]['x-vector']
+						self.gui.new_load['my-vector'] = sol['Loads'][load]['y-vector']
+						self.gui.new_load['mz-vector'] = sol['Loads'][load]['z-vector']
 					if 'Acceleration' in sol['Loads'][load]:
 						self.gui.new_load['Acceleration'] = sol['Loads'][load]['Acceleration']
 					self.applyLoad()
@@ -5504,87 +6614,99 @@ or .sol-files.
 		print('\n\tCreating new Mesh ('+self.gui.new_mesh['Name']+')')
 		nodes = {}
 		elements = {}
-		elmsets = []
-		current = ''
-		count = 0
-		for i in self.gui.new_mesh['Elementsets']:
-			if i == ',':
-				elmsets.append(int(current))
-				current = ''
-				count += 1
-			elif count == (len(self.gui.new_mesh['Elementsets'])-1):
-				current += i
-				elmsets.append(int(current))
-			else:
-				current += i
-				count += 1
-		for elmset in elmsets:
-			if elmset in self.elementsets:
-				for elm in self.elementsets[elmset]:
-					elements[elm] = Element(deepcopy(self.elementsets[elmset][elm].number), None, #elm_nodes)
-											[None for i in range(len(self.elementsets[elmset][elm].nodes))]) #self.elementsets[elmset][elm].nodes)
-					elements[elm].type = deepcopy(self.elementsets[elmset][elm].type)
-					for node in range(len(self.elementsets[elmset][elm].nodes)):
-						nodenum = deepcopy(self.elementsets[elmset][elm].nodes[node].number)
-						if nodenum not in nodes:
-							nodes[nodenum] = deepcopy(self.elementsets[elmset][elm].nodes[node])
-							elements[elm].nodes[node] = nodes[nodenum]
-						else:
-							elements[elm].nodes[node] = nodes[nodenum]
-			else:
-				print('\tElementset', elmset, 'not found. Not applied to mesh')
+		try:
+			elmsets = [int(x.strip()) for x in self.gui.new_mesh['Elementsets'].split(',')]
+		except ValueError:
+			print('\n\tElement sets must be integers (separated by commas).')
+			print('\tExample: 2, 3, 5, 9')
+		else:
+			start_node_num = 0
+			start_elm_num  = 0
+			for elmset in elmsets:
+				if elmset in self.elementsets:
+					if max(self.elementsets[elmset]) > start_elm_num:
+						start_elm_num = max(self.elementsets[elmset])
+					for elm in self.elementsets[elmset]:
+						elements[elm] = Element(deepcopy(self.elementsets[elmset][elm].number), None,
+												[None for i in range(len(self.elementsets[elmset][elm].nodes))])
+						elements[elm].type = deepcopy(self.elementsets[elmset][elm].type)
+						for node in range(len(self.elementsets[elmset][elm].nodes)):
+							nodenum = deepcopy(self.elementsets[elmset][elm].nodes[node].number)
+							if nodenum > start_node_num:
+								start_node_num = nodenum
+							if nodenum not in nodes:
+								nodes[nodenum] = deepcopy(self.elementsets[elmset][elm].nodes[node])
+								elements[elm].nodes[node] = nodes[nodenum]
+							else:
+								elements[elm].nodes[node] = nodes[nodenum]
+				else:
+					print('\tElementset', elmset, 'not found. Not applied to mesh.')
 
-		print('\tNodes:',end=' ')
-		toprint = nodes.keys()
-		toprint = sorted(toprint)
-		if len(toprint) > 8:
-			print('[',end=' ')
-			for i in range(4):
-				print(str(toprint[i])+',',end=' ')
-			print('...',end=' ')
-			print(str(toprint[-3])+',',end=' ')
-			print(str(toprint[-2])+',',end=' ')
-			print(str(toprint[-1])+' ]')
-		else:
-			print(str(toprint))
-		print('\tElements:',end=' ')
-		toprint = elements.keys()
-		toprint = sorted(toprint)
-		if len(toprint) > 8:
-			print('[',end=' ') 
-			for i in range(4):
-				print(str(toprint[i])+',',end=' ')
-			print('...',end=' ')
-			print(str(toprint[-3])+',',end=' ')
-			print(str(toprint[-2])+',',end=' ')
-			print(str(toprint[-1])+' ]')
-		else:
-			print(str(toprint))
+			new_elements = {}
+			for e, element in enumerate(elements):
+				new_elements[start_elm_num+1+e] = elements[element]
+				new_elements[start_elm_num+1+e].number = start_elm_num+1+e
+			new_nodes = {}
+			for n, node in enumerate(nodes):
+				new_nodes[start_node_num+1+n] = nodes[node]
+				new_nodes[start_node_num+1+n].number = start_node_num+1+n
+			elements = new_elements
+			nodes = new_nodes
 
-		self.meshes[self.gui.new_mesh['Name']] = Mesh(nodes,elements)
-		self.meshes[self.gui.new_mesh['Name']].nodesets = {}
-		self.meshes[self.gui.new_mesh['Name']].elementsets = {}
-		self.meshes[self.gui.new_mesh['Name']].materials = {}
-		self.meshes[self.gui.new_mesh['Name']].solutions = {}
-		for elmset in elmsets:
-			if elmset in self.elementsets:
-				self.meshes[self.gui.new_mesh['Name']].elementsets[elmset] = self.elementsets[elmset]
-		if len(self.meshes[self.gui.new_mesh['Name']].elementsets) != 0:
-			x_max = max(self.meshes[self.gui.new_mesh['Name']].nodes[i].coord[0][0] for i in self.meshes[self.gui.new_mesh['Name']].nodes )
-			x_min = min(self.meshes[self.gui.new_mesh['Name']].nodes[i].coord[0][0] for i in self.meshes[self.gui.new_mesh['Name']].nodes )
-			y_max = max(self.meshes[self.gui.new_mesh['Name']].nodes[i].coord[1][0] for i in self.meshes[self.gui.new_mesh['Name']].nodes )
-			y_min = min(self.meshes[self.gui.new_mesh['Name']].nodes[i].coord[1][0] for i in self.meshes[self.gui.new_mesh['Name']].nodes )
-			z_max = max(self.meshes[self.gui.new_mesh['Name']].nodes[i].coord[2][0] for i in self.meshes[self.gui.new_mesh['Name']].nodes )
-			z_min = min(self.meshes[self.gui.new_mesh['Name']].nodes[i].coord[2][0] for i in self.meshes[self.gui.new_mesh['Name']].nodes )
-			self.meshes[self.gui.new_mesh['Name']].viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
-			self.meshes[self.gui.new_mesh['Name']].viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
-		else:
-			self.meshes[self.gui.new_mesh['Name']].viewScope = {'max': [1., 1., 1.], 'min': [1., 1., 1.]}
-			self.meshes[self.gui.new_mesh['Name']].viewRadius = 2.
-		self.meshes[self.gui.new_mesh['Name']].displayLists = {'solutions': {}}
-		self.buildDisplayList(self.meshes[self.gui.new_mesh['Name']])
-		for mesh in self.meshes:
-			self.checkForSection(self.meshes[mesh])
+			print('\tNodes:',end=' ')
+			toprint = nodes.keys()
+			toprint = sorted(toprint)
+			if len(toprint) > 8:
+				print('[',end=' ')
+				for i in range(4):
+					print(str(toprint[i])+',',end=' ')
+				print('...',end=' ')
+				print(str(toprint[-3])+',',end=' ')
+				print(str(toprint[-2])+',',end=' ')
+				print(str(toprint[-1])+' ]')
+			else:
+				print(str(toprint))
+			print('\tElements:',end=' ')
+			toprint = elements.keys()
+			toprint = sorted(toprint)
+			if len(toprint) > 8:
+				print('[',end=' ') 
+				for i in range(4):
+					print(str(toprint[i])+',',end=' ')
+				print('...',end=' ')
+				print(str(toprint[-3])+',',end=' ')
+				print(str(toprint[-2])+',',end=' ')
+				print(str(toprint[-1])+' ]')
+			else:
+				print(str(toprint))
+
+			self.meshes[self.gui.new_mesh['Name']] = Mesh(nodes,elements)
+			mesh = self.meshes[self.gui.new_mesh['Name']]
+			mesh.nodesets = {}
+			mesh.elementsets = {}
+			mesh.materials = {}
+			mesh.solutions = {}
+			for elmset in elmsets:
+				if elmset in self.elementsets:
+					mesh.elementsets[elmset] = self.elementsets[elmset]
+			if len(mesh.elementsets) != 0:
+				x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+				x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+				y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+				y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+				z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+				z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+				mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+				mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+			else:
+				mesh.viewScope = {'max': [1., 1., 1.], 'min': [1., 1., 1.]}
+				mesh.viewRadius = 2.
+			mesh.displayLists = {'solutions': {}}
+			self.buildDisplayList(mesh)
+			self.gui.new_mesh_view = {'Mesh': self.gui.new_mesh['Name']}
+			self.elementOrientation()
+			for mesh in self.meshes:
+				self.checkForSection(self.meshes[mesh])
 
 
 	def createMaterial(self):
@@ -5712,6 +6834,7 @@ or .sol-files.
 				else:
 					wrong_input = True
 			if self.gui.new_solution['Type'] == 'ModalDynamic':
+				self.meshes[self.gui.new_solution['Mesh']].solutions[self.gui.new_solution['Name']]['Results'].append('modes')
 				self.meshes[self.gui.new_solution['Mesh']].solutions[self.gui.new_solution['Name']]['Results'].append('dampratio')
 				self.meshes[self.gui.new_solution['Mesh']].solutions[self.gui.new_solution['Name']]['Results'].append('forcetable')
 			if wrong_input == True:
@@ -5734,7 +6857,7 @@ or .sol-files.
 			print('\n\tNo mesh by that name ('+self.gui.new_solution['Mesh']+').')
 			print('\tNo solution created...')
 
-
+		
 	def applyConstraint(self):
 		'''
 	Applies lagrangian multiplier constraints
@@ -5911,7 +7034,7 @@ or .sol-files.
 		'''
 	Applies load to a selected set of nodes or elements.
 	'''
-		if 'Nodeset' in self.gui.new_load:
+		if self.gui.new_load['Type'] in ['Force', 'ForceConcentrated', 'Dynamic']:
 			if self.gui.new_load['Nodeset'].isdigit():
 				if int(self.gui.new_load['Nodeset']) in self.nodesets:
 					nodecheck = True
@@ -5921,21 +7044,14 @@ or .sol-files.
 					if nodecheck == True:
 						self.meshes[self.gui.new_load['Mesh']].nodesets[int(self.gui.new_load['Nodeset'])] = \
 																			list(self.nodesets[int(self.gui.new_load['Nodeset'])].keys())
-						if self.gui.new_load['Type'] == 'Torque':
-							self.meshes[self.gui.new_load['Mesh']].solutions[self.gui.new_load['Solution']] \
-								['Loads'][self.gui.new_load['Name']] = {'Nodeset': self.gui.new_load['Nodeset'],
-									'Torque': self.gui.new_load['Torque'], 'x-vector': self.gui.new_load['mx-vector'],
-									'y-vector': self.gui.new_load['my-vector'], 'z-vector': self.gui.new_load['mz-vector'],
-									'Type': self.gui.new_load['Type']}
-						else:
-							if self.gui.new_load['Type'] == 'Dynamic':
-								self.gui.new_load['Force'] = self.gui.new_load['Force/Acceleration']
-								self.gui.new_load['Type'] = self.gui.new_load['Load Type']
-							self.meshes[self.gui.new_load['Mesh']].solutions[self.gui.new_load['Solution']] \
-								['Loads'][self.gui.new_load['Name']] = {'Nodeset': self.gui.new_load['Nodeset'],
-									'Force': self.gui.new_load['Force'], 'x-vector': self.gui.new_load['x-vector'],
-									'y-vector': self.gui.new_load['y-vector'], 'z-vector': self.gui.new_load['z-vector'],
-									'Type': self.gui.new_load['Type']}
+						if self.gui.new_load['Type'] == 'Dynamic':
+							self.gui.new_load['Force'] = self.gui.new_load['Force/Acceleration']
+							self.gui.new_load['Type'] = self.gui.new_load['Load Type']
+						self.meshes[self.gui.new_load['Mesh']].solutions[self.gui.new_load['Solution']] \
+							['Loads'][self.gui.new_load['Name']] = {'Nodeset': self.gui.new_load['Nodeset'],
+								'Force': self.gui.new_load['Force'], 'x-vector': self.gui.new_load['x-vector'],
+								'y-vector': self.gui.new_load['y-vector'], 'z-vector': self.gui.new_load['z-vector'],
+								'Type': self.gui.new_load['Type']}
 						print('\n\t', self.gui.new_load['Type'], 'load applied to nodeset',end=' ')
 						print(int(self.gui.new_load['Nodeset']), 'in', self.gui.new_load['Mesh'])
 						print('\tLoads in ('+self.gui.new_load['Mesh']+'):')
@@ -5952,14 +7068,9 @@ or .sol-files.
 							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0],
 									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0], 
 									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0])
-							if self.gui.new_load['Type'] == 'Torque':
-								x = float(self.gui.new_load['mx-vector'])
-								y = float(self.gui.new_load['my-vector'])
-								z = float(self.gui.new_load['mz-vector'])
-							else:
-								x = float(self.gui.new_load['x-vector'])
-								y = float(self.gui.new_load['y-vector'])
-								z = float(self.gui.new_load['z-vector'])
+							x = float(self.gui.new_load['x-vector'])
+							y = float(self.gui.new_load['y-vector'])
+							z = float(self.gui.new_load['z-vector'])
 							max_xyz = max(abs(x),abs(y),abs(z))
 							if max_xyz == 0.:
 								max_xyz = 0.1
@@ -5994,56 +7105,27 @@ or .sol-files.
 									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
 										+z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
 							glEnd()
-							if self.gui.new_load['Type'] == 'Torque':
-								angle = np.pi/4
-								if (x == 0) and (y == 0):
-									x_arrow = x*np.cos(angle) - z*np.sin(angle)
-									y_arrow = y
-									z_arrow = x*np.sin(angle) + z*np.cos(angle)
-								else:
-									x_arrow = x*np.cos(angle) - y*np.sin(angle)
-									y_arrow = x*np.sin(angle) + y*np.cos(angle)
-									z_arrow = z
-								glBegin(GL_LINES)
-								glColor3f(0.7, 0.15, 0.15)
-								glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
-											+x*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
-											+y*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
-											+z*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
-								glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
-											+x*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius \
-											+x_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
-											+y*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius \
-											+y_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
-											+z*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius \
-											+z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
-								glEnd()
+							angle = -np.pi/4
+							if (x == 0) and (y == 0):
+								x_arrow = x*np.cos(angle) - z*np.sin(angle)
+								y_arrow = y
+								z_arrow = x*np.sin(angle) + z*np.cos(angle)
 							else:
-								angle = -np.pi/4
-								if (x == 0) and (y == 0):
-									x_arrow = x*np.cos(angle) - z*np.sin(angle)
-									y_arrow = y
-									z_arrow = x*np.sin(angle) + z*np.cos(angle)
-								else:
-									x_arrow = x*np.cos(angle) - y*np.sin(angle)
-									y_arrow = x*np.sin(angle) + y*np.cos(angle)
-									z_arrow = z
-								glBegin(GL_LINES)
-								glColor3f(0.7, 0.15, 0.15)
-								glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0],
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0], 
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0])
-								glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
-											+x_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
-											+y_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
-										   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
-											+z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
-								glEnd()
+								x_arrow = x*np.cos(angle) - y*np.sin(angle)
+								y_arrow = x*np.sin(angle) + y*np.cos(angle)
+								z_arrow = z
+							glBegin(GL_LINES)
+							glColor3f(0.7, 0.15, 0.15)
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0],
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0], 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0])
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
+										+x_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
+										+y_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
+										+z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+							glEnd()
 						glEndList()
 					else:
 						print('\n\tThere are nodes in the nodeset that are not in the selected mesh')
@@ -6056,7 +7138,282 @@ or .sol-files.
 				print('\tNodeset needs to be specified as an integer.')
 				print('\tNo load applied...')
 
-		if 'Elementset' in self.gui.new_load:
+		elif self.gui.new_load['Type'] == 'ForceDistributed':
+			if self.gui.new_load['Elementset'].isdigit():
+				if int(self.gui.new_load['Elementset']) in self.elementsets:
+					elementcheck = True
+					elementtypecheck = True
+					for element in self.elementsets[int(self.gui.new_load['Elementset'])]:
+						if element not in self.meshes[self.gui.new_load['Mesh']].elements:
+							elementcheck = False
+						else:
+							if self.meshes[self.gui.new_load['Mesh']].elements[element].type not in ['BEAM2N2D', 'BEAM2N']:
+								elementtypecheck = False
+					if elementcheck == True:
+						if elementtypecheck == True:
+							self.meshes[self.gui.new_load['Mesh']].elementsets[int(self.gui.new_load['Elementset'])] = \
+																				list(self.elementsets[int(self.gui.new_load['Elementset'])].keys())
+							self.meshes[self.gui.new_load['Mesh']].solutions[self.gui.new_load['Solution']] \
+								['Loads'][self.gui.new_load['Name']] = {'Elementset': self.gui.new_load['Elementset'],
+								 'Force/Length': self.gui.new_load['Force/Length'], 'x-vector': self.gui.new_load['x-vector'],
+								 'y-vector': self.gui.new_load['y-vector'], 'z-vector': self.gui.new_load['z-vector'],
+								 'Type': self.gui.new_load['Type']}
+							print('\n\t', self.gui.new_load['Type'], 'load applied to elementset',end=' ')
+							print(int(self.gui.new_load['Elementset']), 'in', self.gui.new_load['Mesh'])
+							print('\tLoads in ('+self.gui.new_load['Mesh']+'):')
+							print('\t', self.meshes[self.gui.new_load['Mesh']].solutions[self.gui.new_load['Solution']]['Loads'])
+
+							self.meshes[self.gui.new_load['Mesh']].displayLists['solutions'][self.gui.new_load['Solution']] \
+																			['loads'][self.gui.new_load['Name']] = glGenLists(1)
+							glNewList(self.meshes[self.gui.new_load['Mesh']].displayLists['solutions'][self.gui.new_load['Solution']] \
+																					['loads'][self.gui.new_load['Name']], GL_COMPILE)
+							glLineWidth(9.0)
+							glColor3f(0.7, 0.15, 0.15)
+							for element in self.elementsets[int(self.gui.new_load['Elementset'])]:
+								n1 = []
+								n2 = []
+								for i, node in enumerate(self.meshes[self.gui.new_load['Mesh']].elements[element].nodes):
+									glBegin(GL_LINES)
+									glVertex3f(node.coord[0][0], node.coord[1][0], node.coord[2][0])
+									x = float(self.gui.new_load['x-vector'])
+									y = float(self.gui.new_load['y-vector'])
+									z = float(self.gui.new_load['z-vector'])
+									max_xyz = max(abs(x),abs(y),abs(z))
+									if max_xyz == 0.:
+										max_xyz = 0.1
+									x = -x/max_xyz
+									y = -y/max_xyz
+									z = -z/max_xyz
+									glVertex3f(node.coord[0][0] + x*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											   node.coord[1][0] + y*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											   node.coord[2][0] + z*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+									glEnd()
+									angle = np.pi/4
+									if (x == 0) and (y == 0):
+										x_arrow = x*np.cos(angle) - z*np.sin(angle)
+										y_arrow = y
+										z_arrow = x*np.sin(angle) + z*np.cos(angle)
+									else:
+										x_arrow = x*np.cos(angle) - y*np.sin(angle)
+										y_arrow = x*np.sin(angle) + y*np.cos(angle)
+										z_arrow = z
+									glBegin(GL_LINES)
+									glVertex3f(node.coord[0][0], node.coord[1][0], node.coord[2][0])
+									glVertex3f(node.coord[0][0] + x_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											   node.coord[1][0] + y_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											   node.coord[2][0] + z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+									glEnd()
+									angle = -np.pi/4
+									if (x == 0) and (y == 0):
+										x_arrow = x*np.cos(angle) - z*np.sin(angle)
+										y_arrow = y
+										z_arrow = x*np.sin(angle) + z*np.cos(angle)
+									else:
+										x_arrow = x*np.cos(angle) - y*np.sin(angle)
+										y_arrow = x*np.sin(angle) + y*np.cos(angle)
+										z_arrow = z
+									glBegin(GL_LINES)
+									glVertex3f(node.coord[0][0], node.coord[1][0], node.coord[2][0])
+									glVertex3f(node.coord[0][0] + x_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											   node.coord[1][0] + y_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											   node.coord[2][0] + z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+									glEnd()
+									if i == 0:
+										n1 = [node.coord[0][0] + x*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											  node.coord[1][0] + y*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											  node.coord[2][0] + z*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius]
+									else:
+										n2 = [node.coord[0][0] + x*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											  node.coord[1][0] + y*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+											  node.coord[2][0] + z*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius]
+								glBegin(GL_LINES)
+								glVertex3f(n1[0], n1[1], n1[2])
+								glVertex3f(n2[0], n2[1], n2[2])
+								glEnd()
+							glEndList()
+						else:
+							print('\n\tThere are elements in the elementset which are not BEAM2N or BEAM2N2D elements.')
+							print('\tNo load applied...')
+					else:
+						print('\n\tThere are elements in the nodeset which are not in the selected mesh')
+						print('\tNo load applied...')
+				else:
+					print('\n\tNo elementset by that number ('+self.gui.new_load['Elementset']+').',end=' ')
+					print('\tNo load applied...')
+			else:
+				print('\n\t'+self.gui.new_load['Elementset'], 'is not an acceptable input for Elementset.')
+				print('\tElementset needs to be specified as an integer.')
+				print('\tNo load applied...')
+
+		elif self.gui.new_load['Type'] == 'Torque':
+			if self.gui.new_load['Nodeset'].isdigit():
+				if int(self.gui.new_load['Nodeset']) in self.nodesets:
+					nodecheck = True
+					for node in self.nodesets[int(self.gui.new_load['Nodeset'])]:
+						if node not in self.meshes[self.gui.new_load['Mesh']].nodes:
+							nodecheck = False
+					if nodecheck == True:
+						self.meshes[self.gui.new_load['Mesh']].nodesets[int(self.gui.new_load['Nodeset'])] = \
+																			list(self.nodesets[int(self.gui.new_load['Nodeset'])].keys())
+						self.meshes[self.gui.new_load['Mesh']].solutions[self.gui.new_load['Solution']] \
+							['Loads'][self.gui.new_load['Name']] = {'Nodeset': self.gui.new_load['Nodeset'],
+								'Torque': self.gui.new_load['Torque'], 'x-vector': self.gui.new_load['mx-vector'],
+								'y-vector': self.gui.new_load['my-vector'], 'z-vector': self.gui.new_load['mz-vector'],
+								'Type': self.gui.new_load['Type']}
+						print('\n\t', self.gui.new_load['Type'], 'load applied to nodeset',end=' ')
+						print(int(self.gui.new_load['Nodeset']), 'in', self.gui.new_load['Mesh'])
+						print('\tLoads in ('+self.gui.new_load['Mesh']+'):')
+						print('\t', self.meshes[self.gui.new_load['Mesh']].solutions[self.gui.new_load['Solution']]['Loads'])
+
+						self.meshes[self.gui.new_load['Mesh']].displayLists['solutions'][self.gui.new_load['Solution']] \
+																		['loads'][self.gui.new_load['Name']] = glGenLists(1)
+						glNewList(self.meshes[self.gui.new_load['Mesh']].displayLists['solutions'][self.gui.new_load['Solution']] \
+																				['loads'][self.gui.new_load['Name']], GL_COMPILE)
+						glLineWidth(9.0)
+						for node in self.nodesets[int(self.gui.new_load['Nodeset'])]:
+
+							origin = [ self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0],
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0], 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] ]
+							length = np.sqrt((float(self.gui.new_load['mx-vector'])**2) + \
+											 (float(self.gui.new_load['my-vector'])**2) + \
+											 (float(self.gui.new_load['mz-vector'])**2))
+							mx = float(self.gui.new_load['mx-vector'])
+							my = float(self.gui.new_load['my-vector'])
+							mz = float(self.gui.new_load['mz-vector'])
+
+							if abs(mx) < 0.001 and abs(my) > 0.001:
+								n1_offset = np.array([origin[0]-1, origin[1], origin[2]])
+								n2_offset = np.array([origin[0]+mx-1, origin[1]+my, origin[2]+mz])
+							else:
+								n1_offset = np.array([origin[0], origin[1]+1, origin[2]])
+								n2_offset = np.array([origin[0]+mx, origin[1]+my+1, origin[2]+mz])
+							mv = np.array([mx, my, mz])
+							xu = mv/length
+							n_offset = n1_offset + 0.5*(n2_offset-n1_offset)
+							ov = n_offset - np.array([origin[0],origin[1],origin[2]])
+							yv = ov - np.dot(ov,xu)*xu
+							mag = sqrt(yv[0]**2 + yv[1]**2 + yv[2]**2)
+							if mag == 0.:
+								yu = yv
+							else:
+								yu = yv/mag
+							zu = np.cross(xu, yu)
+
+							scale = 0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius
+							vertices = []
+							arrow = []
+							for v in range(18):
+								d = 24/(v+1)
+								vc = np.cos(2*np.pi/d)
+								vs = np.sin(2*np.pi/d)
+								vertices.append([ origin[0]+vs*yu[0]*scale+vc*zu[0]*scale,
+												  origin[1]+vs*yu[1]*scale+vc*zu[1]*scale,
+												  origin[2]+vs*yu[2]*scale+vc*zu[2]*scale ])
+								if v == 1:
+									arrow.append([ origin[0]+vs*yu[0]*1.3*scale+vc*zu[0]*1.3*scale,
+												   origin[1]+vs*yu[1]*1.3*scale+vc*zu[1]*1.3*scale,
+												   origin[2]+vs*yu[2]*1.3*scale+vc*zu[2]*1.3*scale ])
+									arrow.append([ origin[0]+vs*yu[0]*0.7*scale+vc*zu[0]*0.7*scale,
+												   origin[1]+vs*yu[1]*0.7*scale+vc*zu[1]*0.7*scale,
+												   origin[2]+vs*yu[2]*0.7*scale+vc*zu[2]*0.7*scale ])
+							glColor3f(0.7, 0.15, 0.15)
+							for v in range(17):
+								glBegin(GL_LINES)
+								glVertex3f(vertices[v][0],vertices[v][1],vertices[v][2])
+								glVertex3f(vertices[v+1][0],vertices[v+1][1],vertices[v+1][2])
+								glEnd()
+							glBegin(GL_LINES)
+							glVertex3f(vertices[0][0],vertices[0][1],vertices[0][2])
+							glVertex3f(arrow[0][0],arrow[0][1],arrow[0][2])
+							glEnd()
+							glBegin(GL_LINES)
+							glVertex3f(vertices[0][0],vertices[0][1],vertices[0][2])
+							glVertex3f(arrow[1][0],arrow[1][1],arrow[1][2])
+							glEnd()
+
+							glBegin(GL_LINES)
+							glColor3f(0.7, 0.15, 0.15)
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0],
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0], 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0])
+							x = float(self.gui.new_load['mx-vector'])
+							y = float(self.gui.new_load['my-vector'])
+							z = float(self.gui.new_load['mz-vector'])
+							max_xyz = max(abs(x),abs(y),abs(z))
+							if max_xyz == 0.:
+								max_xyz = 0.1
+							x = -x/max_xyz
+							y = -y/max_xyz
+							z = -z/max_xyz
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
+										+x*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
+										+y*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
+										+z*0.1*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+							glEnd()
+							angle = np.pi/4
+							if (x == 0) and (y == 0):
+								x_arrow = x*np.cos(angle) - z*np.sin(angle)
+								y_arrow = y
+								z_arrow = x*np.sin(angle) + z*np.cos(angle)
+							else:
+								x_arrow = x*np.cos(angle) - y*np.sin(angle)
+								y_arrow = x*np.sin(angle) + y*np.cos(angle)
+								z_arrow = z
+							glBegin(GL_LINES)
+							glColor3f(0.7, 0.15, 0.15)
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0],
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0], 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0])
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
+										+x_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
+										+y_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
+										+z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+							glEnd()
+							angle = np.pi/4
+							if (x == 0) and (y == 0):
+								x_arrow = x*np.cos(angle) - z*np.sin(angle)
+								y_arrow = y
+								z_arrow = x*np.sin(angle) + z*np.cos(angle)
+							else:
+								x_arrow = x*np.cos(angle) - y*np.sin(angle)
+								y_arrow = x*np.sin(angle) + y*np.cos(angle)
+								z_arrow = z
+							glBegin(GL_LINES)
+							glColor3f(0.7, 0.15, 0.15)
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
+										+x*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
+										+y*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
+										+z*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+							glVertex3f(self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[0][0] \
+										+x*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius \
+										+x_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[1][0] \
+										+y*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius \
+										+y_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius, 
+									   self.nodesets[int(self.gui.new_load['Nodeset'])][node].coord[2][0] \
+										+z*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius \
+										+z_arrow*0.02*self.meshes[self.gui.new_load['Mesh']].viewRadius)
+							glEnd()
+						glEndList()
+					else:
+						print('\n\tThere are nodes in the nodeset that are not in the selected mesh')
+						print('\tNo load applied...')
+				else:
+					print('\n\tNo nodeset by that number ('+self.gui.new_load['Nodeset']+').',end=' ')
+					print('\tNo load applied...')
+			else:
+				print('\n\t'+self.gui.new_load['Nodeset'], 'is not an acceptable input for Nodeset.')
+				print('\tNodeset needs to be specified as an integer.')
+				print('\tNo load applied...')
+
+		elif self.gui.new_load['Type'] == 'Gravity':
 			if self.gui.new_load['Elementset'].isdigit():
 				if int(self.gui.new_load['Elementset']) in self.elementsets:
 					elementcheck = True
@@ -6329,52 +7686,58 @@ or .sol-files.
 			fobj.write('#------------------------------------')
 			for result in self.gui.new_solfile['Solution'][solution]:
 				if result in ['disp', 'velc', 'accl', 'frf', 'nodf']:
+					towrite = ''
 					if result == 'disp':
-						fobj.write('\n\tDISPLACEMENT')
+						towrite += '\n\tDISPLACEMENT'
 					if result == 'velc':
-						fobj.write('\n\tVELOCITY')
+						towrite += '\n\tVELOCITY'
 					if result == 'accl':
-						fobj.write('\n\tACCELERATION')
+						towrite += '\n\tACCELERATION'
 					if result == 'frf':
-						fobj.write('\n\tFRF_ACCEL')
+						towrite += '\n\tFRF_ACCEL'
 					if result == 'nodf':
-						fobj.write('\n\tNODEFORCE')
+						towrite += '\n\tNODEFORCE'
 					if 'plot' in self.gui.new_solfile['Solution'][solution][result]:
 						if self.gui.new_solfile['Solution'][solution][result]['plot'] == 'All':
-							fobj.write(', plot, '+str(nodeset_all_number))
+							towrite += ', plot, '+str(nodeset_all_number)
 						else:
-							fobj.write(', plot, '+str(self.gui.new_solfile['Solution'][solution][result]['plot']))
+							towrite += ', plot, '+str(self.gui.new_solfile['Solution'][solution][result]['plot'])
 					if 'text' in self.gui.new_solfile['Solution'][solution][result]:
 						if self.gui.new_solfile['Solution'][solution][result]['text'] == 'All':
-							fobj.write(', text, '+str(nodeset_all_number))
+							towrite += ', text, '+str(nodeset_all_number)
 						else:
-							fobj.write(', text, '+str(self.gui.new_solfile['Solution'][solution][result]['text']))
+							towrite += ', text, '+str(self.gui.new_solfile['Solution'][solution][result]['text'])
+					if ',' in towrite:
+						fobj.write(towrite)
 				if result in ['elmf', 'strs', 'strn']:
+					towrite = ''
 					if result == 'elmf':
-						fobj.write('\n\tELEMENTFORCE')
+						towrite += '\n\tELEMENTFORCE'
 					if result == 'strs':
-						fobj.write('\n\tSTRESS')
+						towrite += '\n\tSTRESS'
 					if result == 'strn':
-						fobj.write('\n\tSTRAIN')
+						towrite += '\n\tSTRAIN'
 					if 'plot' in self.gui.new_solfile['Solution'][solution][result]:
 						if self.gui.new_solfile['Solution'][solution][result]['plot'] == 'All':
-							fobj.write(', plot, '+str(elementset_all_number))
+							towrite += ', plot, '+str(elementset_all_number)
 						else:
-							fobj.write(', plot, '+str(self.gui.new_solfile['Solution'][solution][result]['plot']))
+							towrite += ', plot, '+str(self.gui.new_solfile['Solution'][solution][result]['plot'])
 					if 'text' in self.gui.new_solfile['Solution'][solution][result]:
 						if self.gui.new_solfile['Solution'][solution][result]['text'] == 'All':
-							fobj.write(', text, '+str(elementset_all_number))
+							towrite += ', text, '+str(elementset_all_number)
 						else:
-							fobj.write(', text, '+str(self.gui.new_solfile['Solution'][solution][result]['text']))
+							towrite += ', text, '+str(self.gui.new_solfile['Solution'][solution][result]['text'])
+					if ',' in towrite:
+						fobj.write(towrite)
 				if result == 'modes':
 					fobj.write('\n\tMODESHAPES, '+str(self.gui.new_solfile['Solution'][solution][result]['plot']))
 			fobj.write('\n#\n#\n')
 		fobj.write('#\n#\n#\n')
 
 		# Define materials
-		materials = []
+		materials = {}
 		for section in self.meshes[mesh].sections:
-			materials.append(self.sections[section]['Material'])
+			materials[self.sections[section]['Material']] = self.materials[self.sections[section]['Material']]
 		for material in materials:
 			fobj.write('MATERIAL, Isotropic, '+material+', '+str(self.materials[material]['Elasticity'])+', '+ \
 						str(self.materials[material]['Poisson ratio'])+', '+str(self.materials[material]['Density'])+'\n')
@@ -6401,9 +7764,77 @@ or .sol-files.
 					pass
 				elif self.sections[section]['Type'] == 'RodSect':
 					fobj.write(', '+str(self.sections[section]['Area (Rod or Beam)']))
+					if 'Cross section' in self.sections[section]:
+						fobj.write(', CrossSection, '+str(self.sections[section]['Cross section']['Type']))
+						if self.sections[section]['Cross section']['Type'] == 'Rectangle':
+							fobj.write(', '+str(self.sections[section]['Cross section']['width, w']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['inner width, iw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['inner height, ih']))
+						elif self.sections[section]['Cross section']['Type'] == 'Circle':
+							fobj.write(', '+str(self.sections[section]['Cross section']['radius, r']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['inner radius, ir']))
+						elif self.sections[section]['Cross section']['Type'] == 'L-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['side thickness, st']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom width, bw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom thickness, bt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+						elif self.sections[section]['Cross section']['Type'] == 'I-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['top width, tw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['top thickness, tt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['middle thickness, mt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom width, bw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom thickness, bt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+						elif self.sections[section]['Cross section']['Type'] == 'C-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['top width, tw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['top thickness, tt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['middle thickness, mt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom width, bw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom thickness, bt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+						elif self.sections[section]['Cross section']['Type'] == 'T-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['top width, tw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['top thickness, tt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['middle thickness, mt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
 				elif self.sections[section]['Type'] == 'BeamSect':
 					fobj.write(', '+str(self.sections[section]['Area (Rod or Beam)'])+', '+ \
 							str(self.sections[section]['Izz (Beam)'])+', '+str(self.sections[section]['Iyy (Beam 3D)']))
+					if 'Cross section' in self.sections[section]:
+						fobj.write(', CrossSection, '+str(self.sections[section]['Cross section']['Type']))
+						if self.sections[section]['Cross section']['Type'] == 'Rectangle':
+							fobj.write(', '+str(self.sections[section]['Cross section']['width, w']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['inner width, iw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['inner height, ih']))
+						elif self.sections[section]['Cross section']['Type'] == 'Circle':
+							fobj.write(', '+str(self.sections[section]['Cross section']['radius, r']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['inner radius, ir']))
+						elif self.sections[section]['Cross section']['Type'] == 'L-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['side thickness, st']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom width, bw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom thickness, bt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+						elif self.sections[section]['Cross section']['Type'] == 'I-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['top width, tw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['top thickness, tt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['middle thickness, mt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom width, bw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom thickness, bt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+						elif self.sections[section]['Cross section']['Type'] == 'C-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['top width, tw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['top thickness, tt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['middle thickness, mt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom width, bw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['bottom thickness, bt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
+						elif self.sections[section]['Cross section']['Type'] == 'T-Beam':
+							fobj.write(', '+str(self.sections[section]['Cross section']['top width, tw']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['top thickness, tt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['middle thickness, mt']))
+							fobj.write(', '+str(self.sections[section]['Cross section']['height, h']))
 				elif self.sections[section]['Type'] == 'PlaneSect':
 					fobj.write(', '+str(self.sections[section]['Thickness (2D)']))
 				else:
@@ -6450,6 +7881,9 @@ or .sol-files.
 				if self.meshes[mesh].solutions[solution]['Loads'][load]['Type'] == 'Gravity':
 					fobj.write(', '+str(self.meshes[mesh].solutions[solution]['Loads'][load]['Elementset'])+', '+ \
 								str(self.meshes[mesh].solutions[solution]['Loads'][load]['Acceleration'])+', ')
+				elif self.meshes[mesh].solutions[solution]['Loads'][load]['Type'] == 'ForceDistributed':
+					fobj.write(', '+str(self.meshes[mesh].solutions[solution]['Loads'][load]['Elementset'])+', '+ \
+								str(self.meshes[mesh].solutions[solution]['Loads'][load]['Force/Length'])+', ')
 				elif self.meshes[mesh].solutions[solution]['Loads'][load]['Type'] == 'Torque':
 					fobj.write(', '+str(self.meshes[mesh].solutions[solution]['Loads'][load]['Nodeset'])+', '+ \
 								str(self.meshes[mesh].solutions[solution]['Loads'][load]['Torque'])+', ')
@@ -6703,16 +8137,12 @@ or .sol-files.
 			for j in elements:
 				nodelines = []
 				if elements[j].type == 'ROD2N2D':
-					glLineWidth(8.0)
 					nodelines = [[0,1]]
 				if elements[j].type == 'ROD2N':
-					glLineWidth(8.0)
 					nodelines = [[0,1]]
 				if elements[j].type == 'BEAM2N2D':
-					glLineWidth(8.0)
 					nodelines = [[0,1]]
 				if elements[j].type == 'BEAM2N':
-					glLineWidth(8.0)
 					nodelines = [[0,1]]
 				if elements[j].type == 'TRI3N':
 					nodelines = [[0,1], [1,2], [2,0]]
@@ -6789,6 +8219,563 @@ or .sol-files.
 							   nodes[elements[j].nodes[facenodes[k][2]].number].coord[2][0])
 					glEnd()
 
+				if elements[j].type in ['BEAM2N2D', 'BEAM2N', 'ROD2N2D', 'ROD2N']:
+					if elements[j].section != None:
+						if 'Cross section' in self.sections[elements[j].section] and hasattr(elements[j],'orientation'):
+
+							faces = []
+							lines = []
+							x_vec = elements[j].orientation['x-vec']
+							y_vec = elements[j].orientation['y-vec']
+							z_vec = elements[j].orientation['z-vec']
+
+							if self.sections[elements[j].section]['Cross section']['Type'] == 'Rectangle':
+
+								w  = self.sections[elements[j].section]['Cross section']['width, w']
+								h  = self.sections[elements[j].section]['Cross section']['height, h']
+								iw = self.sections[elements[j].section]['Cross section']['inner width, iw']
+								ih = self.sections[elements[j].section]['Cross section']['inner height, ih']
+								w  = w/2.
+								h  = h/2.
+								iw = iw/2.
+								ih = ih/2.
+								v_11 = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*h-z_vec[0]*w,
+										nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*h-z_vec[1]*w,
+										nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*h-z_vec[2]*w ]
+								v_12 = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*h+z_vec[0]*w,
+										nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*h+z_vec[1]*w,
+										nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*h+z_vec[2]*w ]
+								v_13 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*h+z_vec[0]*w,
+										nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*h+z_vec[1]*w,
+										nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*h+z_vec[2]*w ]
+								v_14 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*h-z_vec[0]*w,
+										nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*h-z_vec[1]*w,
+										nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*h-z_vec[2]*w ]
+								v_21 = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*h-z_vec[0]*w,
+										nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*h-z_vec[1]*w,
+										nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*h-z_vec[2]*w ]
+								v_22 = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*h+z_vec[0]*w,
+										nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*h+z_vec[1]*w,
+										nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*h+z_vec[2]*w ]
+								v_23 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*h+z_vec[0]*w,
+										nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*h+z_vec[1]*w,
+										nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*h+z_vec[2]*w ]
+								v_24 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*h-z_vec[0]*w,
+										nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*h-z_vec[1]*w,
+										nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*h-z_vec[2]*w ]
+								if iw != 0. or ih != 0.:
+									v_15 = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*ih-z_vec[0]*iw,
+											nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*ih-z_vec[1]*iw,
+											nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*ih-z_vec[2]*iw ]
+									v_16 = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*ih+z_vec[0]*iw,
+											nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*ih+z_vec[1]*iw,
+											nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*ih+z_vec[2]*iw ]
+									v_17 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*ih+z_vec[0]*iw,
+											nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*ih+z_vec[1]*iw,
+											nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*ih+z_vec[2]*iw ]
+									v_18 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*ih-z_vec[0]*iw,
+											nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*ih-z_vec[1]*iw,
+											nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*ih-z_vec[2]*iw ]
+									v_25 = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*ih-z_vec[0]*iw,
+											nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*ih-z_vec[1]*iw,
+											nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*ih-z_vec[2]*iw ]
+									v_26 = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*ih+z_vec[0]*iw,
+											nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*ih+z_vec[1]*iw,
+											nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*ih+z_vec[2]*iw ]
+									v_27 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*ih+z_vec[0]*iw,
+											nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*ih+z_vec[1]*iw,
+											nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*ih+z_vec[2]*iw ]
+									v_28 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*ih-z_vec[0]*iw,
+											nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*ih-z_vec[1]*iw,
+											nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*ih-z_vec[2]*iw ]
+
+								lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_11],
+										 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_21],
+										 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24]]
+								faces = [[v_13,v_12,v_22],[v_22,v_23,v_13],
+										 [v_14,v_13,v_23],[v_23,v_24,v_14],
+										 [v_11,v_14,v_24],[v_24,v_21,v_11],
+										 [v_12,v_11,v_21],[v_21,v_22,v_12]]
+
+								if iw == 0. or ih == 0.:
+									faces += [[v_11,v_12,v_13],[v_13,v_14,v_11],
+											  [v_21,v_24,v_23],[v_23,v_22,v_21]]
+								else:
+									lines += [[v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_15],
+											  [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_25],
+											  [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+									faces += [[v_15,v_11,v_12],[v_12,v_16,v_15],
+											  [v_16,v_12,v_13],[v_13,v_17,v_16],
+											  [v_17,v_13,v_14],[v_14,v_18,v_17],
+											  [v_18,v_14,v_11],[v_11,v_15,v_18],
+											  [v_26,v_22,v_21],[v_21,v_25,v_26],
+											  [v_22,v_26,v_23],[v_26,v_27,v_23],
+											  [v_23,v_27,v_24],[v_27,v_28,v_24],
+											  [v_24,v_28,v_21],[v_25,v_21,v_28],
+											  [v_17,v_27,v_16],[v_27,v_26,v_16],
+											  [v_18,v_28,v_17],[v_28,v_27,v_17],
+											  [v_15,v_25,v_18],[v_25,v_28,v_18],
+											  [v_25,v_15,v_26],[v_15,v_16,v_26]]
+
+							elif self.sections[elements[j].section]['Cross section']['Type'] == 'Circle':
+
+								r  = self.sections[elements[j].section]['Cross section']['radius, r']
+								ir  = self.sections[elements[j].section]['Cross section']['inner radius, ir']
+								vertices1 = []
+								vertices2 = []
+								pnts = 24
+								for v in range(pnts):
+									d = pnts/(v+1)
+									vc = np.cos(2*np.pi/d)
+									vs = np.sin(2*np.pi/d)
+									vertices1.append([nodes[elements[j].nodes[0].number].coord[0][0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+													  nodes[elements[j].nodes[0].number].coord[1][0]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+													  nodes[elements[j].nodes[0].number].coord[2][0]+vs*y_vec[2]*r+vc*z_vec[2]*r ])
+									vertices2.append([nodes[elements[j].nodes[1].number].coord[0][0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+													  nodes[elements[j].nodes[1].number].coord[1][0]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+													  nodes[elements[j].nodes[1].number].coord[2][0]+vs*y_vec[2]*r+vc*z_vec[2]*r ])
+								if ir != 0.:
+									ivertices1 = []
+									ivertices2 = []
+									for v in range(pnts):
+										d = pnts/(v+1)
+										vc = np.cos(2*np.pi/d)
+										vs = np.sin(2*np.pi/d)
+										ivertices1.append([nodes[elements[j].nodes[0].number].coord[0][0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+														   nodes[elements[j].nodes[0].number].coord[1][0]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+														   nodes[elements[j].nodes[0].number].coord[2][0]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ])
+										ivertices2.append([nodes[elements[j].nodes[1].number].coord[0][0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+														   nodes[elements[j].nodes[1].number].coord[1][0]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+														   nodes[elements[j].nodes[1].number].coord[2][0]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ])
+
+								lines = []
+								faces = []
+								for v in range(pnts):
+									lines.append([vertices1[v-1],vertices1[v]])
+									lines.append([vertices2[v-1],vertices2[v]])
+								lines.append([vertices1[0],vertices2[0]])
+
+								if ir != 0.:
+									for v in range(pnts):
+										lines.append([ivertices1[v-1],ivertices1[v]])
+										lines.append([ivertices2[v-1],ivertices2[v]])
+									lines.append([ivertices1[0],ivertices2[0]])
+									for v in range(pnts-1):
+										faces.append([ivertices1[v],vertices1[v],vertices1[v+1]])
+										faces.append([vertices1[v+1],ivertices1[v+1],ivertices1[v]])
+										faces.append([ivertices2[v],vertices2[v+1],vertices2[v]])
+										faces.append([vertices2[v+1],ivertices2[v],ivertices2[v+1]])
+										faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+										faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+										faces.append([ivertices1[v],ivertices1[v+1],ivertices2[v]])
+										faces.append([ivertices1[v+1],ivertices2[v+1],ivertices2[v]])
+									faces.append([ivertices1[-1],vertices1[-1],vertices1[0]])
+									faces.append([vertices1[0],ivertices1[0],ivertices1[-1]])
+									faces.append([ivertices2[-1],vertices2[0],vertices2[-1]])
+									faces.append([vertices2[0],ivertices2[-1],ivertices2[0]])
+									faces.append([vertices1[-1],vertices2[-1],vertices2[0]])
+									faces.append([vertices2[0],vertices1[0],vertices1[-1]])
+									faces.append([ivertices1[-1],ivertices1[0],ivertices2[-1]])
+									faces.append([ivertices1[0],ivertices2[0],ivertices2[-1]])
+									
+								else:
+									vertices1.append([nodes[elements[j].nodes[0].number].coord[0][0],
+													  nodes[elements[j].nodes[0].number].coord[1][0],
+													  nodes[elements[j].nodes[0].number].coord[2][0] ])
+									vertices2.append([nodes[elements[j].nodes[1].number].coord[0][0],
+													  nodes[elements[j].nodes[1].number].coord[1][0],
+													  nodes[elements[j].nodes[1].number].coord[2][0] ])
+									for v in range(pnts):
+										faces.append([vertices1[-1],vertices1[v],vertices1[v+1]])
+										faces.append([vertices2[-1],vertices2[v+1],vertices2[v]])
+										faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+										faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+									faces.append([vertices1[-1],vertices1[-2],vertices1[0]])
+									faces.append([vertices2[-1],vertices2[0],vertices2[-2]])
+									faces.append([vertices1[-2],vertices2[-2],vertices2[0]])
+									faces.append([vertices2[0],vertices1[0],vertices1[-2]])
+
+							elif self.sections[elements[j].section]['Cross section']['Type'] == 'L-Beam':
+
+								bw  = self.sections[elements[j].section]['Cross section']['bottom width, bw']
+								bt = self.sections[elements[j].section]['Cross section']['bottom thickness, bt']
+								st = self.sections[elements[j].section]['Cross section']['side thickness, st']
+								h  = self.sections[elements[j].section]['Cross section']['height, h']
+								A1  = st*(h-bt)
+								A2  = bt*bw
+								A   = A1+A2
+								yC1 = (h/2.)+bt
+								yC2 = bt/2.
+								zC1 = st/2.
+								zC2 = bw/2.
+								if A != 0.:
+									yC = (A1*yC1+A2*yC2)/A
+									zC = (A1*zC1+A2*zC2)/A
+								else:
+									yC = 0.
+									zC = 0.
+								v_11  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*yC-z_vec[0]*zC,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*yC-z_vec[1]*zC,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*yC-z_vec[2]*zC ]
+								v_12  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+								v_13  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+								v_14  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ]
+								v_15  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ]
+								v_16  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+								v_21  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*yC-z_vec[0]*zC,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*yC-z_vec[1]*zC,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*yC-z_vec[2]*zC ]
+								v_22  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+								v_23  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+								v_24  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ]
+								v_25  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ]
+								v_26  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+
+								lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],[v_15,v_16],[v_16,v_11],
+										 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],[v_25,v_26],[v_26,v_21],
+										 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],[v_15,v_25],[v_16,v_26]]
+								faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+										 [v_11,v_14,v_16],[v_16,v_14,v_15],
+										 [v_23,v_22,v_21],[v_21,v_24,v_23],
+										 [v_24,v_21,v_26],[v_24,v_26,v_25],
+										 [v_11,v_21,v_12],[v_12,v_21,v_22],
+										 [v_11,v_16,v_26],[v_26,v_21,v_11],
+										 [v_16,v_15,v_26],[v_26,v_15,v_25],
+										 [v_13,v_12,v_22],[v_22,v_23,v_13],
+										 [v_14,v_13,v_24],[v_24,v_13,v_23],
+										 [v_14,v_24,v_25],[v_25,v_15,v_14]]
+
+							elif self.sections[elements[j].section]['Cross section']['Type'] == 'I-Beam':
+								tw = self.sections[elements[j].section]['Cross section']['top width, tw']
+								tt = self.sections[elements[j].section]['Cross section']['top thickness, tt']
+								mt = self.sections[elements[j].section]['Cross section']['middle thickness, mt']
+								bw = self.sections[elements[j].section]['Cross section']['bottom width, bw']
+								bt = self.sections[elements[j].section]['Cross section']['bottom thickness, bt']
+								h  = self.sections[elements[j].section]['Cross section']['height, h']
+								tw = tw/2.
+								tt = tt
+								mt = mt/2.
+								bw = bw/2.
+								bt = bt
+								h  = h/2.
+								v_11  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*h-z_vec[0]*bw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*h-z_vec[1]*bw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*h-z_vec[2]*bw ]
+								v_12  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*h+z_vec[0]*bw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*h+z_vec[1]*bw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*h+z_vec[2]*bw ]
+								v_13  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(h-bt)+z_vec[2]*bw ]
+								v_14  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(h-bt)+z_vec[2]*mt ]
+								v_15  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(h-bt)-z_vec[2]*mt ]
+								v_16  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(h-bt)-z_vec[2]*bw ]
+								v_17  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-tt)-z_vec[2]*tw ]
+								v_18  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-tt)-z_vec[2]*mt ]
+								v_19  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-tt)+z_vec[2]*mt ]
+								v_110 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-tt)+z_vec[2]*tw ]
+								v_111 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*h+z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*h+z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*h+z_vec[2]*tw ]
+								v_112 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*h-z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*h-z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*h-z_vec[2]*tw ]
+								v_21  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*h-z_vec[0]*bw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*h-z_vec[1]*bw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*h-z_vec[2]*bw ]
+								v_22  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*h+z_vec[0]*bw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*h+z_vec[1]*bw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*h+z_vec[2]*bw ]
+								v_23  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(h-bt)+z_vec[2]*bw ]
+								v_24  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(h-bt)+z_vec[2]*mt ]
+								v_25  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(h-bt)-z_vec[2]*mt ]
+								v_26  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(h-bt)-z_vec[2]*bw ]
+								v_27  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-tt)-z_vec[2]*tw ]
+								v_28  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-tt)-z_vec[2]*mt ]
+								v_29  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-tt)+z_vec[2]*mt ]
+								v_210 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-tt)+z_vec[2]*tw ]
+								v_211 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*h+z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*h+z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*h+z_vec[2]*tw ]
+								v_212 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*h-z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*h-z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*h-z_vec[2]*tw ]
+
+								lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_19],
+										 [v_19,v_110],[v_110,v_111],[v_111,v_112],[v_112,v_17],
+										 [v_17,v_18],[v_18,v_15],[v_15,v_16],[v_16,v_11],
+										 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_29],
+										 [v_29,v_210],[v_210,v_211],[v_211,v_212],[v_212,v_27],
+										 [v_27,v_28],[v_28,v_25],[v_25,v_26],[v_26,v_21],
+										 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+										 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28],
+										 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+								faces = [[v_11,v_12,v_13],[v_13,v_16,v_11],
+										 [v_15,v_14,v_19],[v_19,v_18,v_15],
+										 [v_112,v_17,v_110],[v_110,v_111,v_112],
+										 [v_23,v_22,v_21],[v_21,v_26,v_23],
+										 [v_29,v_24,v_25],[v_25,v_28,v_29],
+										 [v_210,v_27,v_212],[v_212,v_211,v_210],
+										 [v_19,v_14,v_24],[v_24,v_29,v_19],
+										 [v_15,v_18,v_28],[v_28,v_25,v_15],
+										 [v_13,v_12,v_22],[v_22,v_23,v_13],
+										 [v_11,v_16,v_26],[v_26,v_21,v_11],
+										 [v_111,v_110,v_210],[v_210,v_211,v_111],
+										 [v_17,v_112,v_212],[v_212,v_27,v_17],
+										 [v_11,v_21,v_12],[v_21,v_22,v_12],
+										 [v_112,v_111,v_212],[v_212,v_111,v_211],
+										 [v_14,v_13,v_24],[v_24,v_13,v_23],
+										 [v_16,v_15,v_26],[v_26,v_15,v_25],
+										 [v_18,v_17,v_27],[v_27,v_28,v_18],
+										 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+							elif self.sections[elements[j].section]['Cross section']['Type'] == 'C-Beam':
+								tw = self.sections[elements[j].section]['Cross section']['top width, tw']
+								tt = self.sections[elements[j].section]['Cross section']['top thickness, tt']
+								mt = self.sections[elements[j].section]['Cross section']['middle thickness, mt']
+								bw = self.sections[elements[j].section]['Cross section']['bottom width, bw']
+								bt = self.sections[elements[j].section]['Cross section']['bottom thickness, bt']
+								h  = self.sections[elements[j].section]['Cross section']['height, h']
+								A1  = tt*tw
+								A2  = mt*(h-tt-bt)
+								A3  = bt*bw
+								A   = A1+A2+A3
+								zC1 = tw/2.
+								zC2 = mt/2.
+								zC3 = bw/2.
+								yC1 = h-(tt/2.)
+								yC2 = (h-tt)/2.
+								yC3 = bt/2.
+								if A != 0.:
+									zC = (A1*zC1+A2*zC2+A3*zC3)/A
+									yC = (A1*yC1+A2*yC2+A3*yC3)/A
+								else:
+									zC = 0.
+									yC = 0.
+								v_11  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*yC-z_vec[0]*zC,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*yC-z_vec[1]*zC,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*yC-z_vec[2]*zC ]
+								v_12  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+								v_13  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+								v_14  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ]
+								v_15  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ]
+								v_16  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ]
+								v_17  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ]
+								v_18  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+								v_21  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*yC-z_vec[0]*zC,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*yC-z_vec[1]*zC,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*yC-z_vec[2]*zC ]
+								v_22  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+								v_23  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+								v_24  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ]
+								v_25  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ]
+								v_26  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ]
+								v_27  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ]
+								v_28  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+
+								lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],
+										 [v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_11],
+										 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],
+										 [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_21],
+										 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+										 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+								faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+										 [v_11,v_14,v_18],[v_18,v_14,v_15],
+										 [v_15,v_16,v_17],[v_17,v_18,v_15],
+										 [v_23,v_22,v_21],[v_21,v_24,v_23],
+										 [v_24,v_21,v_28],[v_24,v_28,v_25],
+										 [v_26,v_25,v_27],[v_28,v_27,v_25],
+										 [v_11,v_21,v_12],[v_12,v_21,v_22],
+										 [v_11,v_18,v_28],[v_28,v_21,v_11],
+										 [v_18,v_17,v_28],[v_28,v_17,v_27],
+										 [v_16,v_26,v_27],[v_27,v_17,v_16],
+										 [v_16,v_15,v_25],[v_25,v_26,v_16],
+										 [v_14,v_24,v_25],[v_25,v_15,v_14],
+										 [v_13,v_24,v_14],[v_24,v_13,v_23],
+										 [v_13,v_12,v_22],[v_22,v_23,v_13]]
+
+							elif self.sections[elements[j].section]['Cross section']['Type'] == 'T-Beam':
+								tw = self.sections[elements[j].section]['Cross section']['top width, tw']
+								tt = self.sections[elements[j].section]['Cross section']['top thickness, tt']
+								mt = self.sections[elements[j].section]['Cross section']['middle thickness, mt']
+								h  = self.sections[elements[j].section]['Cross section']['height, h']
+								A1  = mt*(h-tt)
+								A2  = tt*tw
+								A   = A1+A2
+								yC1 = h-(tt/2.)
+								yC2 = (h-tt)/2.
+								if A != 0.:
+									yC = (A1*yC1+A2*yC2)/A
+								else:
+									yC = 0.
+								tw = tw/2.
+								tt = tt
+								mt = mt/2.
+								v_11  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*yC-z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*yC-z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*yC-z_vec[2]*mt ]
+								v_12  = [nodes[elements[j].nodes[0].number].coord[0][0]-y_vec[0]*yC+z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]-y_vec[1]*yC+z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]-y_vec[2]*yC+z_vec[2]*mt ]
+								v_17  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ]
+								v_18  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ]
+								v_19  = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ]
+								v_110 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ]
+								v_111 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC)+z_vec[2]*tw ]
+								v_112 = [nodes[elements[j].nodes[0].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+										 nodes[elements[j].nodes[0].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+										 nodes[elements[j].nodes[0].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*tw ]
+								v_21  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*yC-z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*yC-z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*yC-z_vec[2]*mt ]
+								v_22  = [nodes[elements[j].nodes[1].number].coord[0][0]-y_vec[0]*yC+z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]-y_vec[1]*yC+z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]-y_vec[2]*yC+z_vec[2]*mt ]
+								v_27  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ]
+								v_28  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ]
+								v_29  = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ]
+								v_210 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ]
+								v_211 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC)+z_vec[2]*tw ]
+								v_212 = [nodes[elements[j].nodes[1].number].coord[0][0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+										 nodes[elements[j].nodes[1].number].coord[1][0]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+										 nodes[elements[j].nodes[1].number].coord[2][0]+y_vec[2]*(h-yC)-z_vec[2]*tw ]
+
+								lines = [[v_11,v_12],[v_12,v_19],[v_19,v_110],[v_110,v_111],
+										 [v_111,v_112],[v_112,v_17],[v_17,v_18],[v_18,v_11],
+										 [v_21,v_22],[v_22,v_29],[v_29,v_210],[v_210,v_211],
+										 [v_211,v_212],[v_212,v_27],[v_27,v_28],[v_28,v_21],
+										 [v_11,v_21],[v_12,v_22],[v_17,v_27],[v_18,v_28],
+										 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+								faces = [[v_11,v_12,v_19],[v_19,v_18,v_11],
+										 [v_112,v_17,v_110],[v_110,v_111,v_112],
+										 [v_29,v_22,v_21],[v_21,v_28,v_29],
+										 [v_210,v_27,v_212],[v_212,v_211,v_210],
+										 [v_19,v_12,v_22],[v_22,v_29,v_19],
+										 [v_11,v_18,v_28],[v_28,v_21,v_11],
+										 [v_111,v_110,v_210],[v_210,v_211,v_111],
+										 [v_17,v_112,v_212],[v_212,v_27,v_17],
+										 [v_11,v_21,v_12],[v_21,v_22,v_12],
+										 [v_112,v_111,v_212],[v_212,v_111,v_211],
+										 [v_18,v_17,v_27],[v_27,v_28,v_18],
+										 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+							else:
+								pass
+
+							glLineWidth(2.0)
+							glColor3f(0.05, 0.1, 0.05)
+							for line in range(len(lines)):
+								glBegin(GL_LINES)
+								glVertex3f(lines[line][0][0],lines[line][0][1],lines[line][0][2])
+								glVertex3f(lines[line][1][0],lines[line][1][1],lines[line][1][2])
+								glEnd()
+
+							glColor3f(0.2, 0.4, 0.2)
+							for face in range(len(faces)):
+								glBegin(GL_TRIANGLES)
+								glVertex3f(faces[face][0][0],faces[face][0][1],faces[face][0][2])
+								glVertex3f(faces[face][1][0],faces[face][1][1],faces[face][1][2])
+								glVertex3f(faces[face][2][0],faces[face][2][1],faces[face][2][2])
+								glEnd()
+
 			glEndList()
 
 
@@ -6821,19 +8808,20 @@ or .sol-files.
 
 				glLineWidth(3.0)
 				for j in elements:
+					glColor3f(0.0, 0.3, 0.0)
 					nodelines = []
 					if elements[j].type == 'ROD2N2D':
-						glLineWidth(8.0)
 						nodelines = [[0,1]]
+						glColor3f(0.0, 0.0, 1.0)
 					elif elements[j].type == 'ROD2N':
-						glLineWidth(8.0)
 						nodelines = [[0,1]]
+						glColor3f(0.0, 0.0, 1.0)
 					elif elements[j].type == 'BEAM2N2D':
-						glLineWidth(8.0)
 						nodelines = [[0,1]]
+						glColor3f(0.0, 0.0, 1.0)
 					elif elements[j].type == 'BEAM2N':
-						glLineWidth(8.0)
 						nodelines = [[0,1]]
+						glColor3f(0.0, 0.0, 1.0)
 					elif elements[j].type == 'TRI3N':
 						nodelines = [[0,1], [1,2], [2,0]]
 					elif elements[j].type == 'TRI6N':
@@ -6857,7 +8845,6 @@ or .sol-files.
 
 					for k in range(len(nodelines)):
 						glBegin(GL_LINES)
-						glColor3f(0.0, 0.3, 0.0)
 						glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0] + 
 									scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][0]),
 								   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0] +
@@ -6871,6 +8858,289 @@ or .sol-files.
 								   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0] +
 									scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][2]))
 						glEnd()
+						
+					if result == 'elementforce':
+						if elements[j].type in ['BEAM2N2D', 'BEAM2N']:
+							# Draw bending or shear diagram
+							disp_max = 0.
+							disp_min = 0.
+							for i in elements:
+								if 'elementforce' not in elements[i].solutions[solution]:
+									pass
+								elif elements[i].type not in ['BEAM2N', 'BEAM2N2D']:
+									pass
+								elif subresult == 'FY':
+									if elements[i].solutions[solution]['elementforce'][1] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][1]
+									if elements[i].solutions[solution]['elementforce'][6] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][6]
+								elif subresult == 'FZ':
+									if elements[i].solutions[solution]['elementforce'][2] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][2]
+									if elements[i].solutions[solution]['elementforce'][7] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][7]
+								elif subresult == 'MX':
+									if elements[i].solutions[solution]['elementforce'][3] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][3]
+									if elements[i].solutions[solution]['elementforce'][8] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][8]
+								elif subresult == 'MY':
+									if elements[i].solutions[solution]['elementforce'][4] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][4]
+									if elements[i].solutions[solution]['elementforce'][9] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][9]
+								elif subresult == 'MZ':
+									if elements[i].solutions[solution]['elementforce'][5] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][5]
+									if elements[i].solutions[solution]['elementforce'][10] >= disp_max:
+										disp_max = elements[i].solutions[solution]['elementforce'][10]
+								else:
+									pass
+
+							scale = max([abs(disp_min), abs(disp_max)])
+							if scale == 0.:
+								scale = 1.e-9
+							n1 = [nodes[elements[j].nodes[0].number].coord[0][0] +
+									scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
+								  nodes[elements[j].nodes[0].number].coord[1][0] +
+									scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
+								  nodes[elements[j].nodes[0].number].coord[2][0] +
+									scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2])]
+							n2 = [nodes[elements[j].nodes[1].number].coord[0][0] +
+									scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
+								  nodes[elements[j].nodes[1].number].coord[1][0] +
+									scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
+								  nodes[elements[j].nodes[1].number].coord[2][0] +
+									scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2])]
+							if subresult in ['FY', 'FZ']:
+								glColor4f(0.8, 0.4, 0.1, 0.7)
+								if subresult == 'FY':
+									shear_n1 = elements[j].solutions[solution]['elementforce'][1]
+									shear_n2 = elements[j].solutions[solution]['elementforce'][6]
+									vector = 'y-vec'
+								else:
+									shear_n1 = elements[j].solutions[solution]['elementforce'][2]
+									shear_n2 = elements[j].solutions[solution]['elementforce'][7]
+									vector = 'z-vec'
+								crossing_zero = False
+								ratio = 0.5
+								if(shear_n1<0 and shear_n2>0):
+									shear_n1 = -abs(shear_n1)
+									shear_n2 = -abs(shear_n2)
+								elif(shear_n1>0 and shear_n2<0):
+									shear_n1 = abs(shear_n1)
+									shear_n2 = abs(shear_n2)
+								elif(shear_n1<0 and shear_n2<0):
+									shear_n1 = -abs(shear_n1)
+									shear_n2 = abs(shear_n2)
+									crossing_zero = True
+									ratio = shear_n1/shear_n2
+								elif(shear_n1>0 and shear_n2>0):
+									shear_n1 = abs(shear_n1)
+									shear_n2 = -abs(shear_n2)
+									crossing_zero = True
+									ratio = shear_n1/shear_n2
+								elif(shear_n1>0 and shear_n2==0):
+									shear_n1 = abs(shear_n1)
+								elif(shear_n1<0 and shear_n2==0):
+									shear_n1 = -abs(shear_n1)
+								elif(shear_n1==0 and shear_n2>0):
+									shear_n2 = -abs(shear_n2)
+								elif(shear_n1==0 and shear_n2<0):
+									shear_n2 = abs(shear_n2)
+								else:
+									pass
+								if crossing_zero:
+									cross_at = [0.,0.,0.]
+									cross_at[0] = n1[0] - (n2[0]-n1[0])*ratio/(1.-ratio)
+									cross_at[1] = n1[1] - (n2[1]-n1[1])*ratio/(1.-ratio)
+									cross_at[2] = n1[2] - (n2[2]-n1[2])*ratio/(1.-ratio)
+									# triangle 1
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( cross_at[0], cross_at[1], cross_at[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(shear_n1/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 2
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(shear_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f(cross_at[0], cross_at[1], cross_at[2])
+									glEnd()
+									# triangle 3
+									glBegin(GL_TRIANGLES)
+									glVertex3f(cross_at[0], cross_at[1], cross_at[2])
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(shear_n2/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 4
+									glBegin(GL_TRIANGLES)
+									glVertex3f(cross_at[0], cross_at[1], cross_at[2])
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(shear_n2/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glEnd()
+								else:
+									# triangle 1
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(shear_n1/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 2
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(shear_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glEnd()
+									# triangle 3
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(shear_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(shear_n2/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 4
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(shear_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(shear_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(shear_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(shear_n2/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glEnd()
+							elif subresult in ['MX', 'MY', 'MZ']:
+								glColor4f(0.5, 0.1, 0.5, 0.7)
+								if subresult == 'MX':
+									bend_n1 = elements[j].solutions[solution]['elementforce'][3]
+									bend_n2 = elements[j].solutions[solution]['elementforce'][8]
+									vector = 'y-vec'
+								elif subresult == 'MY':
+									bend_n1 = elements[j].solutions[solution]['elementforce'][4]
+									bend_n2 = elements[j].solutions[solution]['elementforce'][9]
+									vector = 'z-vec'
+								else:
+									bend_n1 = elements[j].solutions[solution]['elementforce'][5]
+									bend_n2 = elements[j].solutions[solution]['elementforce'][10]
+									vector = 'y-vec'
+								crossing_zero = False
+								ratio = 0.5
+								if(bend_n1<0 and bend_n2>0):
+									bend_n1 = -abs(bend_n1)
+									bend_n2 = -abs(bend_n2)
+								elif(bend_n1<0 and bend_n2<0):
+									bend_n1 = -abs(bend_n1)
+									bend_n2 = abs(bend_n2)
+									crossing_zero = True
+									ratio = bend_n1/bend_n2
+								elif(bend_n1>0 and bend_n2>0):
+									bend_n1 = abs(bend_n1)
+									bend_n2 = -abs(bend_n2)
+									crossing_zero = True
+									ratio = bend_n1/bend_n2
+								elif(bend_n1>0 and bend_n2<0):
+									bend_n1 = abs(bend_n1)
+									bend_n2 = abs(bend_n2)
+								elif(bend_n1>0 and bend_n2==0):
+									bend_n1 = abs(bend_n1)
+								elif(bend_n1<0 and bend_n2==0):
+									bend_n1 = -abs(bend_n1)
+								elif(bend_n1==0 and bend_n2>0):
+									bend_n2 = -abs(bend_n2)
+								elif(bend_n1==0 and bend_n2<0):
+									bend_n2 = abs(bend_n2)
+								else:
+									pass
+								if crossing_zero:
+									cross_at = [0.,0.,0.]
+									cross_at[0] = n1[0] - (n2[0]-n1[0])*ratio/(1.-ratio)
+									cross_at[1] = n1[1] - (n2[1]-n1[1])*ratio/(1.-ratio)
+									cross_at[2] = n1[2] - (n2[2]-n1[2])*ratio/(1.-ratio)
+									# triangle 1
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( cross_at[0], cross_at[1], cross_at[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(bend_n1/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 2
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(bend_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f(cross_at[0], cross_at[1], cross_at[2])
+									glEnd()
+									# triangle 3
+									glBegin(GL_TRIANGLES)
+									glVertex3f(cross_at[0], cross_at[1], cross_at[2])
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(bend_n2/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 4
+									glBegin(GL_TRIANGLES)
+									glVertex3f(cross_at[0], cross_at[1], cross_at[2])
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(bend_n2/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glEnd()
+								else:
+									# triangle 1
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(bend_n1/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 2
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0], n1[1], n1[2] )
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(bend_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glEnd()
+									# triangle 3
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(bend_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(bend_n2/scale)*self.scaleShearBendDiagram )
+									glEnd()
+									# triangle 4
+									glBegin(GL_TRIANGLES)
+									glVertex3f( n1[0] +	elements[j].orientation[vector][0]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[1] + elements[j].orientation[vector][1]*(bend_n1/scale)*self.scaleShearBendDiagram,
+											    n1[2] + elements[j].orientation[vector][2]*(bend_n1/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0] +	elements[j].orientation[vector][0]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[1] + elements[j].orientation[vector][1]*(bend_n2/scale)*self.scaleShearBendDiagram,
+											    n2[2] + elements[j].orientation[vector][2]*(bend_n2/scale)*self.scaleShearBendDiagram )
+									glVertex3f( n2[0], n2[1], n2[2] )
+									glEnd()
+					
 				glEndList()
 
 
@@ -6913,39 +9183,47 @@ or .sol-files.
 					glNewList(self.displayLists[solution][result][subresult]['shaded'], GL_COMPILE)
 
 					disp_mag_values = [ disp_min,
-										disp_min+(disp_max-disp_min)*1./8.,
-										disp_min+(disp_max-disp_min)*2./8.,
-										disp_min+(disp_max-disp_min)*3./8.,
-										disp_min+(disp_max-disp_min)*4./8.,
-										disp_min+(disp_max-disp_min)*5./8.,
-										disp_min+(disp_max-disp_min)*6./8.,
-										disp_min+(disp_max-disp_min)*7./8.,
+										disp_min+(disp_max-disp_min)*1./12.,
+										disp_min+(disp_max-disp_min)*2./12.,
+										disp_min+(disp_max-disp_min)*3./12.,
+										disp_min+(disp_max-disp_min)*4./12.,
+										disp_min+(disp_max-disp_min)*5./12.,
+										disp_min+(disp_max-disp_min)*6./12.,
+										disp_min+(disp_max-disp_min)*7./12.,
+										disp_min+(disp_max-disp_min)*8./12.,
+										disp_min+(disp_max-disp_min)*9./12.,
+										disp_min+(disp_max-disp_min)*10./12.,
+										disp_min+(disp_max-disp_min)*11./12.,
 										disp_max ]
-					disp_colors = [ (0.0, 0.0, 1.0),  # blue
-									(0.0, 0.5, 1.0),  # ocean
-									(0.0, 1.0, 1.0),  # cyan
-									(0.0, 1.0, 0.5),  # turqoise
-									(0.0, 1.0, 0.0),  # green
-									(0.5, 1.0, 0.0),  # spring green
-									(1.0, 1.0, 0.0),  # yellow
-									(1.0, 0.5, 0.0),  # orange
-									(1.0, 0.0, 0.0) ] # red
+					disp_colors = [ (  0.0,   0.0,   1.0), # blue
+									(  0.0, 0.333,   1.0),  
+									(  0.0, 0.666,   1.0),  
+									(  0.0,   1.0,   1.0),  
+									(  0.0,   1.0, 0.666),  
+									(  0.0,   1.0, 0.333),
+									(  0.0,   1.0,   0.0), # green
+									(0.333,   1.0,   0.0),  
+									(0.666,   1.0,   0.0),  
+									(  1.0,   1.0,   0.0),  
+									(  1.0, 0.666,   0.0),  
+									(  1.0, 0.333,   0.0),
+									(  1.0,   0.0,   0.0) ] # red
 					disp_color = disp_colors[0]
 
 					for j in elements:
 						facenodes = []
 						nodelines = []
 						if elements[j].type == 'ROD2N2D':
-							glLineWidth(8.0)
+#							glLineWidth(8.0)
 							nodelines = [[0,1]]
 						elif elements[j].type == 'ROD2N':
-							glLineWidth(8.0)
+#							glLineWidth(8.0)
 							nodelines = [[0,1]]
 						elif elements[j].type == 'BEAM2N2D':
-							glLineWidth(8.0)
+#							glLineWidth(8.0)
 							nodelines = [[0,1]]
 						elif elements[j].type == 'BEAM2N':
-							glLineWidth(8.0)
+#							glLineWidth(8.0)
 							nodelines = [[0,1]]
 						elif elements[j].type == 'TRI3N':
 							facenodes = [[0,1,2]]
@@ -6991,6 +9269,7 @@ or .sol-files.
 								else:
 									disp_color = disp_colors[k]
 									break
+							node1_color = deepcopy(disp_color)
 							glColor3f(disp_color[0], disp_color[1], disp_color[2])
 							glVertex3f(nodes[elements[j].nodes[nodelines[l][0]].number].coord[0][0] + 
 										scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][0]),
@@ -7014,6 +9293,7 @@ or .sol-files.
 								else:
 									disp_color = disp_colors[k]
 									break
+							node2_color = deepcopy(disp_color)
 							glColor3f(disp_color[0], disp_color[1], disp_color[2])
 							glVertex3f(nodes[elements[j].nodes[nodelines[l][1]].number].coord[0][0] + 
 										scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][0]),
@@ -7095,6 +9375,874 @@ or .sol-files.
 									   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
 										scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
 							glEnd()
+							
+							
+
+						if elements[j].type in ['BEAM2N2D', 'BEAM2N', 'ROD2N2D', 'ROD2N']:
+						
+							if hasattr(elements[j],'crossSection'):
+								if hasattr(elements[j],'orientation'):
+									node1_coord = [nodes[elements[j].nodes[0].number].coord[0][0] + 
+													scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[0].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[0].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2])]
+									node1_rotation = [scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][3]),
+													  scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][4]),
+													  scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][5])]
+									node2_coord = [nodes[elements[j].nodes[1].number].coord[0][0] +
+													scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[1].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[1].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2])]
+									node2_rotation = [scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][3]),
+													  scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][4]),
+													  scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][5])]
+									faces = []
+									lines = []
+									x_vec = elements[j].orientation['x-vec']
+									y_vec = elements[j].orientation['y-vec']
+									z_vec = elements[j].orientation['z-vec']
+
+									if elements[j].crossSection['Type'] == 'Rectangle':
+
+										w  = elements[j].crossSection['width, w']
+										h  = elements[j].crossSection['height, h']
+										iw = elements[j].crossSection['inner width, iw']
+										ih = elements[j].crossSection['inner height, ih']
+										w  = w/2.
+										h  = h/2.
+										iw = iw/2.
+										ih = ih/2.
+										v_11 = [[node1_coord[0]-y_vec[0]*h-z_vec[0]*w,
+												 node1_coord[1]-y_vec[1]*h-z_vec[1]*w,
+												 node1_coord[2]-y_vec[2]*h-z_vec[2]*w ], node1_color]
+										v_12 = [[node1_coord[0]-y_vec[0]*h+z_vec[0]*w,
+												 node1_coord[1]-y_vec[1]*h+z_vec[1]*w,
+												 node1_coord[2]-y_vec[2]*h+z_vec[2]*w ], node1_color]
+										v_13 = [[node1_coord[0]+y_vec[0]*h+z_vec[0]*w,
+												 node1_coord[1]+y_vec[1]*h+z_vec[1]*w,
+												 node1_coord[2]+y_vec[2]*h+z_vec[2]*w ], node1_color]
+										v_14 = [[node1_coord[0]+y_vec[0]*h-z_vec[0]*w,
+												 node1_coord[1]+y_vec[1]*h-z_vec[1]*w,
+												 node1_coord[2]+y_vec[2]*h-z_vec[2]*w ], node1_color]
+										v_21 = [[node2_coord[0]-y_vec[0]*h-z_vec[0]*w,
+												 node2_coord[1]-y_vec[1]*h-z_vec[1]*w,
+												 node2_coord[2]-y_vec[2]*h-z_vec[2]*w ], node2_color]
+										v_22 = [[node2_coord[0]-y_vec[0]*h+z_vec[0]*w,
+												 node2_coord[1]-y_vec[1]*h+z_vec[1]*w,
+												 node2_coord[2]-y_vec[2]*h+z_vec[2]*w ], node2_color]
+										v_23 = [[node2_coord[0]+y_vec[0]*h+z_vec[0]*w,
+												 node2_coord[1]+y_vec[1]*h+z_vec[1]*w,
+												 node2_coord[2]+y_vec[2]*h+z_vec[2]*w ], node2_color]
+										v_24 = [[node2_coord[0]+y_vec[0]*h-z_vec[0]*w,
+												 node2_coord[1]+y_vec[1]*h-z_vec[1]*w,
+												 node2_coord[2]+y_vec[2]*h-z_vec[2]*w ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										if iw != 0. or ih != 0.:
+											v_15 = [[node1_coord[0]-y_vec[0]*ih-z_vec[0]*iw,
+													 node1_coord[1]-y_vec[1]*ih-z_vec[1]*iw,
+													 node1_coord[2]-y_vec[2]*ih-z_vec[2]*iw ], node1_color]
+											v_16 = [[node1_coord[0]-y_vec[0]*ih+z_vec[0]*iw,
+													 node1_coord[1]-y_vec[1]*ih+z_vec[1]*iw,
+													 node1_coord[2]-y_vec[2]*ih+z_vec[2]*iw ], node1_color]
+											v_17 = [[node1_coord[0]+y_vec[0]*ih+z_vec[0]*iw,
+													 node1_coord[1]+y_vec[1]*ih+z_vec[1]*iw,
+													 node1_coord[2]+y_vec[2]*ih+z_vec[2]*iw ], node1_color]
+											v_18 = [[node1_coord[0]+y_vec[0]*ih-z_vec[0]*iw,
+													 node1_coord[1]+y_vec[1]*ih-z_vec[1]*iw,
+													 node1_coord[2]+y_vec[2]*ih-z_vec[2]*iw ], node1_color]
+											v_25 = [[node2_coord[0]-y_vec[0]*ih-z_vec[0]*iw,
+													 node2_coord[1]-y_vec[1]*ih-z_vec[1]*iw,
+													 node2_coord[2]-y_vec[2]*ih-z_vec[2]*iw ], node2_color]
+											v_26 = [[node2_coord[0]-y_vec[0]*ih+z_vec[0]*iw,
+													 node2_coord[1]-y_vec[1]*ih+z_vec[1]*iw,
+													 node2_coord[2]-y_vec[2]*ih+z_vec[2]*iw ], node2_color]
+											v_27 = [[node2_coord[0]+y_vec[0]*ih+z_vec[0]*iw,
+													 node2_coord[1]+y_vec[1]*ih+z_vec[1]*iw,
+													 node2_coord[2]+y_vec[2]*ih+z_vec[2]*iw ], node2_color]
+											v_28 = [[node2_coord[0]+y_vec[0]*ih-z_vec[0]*iw,
+													 node2_coord[1]+y_vec[1]*ih-z_vec[1]*iw,
+													 node2_coord[2]+y_vec[2]*ih-z_vec[2]*iw ], node2_color]
+											v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24]]
+										faces = [[v_13,v_12,v_22],[v_22,v_23,v_13],
+												 [v_14,v_13,v_23],[v_23,v_24,v_14],
+												 [v_11,v_14,v_24],[v_24,v_21,v_11],
+												 [v_12,v_11,v_21],[v_21,v_22,v_12]]
+
+										if iw == 0. or ih == 0.:
+											faces += [[v_11,v_12,v_13],[v_13,v_14,v_11],
+													  [v_21,v_24,v_23],[v_23,v_22,v_21]]
+										else:
+											lines += [[v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_15],
+													  [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_25],
+													  [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+											faces += [[v_15,v_11,v_12],[v_12,v_16,v_15],
+													  [v_16,v_12,v_13],[v_13,v_17,v_16],
+													  [v_17,v_13,v_14],[v_14,v_18,v_17],
+													  [v_18,v_14,v_11],[v_11,v_15,v_18],
+													  [v_26,v_22,v_21],[v_21,v_25,v_26],
+													  [v_22,v_26,v_23],[v_26,v_27,v_23],
+													  [v_23,v_27,v_24],[v_27,v_28,v_24],
+													  [v_24,v_28,v_21],[v_25,v_21,v_28],
+													  [v_17,v_27,v_16],[v_27,v_26,v_16],
+													  [v_18,v_28,v_17],[v_28,v_27,v_17],
+													  [v_15,v_25,v_18],[v_25,v_28,v_18],
+													  [v_25,v_15,v_26],[v_15,v_16,v_26]]
+
+									elif elements[j].crossSection['Type'] == 'Circle':
+
+										r  = elements[j].crossSection['radius, r']
+										ir  = elements[j].crossSection['inner radius, ir']
+										vertices1 = []
+										vertices2 = []
+										pnts = 24
+										for v in range(pnts):
+											d = pnts/(v+1)
+											vc = np.cos(2*np.pi/d)
+											vs = np.sin(2*np.pi/d)
+											vertices1.append([[node1_coord[0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+															   node1_coord[1]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+															   node1_coord[2]+vs*y_vec[2]*r+vc*z_vec[2]*r ], node1_color])
+											vertices1[v][0] = rotatePointAboutAxis(vertices1[v][0],node1_coord, \
+																[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											vertices1[v][0] = rotatePointAboutAxis(vertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											vertices1[v][0] = rotatePointAboutAxis(vertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											vertices2.append([[node2_coord[0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+															   node2_coord[1]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+															   node2_coord[2]+vs*y_vec[2]*r+vc*z_vec[2]*r ], node2_color])
+											vertices2[v][0] = rotatePointAboutAxis(vertices2[v][0],node2_coord, \
+																[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											vertices2[v][0] = rotatePointAboutAxis(vertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											vertices2[v][0] = rotatePointAboutAxis(vertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										if ir != 0.:
+											ivertices1 = []
+											ivertices2 = []
+											for v in range(pnts):
+												d = pnts/(v+1)
+												vc = np.cos(2*np.pi/d)
+												vs = np.sin(2*np.pi/d)
+												ivertices1.append([[node1_coord[0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+																    node1_coord[1]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+																    node1_coord[2]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ], node1_color])
+												ivertices1[v][0] = rotatePointAboutAxis(ivertices1[v][0],node1_coord, \
+																[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												ivertices1[v][0] = rotatePointAboutAxis(ivertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												ivertices1[v][0] = rotatePointAboutAxis(ivertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												ivertices2.append([[node2_coord[0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+																    node2_coord[1]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+																    node2_coord[2]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ], node2_color])
+												ivertices2[v][0] = rotatePointAboutAxis(ivertices2[v][0],node2_coord, \
+																[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												ivertices2[v][0] = rotatePointAboutAxis(ivertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												ivertices2[v][0] = rotatePointAboutAxis(ivertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = []
+										faces = []
+										for v in range(pnts):
+											lines.append([vertices1[v-1],vertices1[v]])
+											lines.append([vertices2[v-1],vertices2[v]])
+										lines.append([vertices1[0],vertices2[0]])
+
+										if ir != 0.:
+											for v in range(pnts):
+												lines.append([ivertices1[v-1],ivertices1[v]])
+												lines.append([ivertices2[v-1],ivertices2[v]])
+											lines.append([ivertices1[0],ivertices2[0]])
+											for v in range(pnts-1):
+												faces.append([ivertices1[v],vertices1[v],vertices1[v+1]])
+												faces.append([vertices1[v+1],ivertices1[v+1],ivertices1[v]])
+												faces.append([ivertices2[v],vertices2[v+1],vertices2[v]])
+												faces.append([vertices2[v+1],ivertices2[v],ivertices2[v+1]])
+												faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+												faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+												faces.append([ivertices1[v],ivertices1[v+1],ivertices2[v]])
+												faces.append([ivertices1[v+1],ivertices2[v+1],ivertices2[v]])
+											faces.append([ivertices1[-1],vertices1[-1],vertices1[0]])
+											faces.append([vertices1[0],ivertices1[0],ivertices1[-1]])
+											faces.append([ivertices2[-1],vertices2[0],vertices2[-1]])
+											faces.append([vertices2[0],ivertices2[-1],ivertices2[0]])
+											faces.append([vertices1[-1],vertices2[-1],vertices2[0]])
+											faces.append([vertices2[0],vertices1[0],vertices1[-1]])
+											faces.append([ivertices1[-1],ivertices1[0],ivertices2[-1]])
+											faces.append([ivertices1[0],ivertices2[0],ivertices2[-1]])
+													
+										else:
+											vertices1.append([[node1_coord[0],
+															   node1_coord[1],
+															   node1_coord[2] ], node1_color])
+											vertices1[-1][0] = rotatePointAboutAxis(vertices1[-1][0],node1_coord, \
+																[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											vertices1[-1][0] = rotatePointAboutAxis(vertices1[-1][0],node1_coord, \
+																[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											vertices1[-1][0] = rotatePointAboutAxis(vertices1[-1][0],node1_coord, \
+																[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											vertices2.append([[node2_coord[0],
+															   node2_coord[1],
+															   node2_coord[2] ], node2_color])
+											vertices2[-1][0] = rotatePointAboutAxis(vertices2[-1][0],node2_coord, \
+																[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											vertices2[-1][0] = rotatePointAboutAxis(vertices2[-1][0],node2_coord, \
+																[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											vertices2[-1][0] = rotatePointAboutAxis(vertices2[-1][0],node2_coord, \
+																[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											for v in range(pnts):
+												faces.append([vertices1[-1],vertices1[v],vertices1[v+1]])
+												faces.append([vertices2[-1],vertices2[v+1],vertices2[v]])
+												faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+												faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+											faces.append([vertices1[-1],vertices1[-2],vertices1[0]])
+											faces.append([vertices2[-1],vertices2[0],vertices2[-2]])
+											faces.append([vertices1[-2],vertices2[-2],vertices2[0]])
+											faces.append([vertices2[0],vertices1[0],vertices1[-2]])
+
+									elif elements[j].crossSection['Type'] == 'L-Beam':
+
+										bw = elements[j].crossSection['bottom width, bw']
+										bt = elements[j].crossSection['bottom thickness, bt']
+										st = elements[j].crossSection['side thickness, st']
+										h  = elements[j].crossSection['height, h']
+										A1  = st*(h-bt)
+										A2  = bt*bw
+										A   = A1+A2
+										yC1 = (h/2.)+bt
+										yC2 = bt/2.
+										zC1 = st/2.
+										zC2 = bw/2.
+										if A != 0.:
+											yC = (A1*yC1+A2*yC2)/A
+											zC = (A1*zC1+A2*zC2)/A
+										else:
+											yC = 0.
+											zC = 0.
+										v_11  = [[node1_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node1_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node1_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node1_color]
+										v_13  = [[node1_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node1_color]
+										v_14  = [[node1_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+												  node1_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+												  node1_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ], node1_color]
+										v_15  = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ], node1_color]
+										v_16  = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node1_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node2_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node2_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node2_color]
+										v_23  = [[node2_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node2_color]
+										v_24  = [[node2_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+												  node2_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+												  node2_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ], node2_color]
+										v_25  = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ], node2_color]
+										v_26  = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],[v_15,v_16],[v_16,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],[v_25,v_26],[v_26,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],[v_15,v_25],[v_16,v_26]]
+										faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+												 [v_11,v_14,v_16],[v_16,v_14,v_15],
+												 [v_23,v_22,v_21],[v_21,v_24,v_23],
+												 [v_24,v_21,v_26],[v_24,v_26,v_25],
+												 [v_11,v_21,v_12],[v_12,v_21,v_22],
+												 [v_11,v_16,v_26],[v_26,v_21,v_11],
+												 [v_16,v_15,v_26],[v_26,v_15,v_25],
+												 [v_13,v_12,v_22],[v_22,v_23,v_13],
+												 [v_14,v_13,v_24],[v_24,v_13,v_23],
+												 [v_14,v_24,v_25],[v_25,v_15,v_14]]
+
+									elif elements[j].crossSection['Type'] == 'I-Beam':
+										tw = elements[j].crossSection['top width, tw']
+										tt = elements[j].crossSection['top thickness, tt']
+										mt = elements[j].crossSection['middle thickness, mt']
+										bw = elements[j].crossSection['bottom width, bw']
+										bt = elements[j].crossSection['bottom thickness, bt']
+										h  = elements[j].crossSection['height, h']
+										tw = tw/2.
+										tt = tt
+										mt = mt/2.
+										bw = bw/2.
+										bt = bt
+										h  = h/2.
+										v_11  = [[node1_coord[0]-y_vec[0]*h-z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*h-z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*h-z_vec[2]*bw ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*h+z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*h+z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*h+z_vec[2]*bw ], node1_color]
+										v_13  = [[node1_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*bw ], node1_color]
+										v_14  = [[node1_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*mt ], node1_color]
+										v_15  = [[node1_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*mt ], node1_color]
+										v_16  = [[node1_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*bw ], node1_color]
+										v_17  = [[node1_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*tw ], node1_color]
+										v_18  = [[node1_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*mt ], node1_color]
+										v_19  = [[node1_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*mt ], node1_color]
+										v_110 = [[node1_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*tw ], node1_color]
+										v_111 = [[node1_coord[0]+y_vec[0]*h+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*h+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*h+z_vec[2]*tw ], node1_color]
+										v_112 = [[node1_coord[0]+y_vec[0]*h-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*h-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*h-z_vec[2]*tw ], node1_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*h-z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*h-z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*h-z_vec[2]*bw ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*h+z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*h+z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*h+z_vec[2]*bw ], node2_color]
+										v_23  = [[node2_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*bw ], node2_color]
+										v_24  = [[node2_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*mt ], node2_color]
+										v_25  = [[node2_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*mt ], node2_color]
+										v_26  = [[node2_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*bw ], node2_color]
+										v_27  = [[node2_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*tw ], node2_color]
+										v_28  = [[node2_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*mt ], node2_color]
+										v_29  = [[node2_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*mt ], node2_color]
+										v_210 = [[node2_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*tw ], node2_color]
+										v_211 = [[node2_coord[0]+y_vec[0]*h+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*h+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*h+z_vec[2]*tw ], node2_color]
+										v_212 = [[node2_coord[0]+y_vec[0]*h-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*h-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*h-z_vec[2]*tw ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_19],
+												 [v_19,v_110],[v_110,v_111],[v_111,v_112],[v_112,v_17],
+												 [v_17,v_18],[v_18,v_15],[v_15,v_16],[v_16,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_29],
+												 [v_29,v_210],[v_210,v_211],[v_211,v_212],[v_212,v_27],
+												 [v_27,v_28],[v_28,v_25],[v_25,v_26],[v_26,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+												 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28],
+												 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+										faces = [[v_11,v_12,v_13],[v_13,v_16,v_11],
+												 [v_15,v_14,v_19],[v_19,v_18,v_15],
+												 [v_112,v_17,v_110],[v_110,v_111,v_112],
+												 [v_23,v_22,v_21],[v_21,v_26,v_23],
+												 [v_29,v_24,v_25],[v_25,v_28,v_29],
+												 [v_210,v_27,v_212],[v_212,v_211,v_210],
+												 [v_19,v_14,v_24],[v_24,v_29,v_19],
+												 [v_15,v_18,v_28],[v_28,v_25,v_15],
+												 [v_13,v_12,v_22],[v_22,v_23,v_13],
+												 [v_11,v_16,v_26],[v_26,v_21,v_11],
+												 [v_111,v_110,v_210],[v_210,v_211,v_111],
+												 [v_17,v_112,v_212],[v_212,v_27,v_17],
+												 [v_11,v_21,v_12],[v_21,v_22,v_12],
+												 [v_112,v_111,v_212],[v_212,v_111,v_211],
+												 [v_14,v_13,v_24],[v_24,v_13,v_23],
+												 [v_16,v_15,v_26],[v_26,v_15,v_25],
+												 [v_18,v_17,v_27],[v_27,v_28,v_18],
+												 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+									elif elements[j].crossSection['Type'] == 'C-Beam':
+										tw = elements[j].crossSection['top width, tw']
+										tt = elements[j].crossSection['top thickness, tt']
+										mt = elements[j].crossSection['middle thickness, mt']
+										bw = elements[j].crossSection['bottom width, bw']
+										bt = elements[j].crossSection['bottom thickness, bt']
+										h  = elements[j].crossSection['height, h']
+										A1  = tt*tw
+										A2  = mt*(h-tt-bt)
+										A3  = bt*bw
+										A   = A1+A2+A3
+										zC1 = tw/2.
+										zC2 = mt/2.
+										zC3 = bw/2.
+										yC1 = h-(tt/2.)
+										yC2 = (h-tt)/2.
+										yC3 = bt/2.
+										if A != 0.:
+											zC = (A1*zC1+A2*zC2+A3*zC3)/A
+											yC = (A1*yC1+A2*yC2+A3*yC3)/A
+										else:
+											zC = 0.
+											yC = 0.
+										v_11  = [[node1_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node1_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node1_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node1_color]
+										v_13  = [[node1_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node1_color]
+										v_14  = [[node1_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+												  node1_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+												  node1_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ], node1_color]
+										v_15  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ], node1_color]
+										v_16  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ], node1_color]
+										v_17  = [[node1_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+												  node1_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+												  node1_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ], node1_color]
+										v_18  = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node1_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node2_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node2_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node2_color]
+										v_23  = [[node2_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node2_color]
+										v_24  = [[node2_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+												  node2_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+												  node2_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ], node2_color]
+										v_25  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ], node2_color]
+										v_26  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ], node2_color]
+										v_27  = [[node2_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+												  node2_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+												  node2_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ], node2_color]
+										v_28  = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],
+												 [v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],
+												 [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+												 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+										faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+												 [v_11,v_14,v_18],[v_18,v_14,v_15],
+												 [v_15,v_16,v_17],[v_17,v_18,v_15],
+												 [v_23,v_22,v_21],[v_21,v_24,v_23],
+												 [v_24,v_21,v_28],[v_24,v_28,v_25],
+												 [v_26,v_25,v_27],[v_28,v_27,v_25],
+												 [v_11,v_21,v_12],[v_12,v_21,v_22],
+												 [v_11,v_18,v_28],[v_28,v_21,v_11],
+												 [v_18,v_17,v_28],[v_28,v_17,v_27],
+												 [v_16,v_26,v_27],[v_27,v_17,v_16],
+												 [v_16,v_15,v_25],[v_25,v_26,v_16],
+												 [v_14,v_24,v_25],[v_25,v_15,v_14],
+												 [v_13,v_24,v_14],[v_24,v_13,v_23],
+												 [v_13,v_12,v_22],[v_22,v_23,v_13]]
+
+									elif elements[j].crossSection['Type'] == 'T-Beam':
+										tw = elements[j].crossSection['top width, tw']
+										tt = elements[j].crossSection['top thickness, tt']
+										mt = elements[j].crossSection['middle thickness, mt']
+										h  = elements[j].crossSection['height, h']
+										A1  = mt*(h-tt)
+										A2  = tt*tw
+										A   = A1+A2
+										yC1 = h-(tt/2.)
+										yC2 = (h-tt)/2.
+										if A != 0.:
+											yC = (A1*yC1+A2*yC2)/A
+										else:
+											yC = 0.
+										tw = tw/2.
+										tt = tt
+										mt = mt/2.
+										v_11  = [[node1_coord[0]-y_vec[0]*yC-z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*yC-z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*yC-z_vec[2]*mt ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*yC+z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*yC+z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*yC+z_vec[2]*mt ], node1_color]
+										v_17  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ], node1_color]
+										v_18  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ], node1_color]
+										v_19  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ], node1_color]
+										v_110 = [[node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ], node1_color]
+										v_111 = [[node1_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*tw ], node1_color]
+										v_112 = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*tw ], node2_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*yC-z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*yC-z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*yC-z_vec[2]*mt ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*yC+z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*yC+z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*yC+z_vec[2]*mt ], node2_color]
+										v_27  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ], node2_color]
+										v_28  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ], node2_color]
+										v_29  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ], node2_color]
+										v_210 = [[node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ], node2_color]
+										v_211 = [[node2_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*tw ], node2_color]
+										v_212 = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*tw ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_19],[v_19,v_110],[v_110,v_111],
+												 [v_111,v_112],[v_112,v_17],[v_17,v_18],[v_18,v_11],
+												 [v_21,v_22],[v_22,v_29],[v_29,v_210],[v_210,v_211],
+												 [v_211,v_212],[v_212,v_27],[v_27,v_28],[v_28,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_17,v_27],[v_18,v_28],
+												 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+										faces = [[v_11,v_12,v_19],[v_19,v_18,v_11],
+												 [v_112,v_17,v_110],[v_110,v_111,v_112],
+												 [v_29,v_22,v_21],[v_21,v_28,v_29],
+												 [v_210,v_27,v_212],[v_212,v_211,v_210],
+												 [v_19,v_12,v_22],[v_22,v_29,v_19],
+												 [v_11,v_18,v_28],[v_28,v_21,v_11],
+												 [v_111,v_110,v_210],[v_210,v_211,v_111],
+												 [v_17,v_112,v_212],[v_212,v_27,v_17],
+												 [v_11,v_21,v_12],[v_21,v_22,v_12],
+												 [v_112,v_111,v_212],[v_212,v_111,v_211],
+												 [v_18,v_17,v_27],[v_27,v_28,v_18],
+												 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+									else:
+										pass
+
+									glLineWidth(2.0)
+									glColor3f(0.05, 0.1, 0.05)
+									for line in range(len(lines)):
+										glBegin(GL_LINES)
+										glVertex3f(lines[line][0][0][0],lines[line][0][0][1],lines[line][0][0][2])
+										glVertex3f(lines[line][1][0][0],lines[line][1][0][1],lines[line][1][0][2])
+										glEnd()
+
+									for face in range(len(faces)):
+										glBegin(GL_TRIANGLES)
+										glColor3f(faces[face][0][1][0],faces[face][0][1][1],faces[face][0][1][2])
+										glVertex3f(faces[face][0][0][0],faces[face][0][0][1],faces[face][0][0][2])
+										glColor3f(faces[face][1][1][0],faces[face][1][1][1],faces[face][1][1][2])
+										glVertex3f(faces[face][1][0][0],faces[face][1][0][1],faces[face][1][0][2])
+										glColor3f(faces[face][2][1][0],faces[face][2][1][1],faces[face][2][1][2])
+										glVertex3f(faces[face][2][0][0],faces[face][2][0][1],faces[face][2][0][2])
+										glEnd()
+						
 					glEndList()
 
 				elif result == 'nodeforce':
@@ -7103,12 +10251,24 @@ or .sol-files.
 					disp_max = 0.
 					disp_min = 0.
 					for i in nodes:
-						if 'nodeforce' not in nodes[i].solutions[solution]:
-							pass
-						elif nodes[i].solutions[solution]['nodeforce'][6] >= disp_max:
-							disp_max = nodes[i].solutions[solution]['nodeforce'][6]
+						if subresult == 'Force':
+							if 'nodeforce' not in nodes[i].solutions[solution]:
+								pass
+							elif nodes[i].solutions[solution]['nodeforce'][6] >= disp_max:
+								disp_max = nodes[i].solutions[solution]['nodeforce'][6]
+							else:
+								pass
 						else:
-							pass
+							if 'nodeforce' not in nodes[i].solutions[solution]:
+								pass
+							else:
+								moment_magn = np.sqrt((nodes[i].solutions[solution]['nodeforce'][3])**2 + \
+													  (nodes[i].solutions[solution]['nodeforce'][4])**2 + \
+													  (nodes[i].solutions[solution]['nodeforce'][5])**2)
+								if moment_magn >= disp_max:
+									disp_max = moment_magn
+								else:
+									pass
 					self.displayLists[solution][result][subresult]['info'] = 'Max %.4E' % (disp_max)
 
 					self.displayLists[solution][result][subresult]['max_val'] = disp_max
@@ -7117,52 +10277,198 @@ or .sol-files.
 					glNewList(self.displayLists[solution][result][subresult]['shaded'], GL_COMPILE)
 
 					disp_mag_values = [ disp_min,
-										disp_min+(disp_max-disp_min)*1./8.,
-										disp_min+(disp_max-disp_min)*2./8.,
-										disp_min+(disp_max-disp_min)*3./8.,
-										disp_min+(disp_max-disp_min)*4./8.,
-										disp_min+(disp_max-disp_min)*5./8.,
-										disp_min+(disp_max-disp_min)*6./8.,
-										disp_min+(disp_max-disp_min)*7./8.,
+										disp_min+(disp_max-disp_min)*1./12.,
+										disp_min+(disp_max-disp_min)*2./12.,
+										disp_min+(disp_max-disp_min)*3./12.,
+										disp_min+(disp_max-disp_min)*4./12.,
+										disp_min+(disp_max-disp_min)*5./12.,
+										disp_min+(disp_max-disp_min)*6./12.,
+										disp_min+(disp_max-disp_min)*7./12.,
+										disp_min+(disp_max-disp_min)*8./12.,
+										disp_min+(disp_max-disp_min)*9./12.,
+										disp_min+(disp_max-disp_min)*10./12.,
+										disp_min+(disp_max-disp_min)*11./12.,
 										disp_max ]
-					disp_colors = [ (0.0, 0.0, 1.0),  # blue
-									(0.0, 0.5, 1.0),  # ocean
-									(0.0, 1.0, 1.0),  # cyan
-									(0.0, 1.0, 0.5),  # turqoise
-									(0.0, 1.0, 0.0),  # green
-									(0.5, 1.0, 0.0),  # spring green
-									(1.0, 1.0, 0.0),  # yellow
-									(1.0, 0.5, 0.0),  # orange
-									(1.0, 0.0, 0.0) ] # red
+					disp_colors = [ (  0.0,   0.0,   1.0), # blue
+									(  0.0, 0.333,   1.0),  
+									(  0.0, 0.666,   1.0),  
+									(  0.0,   1.0,   1.0),  
+									(  0.0,   1.0, 0.666),  
+									(  0.0,   1.0, 0.333),
+									(  0.0,   1.0,   0.0), # green
+									(0.333,   1.0,   0.0),  
+									(0.666,   1.0,   0.0),  
+									(  1.0,   1.0,   0.0),  
+									(  1.0, 0.666,   0.0),  
+									(  1.0, 0.333,   0.0),
+									(  1.0,   0.0,   0.0) ] # red
 					disp_color = disp_colors[0]
 
-					glLineWidth(12.0)
+					glLineWidth(9.0)
 					for j in nodes:
-						for k in range(len(disp_mag_values)):
+						if subresult == 'Force':
+							for k in range(len(disp_mag_values)):
+								if 'nodeforce' not in nodes[j].solutions[solution]:
+									disp_color = (0.1, 0.1, 0.1)
+								elif nodes[j].solutions[solution]['nodeforce'][6] > disp_mag_values[k]:
+									pass
+								else:
+									disp_color = disp_colors[k]
+									break
 							if 'nodeforce' not in nodes[j].solutions[solution]:
-								disp_color = (0.1, 0.1, 0.1)
-							elif nodes[j].solutions[solution]['nodeforce'][6] > disp_mag_values[k]:
 								pass
 							else:
-								disp_color = disp_colors[k]
-								break
-						glBegin(GL_LINES)
-						glColor3f(disp_color[0], disp_color[1], disp_color[2])
-						glVertex3f(nodes[j].coord[0][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][0]),
-								   nodes[j].coord[1][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][1]),
-								   nodes[j].coord[2][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][2]))
-						if 'nodeforce' not in nodes[j].solutions[solution]:
-							glVertex3f(nodes[j].coord[0][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][0]),
-								   	   nodes[j].coord[1][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][1]),
-								   	   nodes[j].coord[2][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][2]))
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+
+								if nodes[j].solutions[solution]['nodeforce'][6] < 1.e-7:
+									pass
+								else:
+									glBegin(GL_LINES)
+									glVertex3f(nodes[j].coord[0][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][0],
+											   nodes[j].coord[1][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][1], 
+											   nodes[j].coord[2][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][2])
+									x = nodes[j].solutions[solution]['nodeforce'][0]/disp_max
+									y = nodes[j].solutions[solution]['nodeforce'][1]/disp_max
+									z = nodes[j].solutions[solution]['nodeforce'][2]/disp_max
+									max_xyz = max(abs(x),abs(y),abs(z))
+									if max_xyz == 0.:
+										max_xyz = 0.1
+									x = -x/max_xyz
+									y = -y/max_xyz
+									z = -z/max_xyz
+									glVertex3f(nodes[j].coord[0][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][0] \
+												-x*0.1*mesh.viewRadius, 
+											   nodes[j].coord[1][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][1] \
+												-y*0.1*mesh.viewRadius, 
+											   nodes[j].coord[2][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][2] \
+												-z*0.1*mesh.viewRadius)
+									glEnd()
+									angle = np.pi/4
+									if (x == 0) and (y == 0):
+										x_arrow = x*np.cos(angle) - z*np.sin(angle)
+										y_arrow = y
+										z_arrow = x*np.sin(angle) + z*np.cos(angle)
+									else:
+										x_arrow = x*np.cos(angle) - y*np.sin(angle)
+										y_arrow = x*np.sin(angle) + y*np.cos(angle)
+										z_arrow = z
+									glBegin(GL_LINES)
+									glVertex3f(nodes[j].coord[0][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][0] \
+												-x*0.1*mesh.viewRadius, 
+											   nodes[j].coord[1][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][1] \
+												-y*0.1*mesh.viewRadius, 
+											   nodes[j].coord[2][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][2] \
+												-z*0.1*mesh.viewRadius)
+									glVertex3f(nodes[j].coord[0][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][0] \
+												-x*0.1*mesh.viewRadius + x_arrow*0.02*mesh.viewRadius, 
+											   nodes[j].coord[1][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][1] \
+												-y*0.1*mesh.viewRadius + y_arrow*0.02*mesh.viewRadius, 
+											   nodes[j].coord[2][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][2] \
+												-z*0.1*mesh.viewRadius + z_arrow*0.02*mesh.viewRadius)
+									glEnd()
+									angle = -np.pi/4
+									if (x == 0) and (y == 0):
+										x_arrow = x*np.cos(angle) - z*np.sin(angle)
+										y_arrow = y
+										z_arrow = x*np.sin(angle) + z*np.cos(angle)
+									else:
+										x_arrow = x*np.cos(angle) - y*np.sin(angle)
+										y_arrow = x*np.sin(angle) + y*np.cos(angle)
+										z_arrow = z
+									glBegin(GL_LINES)
+									glVertex3f(nodes[j].coord[0][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][0] \
+												-x*0.1*mesh.viewRadius, 
+											   nodes[j].coord[1][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][1] \
+												-y*0.1*mesh.viewRadius, 
+											   nodes[j].coord[2][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][2] \
+												-z*0.1*mesh.viewRadius)
+									glVertex3f(nodes[j].coord[0][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][0] \
+												-x*0.1*mesh.viewRadius + x_arrow*0.02*mesh.viewRadius, 
+											   nodes[j].coord[1][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][1] \
+												-y*0.1*mesh.viewRadius + y_arrow*0.02*mesh.viewRadius, 
+											   nodes[j].coord[2][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][2] \
+												-z*0.1*mesh.viewRadius + z_arrow*0.02*mesh.viewRadius)
+									glEnd()
+
 						else:
-							glVertex3f(nodes[j].coord[0][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][0]) + \
-										(nodes[j].solutions[solution]['nodeforce'][0]/disp_max)*0.3*mesh.viewRadius,
-									   nodes[j].coord[1][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][1]) + \
-										(nodes[j].solutions[solution]['nodeforce'][1]/disp_max)*0.3*mesh.viewRadius,
-									   nodes[j].coord[2][0] + scale_factor*(displacements[nodes[j].number].solutions[solution]['displacement'][2]) + \
-										(nodes[j].solutions[solution]['nodeforce'][2]/disp_max)*0.3*mesh.viewRadius)
-						glEnd()
+							for k in range(len(disp_mag_values)):
+								if 'nodeforce' not in nodes[j].solutions[solution]:
+									disp_color = (0.1, 0.1, 0.1)
+								else:
+									moment_magn = np.sqrt((nodes[j].solutions[solution]['nodeforce'][3])**2 + \
+														  (nodes[j].solutions[solution]['nodeforce'][4])**2 + \
+														  (nodes[j].solutions[solution]['nodeforce'][5])**2)
+									if moment_magn > disp_mag_values[k]:
+										pass
+									else:
+										disp_color = disp_colors[k]
+										break
+
+							if 'nodeforce' not in nodes[j].solutions[solution]:
+								pass
+							else:
+								origin = [ nodes[j].coord[0][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][0],
+										   nodes[j].coord[1][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][1], 
+										   nodes[j].coord[2][0] + scale_factor*displacements[nodes[j].number].solutions[solution]['displacement'][2] ]
+								moment_magn = np.sqrt((nodes[j].solutions[solution]['nodeforce'][3])**2 + \
+													  (nodes[j].solutions[solution]['nodeforce'][4])**2 + \
+													  (nodes[j].solutions[solution]['nodeforce'][5])**2)
+								if moment_magn < 1.e-7:
+									pass
+								else:
+									mx = nodes[j].solutions[solution]['nodeforce'][3]
+									my = nodes[j].solutions[solution]['nodeforce'][4]
+									mz = nodes[j].solutions[solution]['nodeforce'][5]
+
+									if abs(mx) < 0.001 and abs(my) > 0.001:
+										n1_offset = np.array([origin[0]-1, origin[1], origin[2]])
+										n2_offset = np.array([origin[0]+mx-1, origin[1]+my, origin[2]+mz])
+									else:
+										n1_offset = np.array([origin[0], origin[1]+1, origin[2]])
+										n2_offset = np.array([origin[0]+mx, origin[1]+my+1, origin[2]+mz])
+									mv = np.array([mx, my, mz])
+									xu = mv/moment_magn
+									n_offset = n1_offset + 0.5*(n2_offset-n1_offset)
+									ov = n_offset - np.array([origin[0],origin[1],origin[2]])
+									yv = ov - np.dot(ov,xu)*xu
+									mag = sqrt(yv[0]**2 + yv[1]**2 + yv[2]**2)
+									if mag == 0.:
+										yu = yv
+									else:
+										yu = yv/mag
+									zu = np.cross(xu, yu)
+
+									scale = 0.05*mesh.viewRadius
+									vertices = []
+									arrow = []
+									for v in range(18):
+										d = 24/(v+1)
+										vc = np.cos(2*np.pi/d)
+										vs = np.sin(2*np.pi/d)
+										vertices.append([ origin[0]+vs*yu[0]*scale+vc*zu[0]*scale,
+														  origin[1]+vs*yu[1]*scale+vc*zu[1]*scale,
+														  origin[2]+vs*yu[2]*scale+vc*zu[2]*scale ])
+										if v == 1:
+											arrow.append([ origin[0]+vs*yu[0]*1.3*scale+vc*zu[0]*1.3*scale,
+														   origin[1]+vs*yu[1]*1.3*scale+vc*zu[1]*1.3*scale,
+														   origin[2]+vs*yu[2]*1.3*scale+vc*zu[2]*1.3*scale ])
+											arrow.append([ origin[0]+vs*yu[0]*0.7*scale+vc*zu[0]*0.7*scale,
+														   origin[1]+vs*yu[1]*0.7*scale+vc*zu[1]*0.7*scale,
+														   origin[2]+vs*yu[2]*0.7*scale+vc*zu[2]*0.7*scale ])
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									for v in range(17):
+										glBegin(GL_LINES)
+										glVertex3f(vertices[v][0],vertices[v][1],vertices[v][2])
+										glVertex3f(vertices[v+1][0],vertices[v+1][1],vertices[v+1][2])
+										glEnd()
+									glBegin(GL_LINES)
+									glVertex3f(vertices[0][0],vertices[0][1],vertices[0][2])
+									glVertex3f(arrow[0][0],arrow[0][1],arrow[0][2])
+									glEnd()
+									glBegin(GL_LINES)
+									glVertex3f(vertices[0][0],vertices[0][1],vertices[0][2])
+									glVertex3f(arrow[1][0],arrow[1][1],arrow[1][2])
+									glEnd()
 					glEndList()
 
 				elif result == 'elementforce':
@@ -7182,48 +10488,28 @@ or .sol-files.
 						elif subresult == 'FY':
 							if elements[i].solutions[solution]['elementforce'][1] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][1]
-							if elements[i].solutions[solution]['elementforce'][1] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][1]
 							if elements[i].solutions[solution]['elementforce'][6] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][6]
-							if elements[i].solutions[solution]['elementforce'][6] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][6]
 						elif subresult == 'FZ':
 							if elements[i].solutions[solution]['elementforce'][2] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][2]
-							if elements[i].solutions[solution]['elementforce'][2] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][2]
 							if elements[i].solutions[solution]['elementforce'][7] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][7]
-							if elements[i].solutions[solution]['elementforce'][7] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][7]
 						elif subresult == 'MX':
 							if elements[i].solutions[solution]['elementforce'][3] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][3]
-							if elements[i].solutions[solution]['elementforce'][3] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][3]
 							if elements[i].solutions[solution]['elementforce'][8] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][8]
-							if elements[i].solutions[solution]['elementforce'][8] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][8]
 						elif subresult == 'MY':
 							if elements[i].solutions[solution]['elementforce'][4] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][4]
-							if elements[i].solutions[solution]['elementforce'][4] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][4]
 							if elements[i].solutions[solution]['elementforce'][9] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][9]
-							if elements[i].solutions[solution]['elementforce'][9] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][9]
 						elif subresult == 'MZ':
 							if elements[i].solutions[solution]['elementforce'][5] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][5]
-							if elements[i].solutions[solution]['elementforce'][5] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][5]
 							if elements[i].solutions[solution]['elementforce'][10] >= disp_max:
 								disp_max = elements[i].solutions[solution]['elementforce'][10]
-							if elements[i].solutions[solution]['elementforce'][10] <= disp_min:
-								disp_min = elements[i].solutions[solution]['elementforce'][10]
 						else:
 							pass
 					self.displayLists[solution][result][subresult]['info'] = 'Max %.4E' % (disp_max)
@@ -7234,23 +10520,31 @@ or .sol-files.
 					glNewList(self.displayLists[solution][result][subresult]['shaded'], GL_COMPILE)
 
 					disp_mag_values = [ disp_min,
-										disp_min+(disp_max-disp_min)*1./8.,
-										disp_min+(disp_max-disp_min)*2./8.,
-										disp_min+(disp_max-disp_min)*3./8.,
-										disp_min+(disp_max-disp_min)*4./8.,
-										disp_min+(disp_max-disp_min)*5./8.,
-										disp_min+(disp_max-disp_min)*6./8.,
-										disp_min+(disp_max-disp_min)*7./8.,
+										disp_min+(disp_max-disp_min)*1./12.,
+										disp_min+(disp_max-disp_min)*2./12.,
+										disp_min+(disp_max-disp_min)*3./12.,
+										disp_min+(disp_max-disp_min)*4./12.,
+										disp_min+(disp_max-disp_min)*5./12.,
+										disp_min+(disp_max-disp_min)*6./12.,
+										disp_min+(disp_max-disp_min)*7./12.,
+										disp_min+(disp_max-disp_min)*8./12.,
+										disp_min+(disp_max-disp_min)*9./12.,
+										disp_min+(disp_max-disp_min)*10./12.,
+										disp_min+(disp_max-disp_min)*11./12.,
 										disp_max ]
-					disp_colors = [ (0.0, 0.0, 1.0),  # blue
-									(0.0, 0.5, 1.0),  # ocean
-									(0.0, 1.0, 1.0),  # cyan
-									(0.0, 1.0, 0.5),  # turqoise
-									(0.0, 1.0, 0.0),  # green
-									(0.5, 1.0, 0.0),  # spring green
-									(1.0, 1.0, 0.0),  # yellow
-									(1.0, 0.5, 0.0),  # orange
-									(1.0, 0.0, 0.0) ] # red
+					disp_colors = [ (  0.0,   0.0,   1.0), # blue
+									(  0.0, 0.333,   1.0),  
+									(  0.0, 0.666,   1.0),  
+									(  0.0,   1.0,   1.0),  
+									(  0.0,   1.0, 0.666),  
+									(  0.0,   1.0, 0.333),
+									(  0.0,   1.0,   0.0), # green
+									(0.333,   1.0,   0.0),  
+									(0.666,   1.0,   0.0),  
+									(  1.0,   1.0,   0.0),  
+									(  1.0, 0.666,   0.0),  
+									(  1.0, 0.333,   0.0),
+									(  1.0,   0.0,   0.0) ] # red
 					disp_color = disp_colors[0]
 
 					glLineWidth(9.0)
@@ -7264,6 +10558,7 @@ or .sol-files.
 							else:
 								disp_color = disp_colors[k]
 								break
+						node1_color = deepcopy(disp_color)
 						glBegin(GL_LINES)
 						glColor3f(disp_color[0], disp_color[1], disp_color[2])
 						glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] + 
@@ -7281,6 +10576,7 @@ or .sol-files.
 							else:
 								disp_color = disp_colors[k]
 								break
+						node2_color = deepcopy(disp_color)
 						glColor3f(disp_color[0], disp_color[1], disp_color[2])
 						glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
 									scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
@@ -7289,271 +10585,872 @@ or .sol-files.
 								   nodes[elements[j].nodes[1].number].coord[2][0] +
 									scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
 						glEnd()
-						if elements[j].type in ['BEAM2N2D', 'BEAM2N']:
-							# Draw bending or shear diagram
-							scale = max([abs(disp_min), abs(disp_max)])
-							if scale == 0.:
-								scale = 1.e-9
-							if subresult in ['FY', 'FZ']:
-								glColor4f(0.8, 0.4, 0.1, 0.7)
-								if subresult == 'FY':
-									shear_n1 = elements[j].solutions[solution]['elementforce'][1]
-									shear_n2 = elements[j].solutions[solution]['elementforce'][6]
-									vector = 'y-vec'
-								else:
-									shear_n1 = elements[j].solutions[solution]['elementforce'][2]
-									shear_n2 = elements[j].solutions[solution]['elementforce'][7]
-									vector = 'z-vec'
-								if(shear_n1<0 and shear_n2>0):
-									shear_n1 = -abs(shear_n1)
-									shear_n2 = -abs(shear_n2)
-								elif(shear_n1<0 and shear_n2<0):
-									shear_n1 = -abs(shear_n1)
-									shear_n2 = abs(shear_n2)
-								elif(shear_n1>0 and shear_n2>0):
-									shear_n1 = abs(shear_n1)
-									shear_n2 = -abs(shear_n2)
-								elif(shear_n1>0 and shear_n2<0):
-									shear_n1 = abs(shear_n1)
-									shear_n2 = abs(shear_n2)
-								elif(shear_n1>0 and shear_n2==0):
-									shear_n1 = abs(shear_n1)
-								elif(shear_n1<0 and shear_n2==0):
-									shear_n1 = -abs(shear_n1)
-								# triangle 1
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(shear_n1/scale))
-								glEnd()
-								# triangle 2
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(shear_n1/scale))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glEnd()
-								# triangle 3
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(shear_n1/scale))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(shear_n2/scale),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(shear_n2/scale),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(shear_n2/scale))
-								glEnd()
-								# triangle 4
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(shear_n1/scale),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(shear_n1/scale))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(shear_n2/scale),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(shear_n2/scale),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(shear_n2/scale))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glEnd()
-							elif subresult in ['MX', 'MY', 'MZ']:
-								glColor4f(0.5, 0.1, 0.5, 0.7)
-								if subresult == 'MX':
-									bend_n1 = elements[j].solutions[solution]['elementforce'][3]
-									bend_n2 = elements[j].solutions[solution]['elementforce'][8]
-									vector = 'y-vec'
-								elif subresult == 'MY':
-									bend_n1 = elements[j].solutions[solution]['elementforce'][4]
-									bend_n2 = elements[j].solutions[solution]['elementforce'][9]
-									vector = 'z-vec'
-								else:
-									bend_n1 = elements[j].solutions[solution]['elementforce'][5]
-									bend_n2 = elements[j].solutions[solution]['elementforce'][10]
-									vector = 'y-vec'
-								if(bend_n1<0 and bend_n2>0):
-									bend_n1 = -abs(bend_n1)
-									bend_n2 = -abs(bend_n2)
-								elif(bend_n1<0 and bend_n2<0):
-									bend_n1 = -abs(bend_n1)
-									bend_n2 = abs(bend_n2)
-								elif(bend_n1>0 and bend_n2>0):
-									bend_n1 = abs(bend_n1)
-									bend_n2 = -abs(bend_n2)
-								elif(bend_n1>0 and bend_n2<0):
-									bend_n1 = abs(bend_n1)
-									bend_n2 = abs(bend_n2)
-								elif(bend_n1>0 and bend_n2==0):
-									bend_n1 = abs(bend_n1)
-								elif(bend_n1<0 and bend_n2==0):
-									bend_n1 = -abs(bend_n1)
-								# triangle 1
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(bend_n1/scale)*0.1*mesh.viewRadius)
-								glEnd()
-								# triangle 2
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(bend_n1/scale)*0.1*mesh.viewRadius)
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glEnd()
-								# triangle 3
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(bend_n1/scale)*0.1*mesh.viewRadius)
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(bend_n2/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(bend_n2/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(bend_n2/scale)*0.1*mesh.viewRadius)
-								glEnd()
-								# triangle 4
-								glBegin(GL_TRIANGLES)
-								glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(bend_n1/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[0].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(bend_n1/scale)*0.1*mesh.viewRadius)
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]) +
-											elements[j].orientation[vector][0]*(bend_n2/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]) +
-											elements[j].orientation[vector][1]*(bend_n2/scale)*0.1*mesh.viewRadius,
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]) +
-											elements[j].orientation[vector][2]*(bend_n2/scale)*0.1*mesh.viewRadius)
-								glVertex3f(nodes[elements[j].nodes[1].number].coord[0][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[1].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[1].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2]))
-								glEnd()
+
+						if elements[j].type in ['BEAM2N2D', 'BEAM2N', 'ROD2N2D', 'ROD2N']:
+							if hasattr(elements[j],'crossSection'):
+								if hasattr(elements[j],'orientation'):
+									node1_coord = [nodes[elements[j].nodes[0].number].coord[0][0] + 
+													scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[0].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[0].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2])]
+									node1_rotation = [scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][3]),
+													  scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][4]),
+													  scale_factor*(displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][5])]
+									node2_coord = [nodes[elements[j].nodes[1].number].coord[0][0] +
+													scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[1].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[1].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][2])]
+									node2_rotation = [scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][3]),
+													  scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][4]),
+													  scale_factor*(displacements[elements[j].nodes[1].number].solutions[solution]['displacement'][5])]
+
+									faces = []
+									lines = []
+									x_vec = elements[j].orientation['x-vec']
+									y_vec = elements[j].orientation['y-vec']
+									z_vec = elements[j].orientation['z-vec']
+
+									if elements[j].crossSection['Type'] == 'Rectangle':
+
+										w  = elements[j].crossSection['width, w']
+										h  = elements[j].crossSection['height, h']
+										iw = elements[j].crossSection['inner width, iw']
+										ih = elements[j].crossSection['inner height, ih']
+										w  = w/2.
+										h  = h/2.
+										iw = iw/2.
+										ih = ih/2.
+										v_11 = [[node1_coord[0]-y_vec[0]*h-z_vec[0]*w,
+												 node1_coord[1]-y_vec[1]*h-z_vec[1]*w,
+												 node1_coord[2]-y_vec[2]*h-z_vec[2]*w ], node1_color]
+										v_12 = [[node1_coord[0]-y_vec[0]*h+z_vec[0]*w,
+												 node1_coord[1]-y_vec[1]*h+z_vec[1]*w,
+												 node1_coord[2]-y_vec[2]*h+z_vec[2]*w ], node1_color]
+										v_13 = [[node1_coord[0]+y_vec[0]*h+z_vec[0]*w,
+												 node1_coord[1]+y_vec[1]*h+z_vec[1]*w,
+												 node1_coord[2]+y_vec[2]*h+z_vec[2]*w ], node1_color]
+										v_14 = [[node1_coord[0]+y_vec[0]*h-z_vec[0]*w,
+												 node1_coord[1]+y_vec[1]*h-z_vec[1]*w,
+												 node1_coord[2]+y_vec[2]*h-z_vec[2]*w ], node1_color]
+										v_21 = [[node2_coord[0]-y_vec[0]*h-z_vec[0]*w,
+												 node2_coord[1]-y_vec[1]*h-z_vec[1]*w,
+												 node2_coord[2]-y_vec[2]*h-z_vec[2]*w ], node2_color]
+										v_22 = [[node2_coord[0]-y_vec[0]*h+z_vec[0]*w,
+												 node2_coord[1]-y_vec[1]*h+z_vec[1]*w,
+												 node2_coord[2]-y_vec[2]*h+z_vec[2]*w ], node2_color]
+										v_23 = [[node2_coord[0]+y_vec[0]*h+z_vec[0]*w,
+												 node2_coord[1]+y_vec[1]*h+z_vec[1]*w,
+												 node2_coord[2]+y_vec[2]*h+z_vec[2]*w ], node2_color]
+										v_24 = [[node2_coord[0]+y_vec[0]*h-z_vec[0]*w,
+												 node2_coord[1]+y_vec[1]*h-z_vec[1]*w,
+												 node2_coord[2]+y_vec[2]*h-z_vec[2]*w ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										if iw != 0. or ih != 0.:
+											v_15 = [[node1_coord[0]-y_vec[0]*ih-z_vec[0]*iw,
+													 node1_coord[1]-y_vec[1]*ih-z_vec[1]*iw,
+													 node1_coord[2]-y_vec[2]*ih-z_vec[2]*iw ], node1_color]
+											v_16 = [[node1_coord[0]-y_vec[0]*ih+z_vec[0]*iw,
+													 node1_coord[1]-y_vec[1]*ih+z_vec[1]*iw,
+													 node1_coord[2]-y_vec[2]*ih+z_vec[2]*iw ], node1_color]
+											v_17 = [[node1_coord[0]+y_vec[0]*ih+z_vec[0]*iw,
+													 node1_coord[1]+y_vec[1]*ih+z_vec[1]*iw,
+													 node1_coord[2]+y_vec[2]*ih+z_vec[2]*iw ], node1_color]
+											v_18 = [[node1_coord[0]+y_vec[0]*ih-z_vec[0]*iw,
+													 node1_coord[1]+y_vec[1]*ih-z_vec[1]*iw,
+													 node1_coord[2]+y_vec[2]*ih-z_vec[2]*iw ], node1_color]
+											v_25 = [[node2_coord[0]-y_vec[0]*ih-z_vec[0]*iw,
+													 node2_coord[1]-y_vec[1]*ih-z_vec[1]*iw,
+													 node2_coord[2]-y_vec[2]*ih-z_vec[2]*iw ], node2_color]
+											v_26 = [[node2_coord[0]-y_vec[0]*ih+z_vec[0]*iw,
+													 node2_coord[1]-y_vec[1]*ih+z_vec[1]*iw,
+													 node2_coord[2]-y_vec[2]*ih+z_vec[2]*iw ], node2_color]
+											v_27 = [[node2_coord[0]+y_vec[0]*ih+z_vec[0]*iw,
+													 node2_coord[1]+y_vec[1]*ih+z_vec[1]*iw,
+													 node2_coord[2]+y_vec[2]*ih+z_vec[2]*iw ], node2_color]
+											v_28 = [[node2_coord[0]+y_vec[0]*ih-z_vec[0]*iw,
+													 node2_coord[1]+y_vec[1]*ih-z_vec[1]*iw,
+													 node2_coord[2]+y_vec[2]*ih-z_vec[2]*iw ], node2_color]
+											v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24]]
+										faces = [[v_13,v_12,v_22],[v_22,v_23,v_13],
+												 [v_14,v_13,v_23],[v_23,v_24,v_14],
+												 [v_11,v_14,v_24],[v_24,v_21,v_11],
+												 [v_12,v_11,v_21],[v_21,v_22,v_12]]
+
+										if iw == 0. or ih == 0.:
+											faces += [[v_11,v_12,v_13],[v_13,v_14,v_11],
+													  [v_21,v_24,v_23],[v_23,v_22,v_21]]
+										else:
+											lines += [[v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_15],
+													  [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_25],
+													  [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+											faces += [[v_15,v_11,v_12],[v_12,v_16,v_15],
+													  [v_16,v_12,v_13],[v_13,v_17,v_16],
+													  [v_17,v_13,v_14],[v_14,v_18,v_17],
+													  [v_18,v_14,v_11],[v_11,v_15,v_18],
+													  [v_26,v_22,v_21],[v_21,v_25,v_26],
+													  [v_22,v_26,v_23],[v_26,v_27,v_23],
+													  [v_23,v_27,v_24],[v_27,v_28,v_24],
+													  [v_24,v_28,v_21],[v_25,v_21,v_28],
+													  [v_17,v_27,v_16],[v_27,v_26,v_16],
+													  [v_18,v_28,v_17],[v_28,v_27,v_17],
+													  [v_15,v_25,v_18],[v_25,v_28,v_18],
+													  [v_25,v_15,v_26],[v_15,v_16,v_26]]
+
+									elif elements[j].crossSection['Type'] == 'Circle':
+
+										r  = elements[j].crossSection['radius, r']
+										ir  = elements[j].crossSection['inner radius, ir']
+										vertices1 = []
+										vertices2 = []
+										pnts = 24
+										for v in range(pnts):
+											d = pnts/(v+1)
+											vc = np.cos(2*np.pi/d)
+											vs = np.sin(2*np.pi/d)
+											vertices1.append([[node1_coord[0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+															   node1_coord[1]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+															   node1_coord[2]+vs*y_vec[2]*r+vc*z_vec[2]*r ], node1_color])
+											vertices1[v][0] = rotatePointAboutAxis(vertices1[v][0],node1_coord, \
+																[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											vertices1[v][0] = rotatePointAboutAxis(vertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											vertices1[v][0] = rotatePointAboutAxis(vertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											vertices2.append([[node2_coord[0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+															   node2_coord[1]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+															   node2_coord[2]+vs*y_vec[2]*r+vc*z_vec[2]*r ], node2_color])
+											vertices2[v][0] = rotatePointAboutAxis(vertices2[v][0],node2_coord, \
+																[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											vertices2[v][0] = rotatePointAboutAxis(vertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											vertices2[v][0] = rotatePointAboutAxis(vertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										if ir != 0.:
+											ivertices1 = []
+											ivertices2 = []
+											for v in range(pnts):
+												d = pnts/(v+1)
+												vc = np.cos(2*np.pi/d)
+												vs = np.sin(2*np.pi/d)
+												ivertices1.append([[node1_coord[0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+																    node1_coord[1]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+																    node1_coord[2]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ], node1_color])
+												ivertices1[v][0] = rotatePointAboutAxis(ivertices1[v][0],node1_coord, \
+																[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												ivertices1[v][0] = rotatePointAboutAxis(ivertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												ivertices1[v][0] = rotatePointAboutAxis(ivertices1[v][0],node1_coord, \
+																[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												ivertices2.append([[node2_coord[0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+																    node2_coord[1]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+																    node2_coord[2]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ], node2_color])
+												ivertices2[v][0] = rotatePointAboutAxis(ivertices2[v][0],node2_coord, \
+																[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												ivertices2[v][0] = rotatePointAboutAxis(ivertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												ivertices2[v][0] = rotatePointAboutAxis(ivertices2[v][0],node2_coord, \
+																[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = []
+										faces = []
+										for v in range(pnts):
+											lines.append([vertices1[v-1],vertices1[v]])
+											lines.append([vertices2[v-1],vertices2[v]])
+										lines.append([vertices1[0],vertices2[0]])
+
+										if ir != 0.:
+											for v in range(pnts):
+												lines.append([ivertices1[v-1],ivertices1[v]])
+												lines.append([ivertices2[v-1],ivertices2[v]])
+											lines.append([ivertices1[0],ivertices2[0]])
+											for v in range(pnts-1):
+												faces.append([ivertices1[v],vertices1[v],vertices1[v+1]])
+												faces.append([vertices1[v+1],ivertices1[v+1],ivertices1[v]])
+												faces.append([ivertices2[v],vertices2[v+1],vertices2[v]])
+												faces.append([vertices2[v+1],ivertices2[v],ivertices2[v+1]])
+												faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+												faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+												faces.append([ivertices1[v],ivertices1[v+1],ivertices2[v]])
+												faces.append([ivertices1[v+1],ivertices2[v+1],ivertices2[v]])
+											faces.append([ivertices1[-1],vertices1[-1],vertices1[0]])
+											faces.append([vertices1[0],ivertices1[0],ivertices1[-1]])
+											faces.append([ivertices2[-1],vertices2[0],vertices2[-1]])
+											faces.append([vertices2[0],ivertices2[-1],ivertices2[0]])
+											faces.append([vertices1[-1],vertices2[-1],vertices2[0]])
+											faces.append([vertices2[0],vertices1[0],vertices1[-1]])
+											faces.append([ivertices1[-1],ivertices1[0],ivertices2[-1]])
+											faces.append([ivertices1[0],ivertices2[0],ivertices2[-1]])
+													
+										else:
+											vertices1.append([[node1_coord[0],
+															   node1_coord[1],
+															   node1_coord[2] ], node1_color])
+											vertices1[-1][0] = rotatePointAboutAxis(vertices1[-1][0],node1_coord, \
+																[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+											vertices1[-1][0] = rotatePointAboutAxis(vertices1[-1][0],node1_coord, \
+																[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+											vertices1[-1][0] = rotatePointAboutAxis(vertices1[-1][0],node1_coord, \
+																[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+											vertices2.append([[node2_coord[0],
+															   node2_coord[1],
+															   node2_coord[2] ], node2_color])
+											vertices2[-1][0] = rotatePointAboutAxis(vertices2[-1][0],node2_coord, \
+																[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+											vertices2[-1][0] = rotatePointAboutAxis(vertices2[-1][0],node2_coord, \
+																[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+											vertices2[-1][0] = rotatePointAboutAxis(vertices2[-1][0],node2_coord, \
+																[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+											for v in range(pnts):
+												faces.append([vertices1[-1],vertices1[v],vertices1[v+1]])
+												faces.append([vertices2[-1],vertices2[v+1],vertices2[v]])
+												faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+												faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+											faces.append([vertices1[-1],vertices1[-2],vertices1[0]])
+											faces.append([vertices2[-1],vertices2[0],vertices2[-2]])
+											faces.append([vertices1[-2],vertices2[-2],vertices2[0]])
+											faces.append([vertices2[0],vertices1[0],vertices1[-2]])
+
+									elif elements[j].crossSection['Type'] == 'L-Beam':
+
+										bw = elements[j].crossSection['bottom width, bw']
+										bt = elements[j].crossSection['bottom thickness, bt']
+										st = elements[j].crossSection['side thickness, st']
+										h  = elements[j].crossSection['height, h']
+										A1  = st*(h-bt)
+										A2  = bt*bw
+										A   = A1+A2
+										yC1 = (h/2.)+bt
+										yC2 = bt/2.
+										zC1 = st/2.
+										zC2 = bw/2.
+										if A != 0.:
+											yC = (A1*yC1+A2*yC2)/A
+											zC = (A1*zC1+A2*zC2)/A
+										else:
+											yC = 0.
+											zC = 0.
+										v_11  = [[node1_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node1_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node1_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node1_color]
+										v_13  = [[node1_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node1_color]
+										v_14  = [[node1_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+												  node1_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+												  node1_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ], node1_color]
+										v_15  = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ], node1_color]
+										v_16  = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node1_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node2_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node2_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node2_color]
+										v_23  = [[node2_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node2_color]
+										v_24  = [[node2_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+												  node2_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+												  node2_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ], node2_color]
+										v_25  = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ], node2_color]
+										v_26  = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],[v_15,v_16],[v_16,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],[v_25,v_26],[v_26,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],[v_15,v_25],[v_16,v_26]]
+										faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+												 [v_11,v_14,v_16],[v_16,v_14,v_15],
+												 [v_23,v_22,v_21],[v_21,v_24,v_23],
+												 [v_24,v_21,v_26],[v_24,v_26,v_25],
+												 [v_11,v_21,v_12],[v_12,v_21,v_22],
+												 [v_11,v_16,v_26],[v_26,v_21,v_11],
+												 [v_16,v_15,v_26],[v_26,v_15,v_25],
+												 [v_13,v_12,v_22],[v_22,v_23,v_13],
+												 [v_14,v_13,v_24],[v_24,v_13,v_23],
+												 [v_14,v_24,v_25],[v_25,v_15,v_14]]
+
+									elif elements[j].crossSection['Type'] == 'I-Beam':
+										tw = elements[j].crossSection['top width, tw']
+										tt = elements[j].crossSection['top thickness, tt']
+										mt = elements[j].crossSection['middle thickness, mt']
+										bw = elements[j].crossSection['bottom width, bw']
+										bt = elements[j].crossSection['bottom thickness, bt']
+										h  = elements[j].crossSection['height, h']
+										tw = tw/2.
+										tt = tt
+										mt = mt/2.
+										bw = bw/2.
+										bt = bt
+										h  = h/2.
+										v_11  = [[node1_coord[0]-y_vec[0]*h-z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*h-z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*h-z_vec[2]*bw ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*h+z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*h+z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*h+z_vec[2]*bw ], node1_color]
+										v_13  = [[node1_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*bw ], node1_color]
+										v_14  = [[node1_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*mt ], node1_color]
+										v_15  = [[node1_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*mt ], node1_color]
+										v_16  = [[node1_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+												  node1_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+												  node1_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*bw ], node1_color]
+										v_17  = [[node1_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*tw ], node1_color]
+										v_18  = [[node1_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*mt ], node1_color]
+										v_19  = [[node1_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*mt ], node1_color]
+										v_110 = [[node1_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*tw ], node1_color]
+										v_111 = [[node1_coord[0]+y_vec[0]*h+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*h+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*h+z_vec[2]*tw ], node1_color]
+										v_112 = [[node1_coord[0]+y_vec[0]*h-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*h-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*h-z_vec[2]*tw ], node1_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*h-z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*h-z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*h-z_vec[2]*bw ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*h+z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*h+z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*h+z_vec[2]*bw ], node2_color]
+										v_23  = [[node2_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*bw ], node2_color]
+										v_24  = [[node2_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*mt ], node2_color]
+										v_25  = [[node2_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*mt ], node2_color]
+										v_26  = [[node2_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+												  node2_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+												  node2_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*bw ], node2_color]
+										v_27  = [[node2_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*tw ], node2_color]
+										v_28  = [[node2_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*mt ], node2_color]
+										v_29  = [[node2_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*mt ], node2_color]
+										v_210 = [[node2_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*tw ], node2_color]
+										v_211 = [[node2_coord[0]+y_vec[0]*h+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*h+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*h+z_vec[2]*tw ], node2_color]
+										v_212 = [[node2_coord[0]+y_vec[0]*h-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*h-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*h-z_vec[2]*tw ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_19],
+												 [v_19,v_110],[v_110,v_111],[v_111,v_112],[v_112,v_17],
+												 [v_17,v_18],[v_18,v_15],[v_15,v_16],[v_16,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_29],
+												 [v_29,v_210],[v_210,v_211],[v_211,v_212],[v_212,v_27],
+												 [v_27,v_28],[v_28,v_25],[v_25,v_26],[v_26,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+												 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28],
+												 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+										faces = [[v_11,v_12,v_13],[v_13,v_16,v_11],
+												 [v_15,v_14,v_19],[v_19,v_18,v_15],
+												 [v_112,v_17,v_110],[v_110,v_111,v_112],
+												 [v_23,v_22,v_21],[v_21,v_26,v_23],
+												 [v_29,v_24,v_25],[v_25,v_28,v_29],
+												 [v_210,v_27,v_212],[v_212,v_211,v_210],
+												 [v_19,v_14,v_24],[v_24,v_29,v_19],
+												 [v_15,v_18,v_28],[v_28,v_25,v_15],
+												 [v_13,v_12,v_22],[v_22,v_23,v_13],
+												 [v_11,v_16,v_26],[v_26,v_21,v_11],
+												 [v_111,v_110,v_210],[v_210,v_211,v_111],
+												 [v_17,v_112,v_212],[v_212,v_27,v_17],
+												 [v_11,v_21,v_12],[v_21,v_22,v_12],
+												 [v_112,v_111,v_212],[v_212,v_111,v_211],
+												 [v_14,v_13,v_24],[v_24,v_13,v_23],
+												 [v_16,v_15,v_26],[v_26,v_15,v_25],
+												 [v_18,v_17,v_27],[v_27,v_28,v_18],
+												 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+									elif elements[j].crossSection['Type'] == 'C-Beam':
+										tw = elements[j].crossSection['top width, tw']
+										tt = elements[j].crossSection['top thickness, tt']
+										mt = elements[j].crossSection['middle thickness, mt']
+										bw = elements[j].crossSection['bottom width, bw']
+										bt = elements[j].crossSection['bottom thickness, bt']
+										h  = elements[j].crossSection['height, h']
+										A1  = tt*tw
+										A2  = mt*(h-tt-bt)
+										A3  = bt*bw
+										A   = A1+A2+A3
+										zC1 = tw/2.
+										zC2 = mt/2.
+										zC3 = bw/2.
+										yC1 = h-(tt/2.)
+										yC2 = (h-tt)/2.
+										yC3 = bt/2.
+										if A != 0.:
+											zC = (A1*zC1+A2*zC2+A3*zC3)/A
+											yC = (A1*yC1+A2*yC2+A3*yC3)/A
+										else:
+											zC = 0.
+											yC = 0.
+										v_11  = [[node1_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node1_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node1_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node1_color]
+										v_13  = [[node1_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node1_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node1_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node1_color]
+										v_14  = [[node1_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+												  node1_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+												  node1_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ], node1_color]
+										v_15  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ], node1_color]
+										v_16  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ], node1_color]
+										v_17  = [[node1_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+												  node1_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+												  node1_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ], node1_color]
+										v_18  = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node1_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+												  node2_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+												  node2_coord[2]-y_vec[2]*yC-z_vec[2]*zC ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ], node2_color]
+										v_23  = [[node2_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+												  node2_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+												  node2_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ], node2_color]
+										v_24  = [[node2_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+												  node2_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+												  node2_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ], node2_color]
+										v_25  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ], node2_color]
+										v_26  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ], node2_color]
+										v_27  = [[node2_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+												  node2_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+												  node2_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ], node2_color]
+										v_28  = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_13[0] = rotatePointAboutAxis(v_13[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_14[0] = rotatePointAboutAxis(v_14[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_15[0] = rotatePointAboutAxis(v_15[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_16[0] = rotatePointAboutAxis(v_16[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_23[0] = rotatePointAboutAxis(v_23[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_24[0] = rotatePointAboutAxis(v_24[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_25[0] = rotatePointAboutAxis(v_25[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_26[0] = rotatePointAboutAxis(v_26[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],
+												 [v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_11],
+												 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],
+												 [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+												 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+										faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+												 [v_11,v_14,v_18],[v_18,v_14,v_15],
+												 [v_15,v_16,v_17],[v_17,v_18,v_15],
+												 [v_23,v_22,v_21],[v_21,v_24,v_23],
+												 [v_24,v_21,v_28],[v_24,v_28,v_25],
+												 [v_26,v_25,v_27],[v_28,v_27,v_25],
+												 [v_11,v_21,v_12],[v_12,v_21,v_22],
+												 [v_11,v_18,v_28],[v_28,v_21,v_11],
+												 [v_18,v_17,v_28],[v_28,v_17,v_27],
+												 [v_16,v_26,v_27],[v_27,v_17,v_16],
+												 [v_16,v_15,v_25],[v_25,v_26,v_16],
+												 [v_14,v_24,v_25],[v_25,v_15,v_14],
+												 [v_13,v_24,v_14],[v_24,v_13,v_23],
+												 [v_13,v_12,v_22],[v_22,v_23,v_13]]
+
+									elif elements[j].crossSection['Type'] == 'T-Beam':
+										tw = elements[j].crossSection['top width, tw']
+										tt = elements[j].crossSection['top thickness, tt']
+										mt = elements[j].crossSection['middle thickness, mt']
+										h  = elements[j].crossSection['height, h']
+										A1  = mt*(h-tt)
+										A2  = tt*tw
+										A   = A1+A2
+										yC1 = h-(tt/2.)
+										yC2 = (h-tt)/2.
+										if A != 0.:
+											yC = (A1*yC1+A2*yC2)/A
+										else:
+											yC = 0.
+										tw = tw/2.
+										tt = tt
+										mt = mt/2.
+										v_11  = [[node1_coord[0]-y_vec[0]*yC-z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*yC-z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*yC-z_vec[2]*mt ], node1_color]
+										v_12  = [[node1_coord[0]-y_vec[0]*yC+z_vec[0]*mt,
+												  node1_coord[1]-y_vec[1]*yC+z_vec[1]*mt,
+												  node1_coord[2]-y_vec[2]*yC+z_vec[2]*mt ], node1_color]
+										v_17  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ], node1_color]
+										v_18  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ], node1_color]
+										v_19  = [[node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ], node1_color]
+										v_110 = [[node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ], node1_color]
+										v_111 = [[node1_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*tw ], node1_color]
+										v_112 = [[node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+												  node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+												  node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*tw ], node2_color]
+										v_21  = [[node2_coord[0]-y_vec[0]*yC-z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*yC-z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*yC-z_vec[2]*mt ], node2_color]
+										v_22  = [[node2_coord[0]-y_vec[0]*yC+z_vec[0]*mt,
+												  node2_coord[1]-y_vec[1]*yC+z_vec[1]*mt,
+												  node2_coord[2]-y_vec[2]*yC+z_vec[2]*mt ], node2_color]
+										v_27  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ], node2_color]
+										v_28  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ], node2_color]
+										v_29  = [[node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ], node2_color]
+										v_210 = [[node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ], node2_color]
+										v_211 = [[node2_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*tw ], node2_color]
+										v_212 = [[node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+												  node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+												  node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*tw ], node2_color]
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_11[0] = rotatePointAboutAxis(v_11[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_12[0] = rotatePointAboutAxis(v_12[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_17[0] = rotatePointAboutAxis(v_17[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_18[0] = rotatePointAboutAxis(v_18[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_19[0] = rotatePointAboutAxis(v_19[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_110[0] = rotatePointAboutAxis(v_110[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_111[0] = rotatePointAboutAxis(v_111[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+										v_112[0] = rotatePointAboutAxis(v_112[0],node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_21[0] = rotatePointAboutAxis(v_21[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_22[0] = rotatePointAboutAxis(v_22[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_27[0] = rotatePointAboutAxis(v_27[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_28[0] = rotatePointAboutAxis(v_28[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_29[0] = rotatePointAboutAxis(v_29[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_210[0] = rotatePointAboutAxis(v_210[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_211[0] = rotatePointAboutAxis(v_211[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+										v_212[0] = rotatePointAboutAxis(v_212[0],node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+										lines = [[v_11,v_12],[v_12,v_19],[v_19,v_110],[v_110,v_111],
+												 [v_111,v_112],[v_112,v_17],[v_17,v_18],[v_18,v_11],
+												 [v_21,v_22],[v_22,v_29],[v_29,v_210],[v_210,v_211],
+												 [v_211,v_212],[v_212,v_27],[v_27,v_28],[v_28,v_21],
+												 [v_11,v_21],[v_12,v_22],[v_17,v_27],[v_18,v_28],
+												 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+										faces = [[v_11,v_12,v_19],[v_19,v_18,v_11],
+												 [v_112,v_17,v_110],[v_110,v_111,v_112],
+												 [v_29,v_22,v_21],[v_21,v_28,v_29],
+												 [v_210,v_27,v_212],[v_212,v_211,v_210],
+												 [v_19,v_12,v_22],[v_22,v_29,v_19],
+												 [v_11,v_18,v_28],[v_28,v_21,v_11],
+												 [v_111,v_110,v_210],[v_210,v_211,v_111],
+												 [v_17,v_112,v_212],[v_212,v_27,v_17],
+												 [v_11,v_21,v_12],[v_21,v_22,v_12],
+												 [v_112,v_111,v_212],[v_212,v_111,v_211],
+												 [v_18,v_17,v_27],[v_27,v_28,v_18],
+												 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+									else:
+										pass
+
+									glLineWidth(2.0)
+									glColor3f(0.05, 0.1, 0.05)
+									for line in range(len(lines)):
+										glBegin(GL_LINES)
+										glVertex3f(lines[line][0][0][0],lines[line][0][0][1],lines[line][0][0][2])
+										glVertex3f(lines[line][1][0][0],lines[line][1][0][1],lines[line][1][0][2])
+										glEnd()
+
+									for face in range(len(faces)):
+										glBegin(GL_TRIANGLES)
+										glColor3f(faces[face][0][1][0],faces[face][0][1][1],faces[face][0][1][2])
+										glVertex3f(faces[face][0][0][0],faces[face][0][0][1],faces[face][0][0][2])
+										glColor3f(faces[face][1][1][0],faces[face][1][1][1],faces[face][1][1][2])
+										glVertex3f(faces[face][1][0][0],faces[face][1][0][1],faces[face][1][0][2])
+										glColor3f(faces[face][2][1][0],faces[face][2][1][1],faces[face][2][1][2])
+										glVertex3f(faces[face][2][0][0],faces[face][2][0][1],faces[face][2][0][2])
+										glEnd()
+
 					glEndList()
 
 				elif result == 'stress':
@@ -7567,11 +11464,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]
 								else:
 									if elements[i].solutions[solution]['stress']['nodal'][j+1]['VonMises'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['stress']['nodal'][j+1]['VonMises']
@@ -7583,11 +11475,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]
 								else:
 									if elements[i].solutions[solution]['stress']['nodal'][j+1]['MaxPrinc'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['stress']['nodal'][j+1]['MaxPrinc']
@@ -7599,11 +11486,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]/2.
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]/2.
 								else:
 									if elements[i].solutions[solution]['stress']['nodal'][j+1]['MinPrinc'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['stress']['nodal'][j+1]['MinPrinc']
@@ -7615,11 +11497,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]/2.
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]/2.
 								else:
 									if elements[i].solutions[solution]['stress']['nodal'][j+1]['MaxShear'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['stress']['nodal'][j+1]['MaxShear']
@@ -7633,23 +11510,31 @@ or .sol-files.
 					glNewList(self.displayLists[solution][result][subresult]['shaded'], GL_COMPILE)
 
 					disp_mag_values = [ disp_min,
-										disp_min+(disp_max-disp_min)*1./8.,
-										disp_min+(disp_max-disp_min)*2./8.,
-										disp_min+(disp_max-disp_min)*3./8.,
-										disp_min+(disp_max-disp_min)*4./8.,
-										disp_min+(disp_max-disp_min)*5./8.,
-										disp_min+(disp_max-disp_min)*6./8.,
-										disp_min+(disp_max-disp_min)*7./8.,
+										disp_min+(disp_max-disp_min)*1./12.,
+										disp_min+(disp_max-disp_min)*2./12.,
+										disp_min+(disp_max-disp_min)*3./12.,
+										disp_min+(disp_max-disp_min)*4./12.,
+										disp_min+(disp_max-disp_min)*5./12.,
+										disp_min+(disp_max-disp_min)*6./12.,
+										disp_min+(disp_max-disp_min)*7./12.,
+										disp_min+(disp_max-disp_min)*8./12.,
+										disp_min+(disp_max-disp_min)*9./12.,
+										disp_min+(disp_max-disp_min)*10./12.,
+										disp_min+(disp_max-disp_min)*11./12.,
 										disp_max ]
-					disp_colors = [ (0.0, 0.0, 1.0),  # blue
-									(0.0, 0.5, 1.0),  # ocean
-									(0.0, 1.0, 1.0),  # cyan
-									(0.0, 1.0, 0.5),  # turqoise
-									(0.0, 1.0, 0.0),  # green
-									(0.5, 1.0, 0.0),  # spring green
-									(1.0, 1.0, 0.0),  # yellow
-									(1.0, 0.5, 0.0),  # orange
-									(1.0, 0.0, 0.0) ] # red
+					disp_colors = [ (  0.0,   0.0,   1.0), # blue
+									(  0.0, 0.333,   1.0),  
+									(  0.0, 0.666,   1.0),  
+									(  0.0,   1.0,   1.0),  
+									(  0.0,   1.0, 0.666),  
+									(  0.0,   1.0, 0.333),
+									(  0.0,   1.0,   0.0), # green
+									(0.333,   1.0,   0.0),  
+									(0.666,   1.0,   0.0),  
+									(  1.0,   1.0,   0.0),  
+									(  1.0, 0.666,   0.0),  
+									(  1.0, 0.333,   0.0),
+									(  1.0,   0.0,   0.0) ] # red
 					disp_color = disp_colors[0]
 
 					for j in elements:
@@ -7830,11 +11715,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises']
@@ -7846,11 +11726,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc']
@@ -7862,11 +11737,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]/2.
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]/2.
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc']
@@ -7878,11 +11748,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['stress'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['stress'][0]/2.
-									if elements[i].solutions[solution]['stress'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['stress'][0]/2.
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear']
@@ -7896,23 +11761,31 @@ or .sol-files.
 					glNewList(self.displayLists[solution][result][subresult]['average'], GL_COMPILE)
 
 					disp_mag_values = [ disp_min,
-										disp_min+(disp_max-disp_min)*1./8.,
-										disp_min+(disp_max-disp_min)*2./8.,
-										disp_min+(disp_max-disp_min)*3./8.,
-										disp_min+(disp_max-disp_min)*4./8.,
-										disp_min+(disp_max-disp_min)*5./8.,
-										disp_min+(disp_max-disp_min)*6./8.,
-										disp_min+(disp_max-disp_min)*7./8.,
+										disp_min+(disp_max-disp_min)*1./12.,
+										disp_min+(disp_max-disp_min)*2./12.,
+										disp_min+(disp_max-disp_min)*3./12.,
+										disp_min+(disp_max-disp_min)*4./12.,
+										disp_min+(disp_max-disp_min)*5./12.,
+										disp_min+(disp_max-disp_min)*6./12.,
+										disp_min+(disp_max-disp_min)*7./12.,
+										disp_min+(disp_max-disp_min)*8./12.,
+										disp_min+(disp_max-disp_min)*9./12.,
+										disp_min+(disp_max-disp_min)*10./12.,
+										disp_min+(disp_max-disp_min)*11./12.,
 										disp_max ]
-					disp_colors = [ (0.0, 0.0, 1.0),  # blue
-									(0.0, 0.5, 1.0),  # ocean
-									(0.0, 1.0, 1.0),  # cyan
-									(0.0, 1.0, 0.5),  # turqoise
-									(0.0, 1.0, 0.0),  # green
-									(0.5, 1.0, 0.0),  # spring green
-									(1.0, 1.0, 0.0),  # yellow
-									(1.0, 0.5, 0.0),  # orange
-									(1.0, 0.0, 0.0) ] # red
+					disp_colors = [ (  0.0,   0.0,   1.0), # blue
+									(  0.0, 0.333,   1.0),  
+									(  0.0, 0.666,   1.0),  
+									(  0.0,   1.0,   1.0),  
+									(  0.0,   1.0, 0.666),  
+									(  0.0,   1.0, 0.333),
+									(  0.0,   1.0,   0.0), # green
+									(0.333,   1.0,   0.0),  
+									(0.666,   1.0,   0.0),  
+									(  1.0,   1.0,   0.0),  
+									(  1.0, 0.666,   0.0),  
+									(  1.0, 0.333,   0.0),
+									(  1.0,   0.0,   0.0) ] # red
 					disp_color = disp_colors[0]
 
 					for j in elements:
@@ -8107,11 +11980,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]
 								else:
 									if elements[i].solutions[solution]['strain']['nodal'][j+1]['VonMises'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['strain']['nodal'][j+1]['VonMises']
@@ -8123,11 +11991,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]
 								else:
 									if elements[i].solutions[solution]['strain']['nodal'][j+1]['MaxPrinc'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['strain']['nodal'][j+1]['MaxPrinc']
@@ -8139,11 +12002,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]/2.
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]/2.
 								else:
 									if elements[i].solutions[solution]['strain']['nodal'][j+1]['MinPrinc'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['strain']['nodal'][j+1]['MinPrinc']
@@ -8155,11 +12013,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]/2.
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]/2.
 								else:
 									if elements[i].solutions[solution]['strain']['nodal'][j+1]['MaxShear'] >= disp_max:
 										disp_max = elements[i].solutions[solution]['strain']['nodal'][j+1]['MaxShear']
@@ -8173,23 +12026,31 @@ or .sol-files.
 					glNewList(self.displayLists[solution][result][subresult]['shaded'], GL_COMPILE)
 
 					disp_mag_values = [ disp_min,
-										disp_min+(disp_max-disp_min)*1./8.,
-										disp_min+(disp_max-disp_min)*2./8.,
-										disp_min+(disp_max-disp_min)*3./8.,
-										disp_min+(disp_max-disp_min)*4./8.,
-										disp_min+(disp_max-disp_min)*5./8.,
-										disp_min+(disp_max-disp_min)*6./8.,
-										disp_min+(disp_max-disp_min)*7./8.,
+										disp_min+(disp_max-disp_min)*1./12.,
+										disp_min+(disp_max-disp_min)*2./12.,
+										disp_min+(disp_max-disp_min)*3./12.,
+										disp_min+(disp_max-disp_min)*4./12.,
+										disp_min+(disp_max-disp_min)*5./12.,
+										disp_min+(disp_max-disp_min)*6./12.,
+										disp_min+(disp_max-disp_min)*7./12.,
+										disp_min+(disp_max-disp_min)*8./12.,
+										disp_min+(disp_max-disp_min)*9./12.,
+										disp_min+(disp_max-disp_min)*10./12.,
+										disp_min+(disp_max-disp_min)*11./12.,
 										disp_max ]
-					disp_colors = [ (0.0, 0.0, 1.0),  # blue
-									(0.0, 0.5, 1.0),  # ocean
-									(0.0, 1.0, 1.0),  # cyan
-									(0.0, 1.0, 0.5),  # turqoise
-									(0.0, 1.0, 0.0),  # green
-									(0.5, 1.0, 0.0),  # spring green
-									(1.0, 1.0, 0.0),  # yellow
-									(1.0, 0.5, 0.0),  # orange
-									(1.0, 0.0, 0.0) ] # red
+					disp_colors = [ (  0.0,   0.0,   1.0), # blue
+									(  0.0, 0.333,   1.0),  
+									(  0.0, 0.666,   1.0),  
+									(  0.0,   1.0,   1.0),  
+									(  0.0,   1.0, 0.666),  
+									(  0.0,   1.0, 0.333),
+									(  0.0,   1.0,   0.0), # green
+									(0.333,   1.0,   0.0),  
+									(0.666,   1.0,   0.0),  
+									(  1.0,   1.0,   0.0),  
+									(  1.0, 0.666,   0.0),  
+									(  1.0, 0.333,   0.0),
+									(  1.0,   0.0,   0.0) ] # red
 					disp_color = disp_colors[0]
 
 					for j in elements:
@@ -8370,11 +12231,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises']
@@ -8386,11 +12242,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc']
@@ -8402,11 +12253,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]/2.
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]/2.
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc']
@@ -8418,11 +12264,6 @@ or .sol-files.
 									pass
 								elif result not in elements[i].solutions[solution]:
 									pass
-								elif elements[i].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
-									if elements[i].solutions[solution]['strain'][0] >= disp_max:
-										disp_max = elements[i].solutions[solution]['strain'][0]/2.
-									if elements[i].solutions[solution]['strain'][0] <= disp_min:
-										disp_min = elements[i].solutions[solution]['strain'][0]/2.
 								else:
 									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear'] >= disp_max:
 										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear']
@@ -8436,23 +12277,31 @@ or .sol-files.
 					glNewList(self.displayLists[solution][result][subresult]['average'], GL_COMPILE)
 
 					disp_mag_values = [ disp_min,
-										disp_min+(disp_max-disp_min)*1./8.,
-										disp_min+(disp_max-disp_min)*2./8.,
-										disp_min+(disp_max-disp_min)*3./8.,
-										disp_min+(disp_max-disp_min)*4./8.,
-										disp_min+(disp_max-disp_min)*5./8.,
-										disp_min+(disp_max-disp_min)*6./8.,
-										disp_min+(disp_max-disp_min)*7./8.,
+										disp_min+(disp_max-disp_min)*1./12.,
+										disp_min+(disp_max-disp_min)*2./12.,
+										disp_min+(disp_max-disp_min)*3./12.,
+										disp_min+(disp_max-disp_min)*4./12.,
+										disp_min+(disp_max-disp_min)*5./12.,
+										disp_min+(disp_max-disp_min)*6./12.,
+										disp_min+(disp_max-disp_min)*7./12.,
+										disp_min+(disp_max-disp_min)*8./12.,
+										disp_min+(disp_max-disp_min)*9./12.,
+										disp_min+(disp_max-disp_min)*10./12.,
+										disp_min+(disp_max-disp_min)*11./12.,
 										disp_max ]
-					disp_colors = [ (0.0, 0.0, 1.0),  # blue
-									(0.0, 0.5, 1.0),  # ocean
-									(0.0, 1.0, 1.0),  # cyan
-									(0.0, 1.0, 0.5),  # turqoise
-									(0.0, 1.0, 0.0),  # green
-									(0.5, 1.0, 0.0),  # spring green
-									(1.0, 1.0, 0.0),  # yellow
-									(1.0, 0.5, 0.0),  # orange
-									(1.0, 0.0, 0.0) ] # red
+					disp_colors = [ (  0.0,   0.0,   1.0), # blue
+									(  0.0, 0.333,   1.0),  
+									(  0.0, 0.666,   1.0),  
+									(  0.0,   1.0,   1.0),  
+									(  0.0,   1.0, 0.666),  
+									(  0.0,   1.0, 0.333),
+									(  0.0,   1.0,   0.0), # green
+									(0.333,   1.0,   0.0),  
+									(0.666,   1.0,   0.0),  
+									(  1.0,   1.0,   0.0),  
+									(  1.0, 0.666,   0.0),  
+									(  1.0, 0.333,   0.0),
+									(  1.0,   0.0,   0.0) ] # red
 					disp_color = disp_colors[0]
 
 					for j in elements:
@@ -8656,13 +12505,13 @@ or .sol-files.
 						self.displayLists[solution][result][subresult] = \
 														{'info': '%.4E Hertz' % (self.results[newResult].solutions[solution].eigenfrequencies[mode])}
 
-						for frame in range(7):
+						for frame in range(13):
 							self.displayLists[solution][result][subresult][frame] = {}
 							self.displayLists[solution][result][subresult][frame]['nodes'] = glGenLists(1)
 							self.displayLists[solution][result][subresult][frame]['wireframe'] = glGenLists(1)
 							self.displayLists[solution][result][subresult][frame]['shaded'] = glGenLists(1)
 
-							move = (frame-3)*0.1*self.scale_factor
+							move = (frame-6)*0.1*self.scale_factor
 							# nodes modelled with displacement
 							glNewList(self.displayLists[solution][result][subresult][frame]['nodes'], GL_COMPILE)
 
@@ -8689,16 +12538,12 @@ or .sol-files.
 							for j in elements:
 								nodelines = []
 								if elements[j].type == 'ROD2N2D':
-									pass
 									nodelines = [[0,1]]
 								if elements[j].type == 'ROD2N':
-									pass
 									nodelines = [[0,1]]
 								if elements[j].type == 'BEAM2N2D':
-									pass
 									nodelines = [[0,1]]
 								if elements[j].type == 'BEAM2N':
-									pass
 									nodelines = [[0,1]]
 								if elements[j].type == 'TRI3N':
 									nodelines = [[0,1], [1,2], [2,0]]
@@ -8827,6 +12672,895 @@ or .sol-files.
 												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
 													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]+1], 0.)
 										glEnd()
+
+
+								if elements[j].type in ['BEAM2N2D', 'BEAM2N', 'ROD2N2D', 'ROD2N']:
+									if hasattr(elements[j],'crossSection'):
+										if hasattr(elements[j],'orientation'):
+											if elements[j].type in ['BEAM2N2D', 'BEAM2N']:
+												node1_coord = [nodes[elements[j].nodes[0].number].coord[0][0] + 
+																move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]],
+															   nodes[elements[j].nodes[0].number].coord[1][0] +
+																move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+1], 0.]
+												node2_coord = [nodes[elements[j].nodes[1].number].coord[0][0] + 
+																move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]],
+															   nodes[elements[j].nodes[1].number].coord[1][0] +
+																move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+1], 0.]
+												if is3D:
+													node1_coord[2] = nodes[elements[j].nodes[0].number].coord[2][0] + \
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+2]
+													node1_rotation = [move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+3],
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+4],
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+5]]
+													node2_coord[2] = nodes[elements[j].nodes[1].number].coord[2][0] + \
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+2]
+													node2_rotation = [move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+3],
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+4],
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+5]]
+												else:
+													node1_rotation = [0., 0., move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+2]]
+													node2_rotation = [0., 0., move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+2]]
+											else:
+												node1_coord = [nodes[elements[j].nodes[0].number].coord[0][0] + 
+																move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]],
+															   nodes[elements[j].nodes[0].number].coord[1][0] +
+																move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+1], 0.]
+												node2_coord = [nodes[elements[j].nodes[1].number].coord[0][0] + 
+																move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]],
+															   nodes[elements[j].nodes[1].number].coord[1][0] +
+																move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+1], 0.]
+												if is3D:
+													node1_coord[2] = nodes[elements[j].nodes[0].number].coord[2][0] + \
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+2]
+													node1_rotation = [0.,0.,0.]
+													node2_coord[2] = nodes[elements[j].nodes[1].number].coord[2][0] + \
+																	  move*eigenvector[mesh.NFMT[elements[j].nodes[1].number]+2]
+													node2_rotation = [0.,0.,0.]
+												else:
+													node1_rotation = [0., 0., 0.]
+													node2_rotation = [0., 0., 0.]
+												
+											faces = []
+											lines = []
+											x_vec = elements[j].orientation['x-vec']
+											y_vec = elements[j].orientation['y-vec']
+											z_vec = elements[j].orientation['z-vec']
+
+											if elements[j].crossSection['Type'] == 'Rectangle':
+
+												w  = elements[j].crossSection['width, w']
+												h  = elements[j].crossSection['height, h']
+												iw = elements[j].crossSection['inner width, iw']
+												ih = elements[j].crossSection['inner height, ih']
+												w  = w/2.
+												h  = h/2.
+												iw = iw/2.
+												ih = ih/2.
+												v_11 = [node1_coord[0]-y_vec[0]*h-z_vec[0]*w,
+														node1_coord[1]-y_vec[1]*h-z_vec[1]*w,
+														node1_coord[2]-y_vec[2]*h-z_vec[2]*w ]
+												v_12 = [node1_coord[0]-y_vec[0]*h+z_vec[0]*w,
+														node1_coord[1]-y_vec[1]*h+z_vec[1]*w,
+														node1_coord[2]-y_vec[2]*h+z_vec[2]*w ]
+												v_13 = [node1_coord[0]+y_vec[0]*h+z_vec[0]*w,
+														node1_coord[1]+y_vec[1]*h+z_vec[1]*w,
+														node1_coord[2]+y_vec[2]*h+z_vec[2]*w ]
+												v_14 = [node1_coord[0]+y_vec[0]*h-z_vec[0]*w,
+														node1_coord[1]+y_vec[1]*h-z_vec[1]*w,
+														node1_coord[2]+y_vec[2]*h-z_vec[2]*w ]
+												v_21 = [node2_coord[0]-y_vec[0]*h-z_vec[0]*w,
+														node2_coord[1]-y_vec[1]*h-z_vec[1]*w,
+														node2_coord[2]-y_vec[2]*h-z_vec[2]*w ]
+												v_22 = [node2_coord[0]-y_vec[0]*h+z_vec[0]*w,
+														node2_coord[1]-y_vec[1]*h+z_vec[1]*w,
+														node2_coord[2]-y_vec[2]*h+z_vec[2]*w ]
+												v_23 = [node2_coord[0]+y_vec[0]*h+z_vec[0]*w,
+														node2_coord[1]+y_vec[1]*h+z_vec[1]*w,
+														node2_coord[2]+y_vec[2]*h+z_vec[2]*w ]
+												v_24 = [node2_coord[0]+y_vec[0]*h-z_vec[0]*w,
+														node2_coord[1]+y_vec[1]*h-z_vec[1]*w,
+														node2_coord[2]+y_vec[2]*h-z_vec[2]*w ]
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												if iw != 0. or ih != 0.:
+													v_15 = [node1_coord[0]-y_vec[0]*ih-z_vec[0]*iw,
+															node1_coord[1]-y_vec[1]*ih-z_vec[1]*iw,
+															node1_coord[2]-y_vec[2]*ih-z_vec[2]*iw ]
+													v_16 = [node1_coord[0]-y_vec[0]*ih+z_vec[0]*iw,
+															node1_coord[1]-y_vec[1]*ih+z_vec[1]*iw,
+															node1_coord[2]-y_vec[2]*ih+z_vec[2]*iw ]
+													v_17 = [node1_coord[0]+y_vec[0]*ih+z_vec[0]*iw,
+															node1_coord[1]+y_vec[1]*ih+z_vec[1]*iw,
+															node1_coord[2]+y_vec[2]*ih+z_vec[2]*iw ]
+													v_18 = [node1_coord[0]+y_vec[0]*ih-z_vec[0]*iw,
+															node1_coord[1]+y_vec[1]*ih-z_vec[1]*iw,
+															node1_coord[2]+y_vec[2]*ih-z_vec[2]*iw ]
+													v_25 = [node2_coord[0]-y_vec[0]*ih-z_vec[0]*iw,
+															node2_coord[1]-y_vec[1]*ih-z_vec[1]*iw,
+															node2_coord[2]-y_vec[2]*ih-z_vec[2]*iw ]
+													v_26 = [node2_coord[0]-y_vec[0]*ih+z_vec[0]*iw,
+															node2_coord[1]-y_vec[1]*ih+z_vec[1]*iw,
+															node2_coord[2]-y_vec[2]*ih+z_vec[2]*iw ]
+													v_27 = [node2_coord[0]+y_vec[0]*ih+z_vec[0]*iw,
+															node2_coord[1]+y_vec[1]*ih+z_vec[1]*iw,
+															node2_coord[2]+y_vec[2]*ih+z_vec[2]*iw ]
+													v_28 = [node2_coord[0]+y_vec[0]*ih-z_vec[0]*iw,
+															node2_coord[1]+y_vec[1]*ih-z_vec[1]*iw,
+															node2_coord[2]+y_vec[2]*ih-z_vec[2]*iw ]
+													v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+													v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+													v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+													v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+													v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+													v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+													v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+													v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+													v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+													v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+													v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+													v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+													v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+													v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+													v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+													v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+													v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+													v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+													v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+													v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+													v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+													v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+													v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+													v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+												lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_11],
+														 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_21],
+														 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24]]
+												faces = [[v_13,v_12,v_22],[v_22,v_23,v_13],
+														 [v_14,v_13,v_23],[v_23,v_24,v_14],
+														 [v_11,v_14,v_24],[v_24,v_21,v_11],
+														 [v_12,v_11,v_21],[v_21,v_22,v_12]]
+
+												if iw == 0. or ih == 0.:
+													faces += [[v_11,v_12,v_13],[v_13,v_14,v_11],
+															  [v_21,v_24,v_23],[v_23,v_22,v_21]]
+												else:
+													lines += [[v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_15],
+															  [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_25],
+															  [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+													faces += [[v_15,v_11,v_12],[v_12,v_16,v_15],
+															  [v_16,v_12,v_13],[v_13,v_17,v_16],
+															  [v_17,v_13,v_14],[v_14,v_18,v_17],
+															  [v_18,v_14,v_11],[v_11,v_15,v_18],
+															  [v_26,v_22,v_21],[v_21,v_25,v_26],
+															  [v_22,v_26,v_23],[v_26,v_27,v_23],
+															  [v_23,v_27,v_24],[v_27,v_28,v_24],
+															  [v_24,v_28,v_21],[v_25,v_21,v_28],
+															  [v_17,v_27,v_16],[v_27,v_26,v_16],
+															  [v_18,v_28,v_17],[v_28,v_27,v_17],
+															  [v_15,v_25,v_18],[v_25,v_28,v_18],
+															  [v_25,v_15,v_26],[v_15,v_16,v_26]]
+
+											elif elements[j].crossSection['Type'] == 'Circle':
+
+												r  = elements[j].crossSection['radius, r']
+												ir  = elements[j].crossSection['inner radius, ir']
+												vertices1 = []
+												vertices2 = []
+												pnts = 24
+												for v in range(pnts):
+													d = pnts/(v+1)
+													vc = np.cos(2*np.pi/d)
+													vs = np.sin(2*np.pi/d)
+													vertices1.append([node1_coord[0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+																	  node1_coord[1]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+																	  node1_coord[2]+vs*y_vec[2]*r+vc*z_vec[2]*r ])
+													vertices1[v] = rotatePointAboutAxis(vertices1[v],node1_coord, \
+																		[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+													vertices1[v] = rotatePointAboutAxis(vertices1[v],node1_coord, \
+																		[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+													vertices1[v] = rotatePointAboutAxis(vertices1[v],node1_coord, \
+																		[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+													vertices2.append([node2_coord[0]+vs*y_vec[0]*r+vc*z_vec[0]*r,
+																	  node2_coord[1]+vs*y_vec[1]*r+vc*z_vec[1]*r,
+																	  node2_coord[2]+vs*y_vec[2]*r+vc*z_vec[2]*r ])
+													vertices2[v] = rotatePointAboutAxis(vertices2[v],node2_coord, \
+																		[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+													vertices2[v] = rotatePointAboutAxis(vertices2[v],node2_coord, \
+																		[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+													vertices2[v] = rotatePointAboutAxis(vertices2[v],node2_coord, \
+																		[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												if ir != 0.:
+													ivertices1 = []
+													ivertices2 = []
+													for v in range(pnts):
+														d = pnts/(v+1)
+														vc = np.cos(2*np.pi/d)
+														vs = np.sin(2*np.pi/d)
+														ivertices1.append([node1_coord[0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+																		   node1_coord[1]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+																		   node1_coord[2]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ])
+														ivertices1[v] = rotatePointAboutAxis(ivertices1[v],node1_coord, \
+																		[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+														ivertices1[v] = rotatePointAboutAxis(ivertices1[v],node1_coord, \
+																		[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+														ivertices1[v] = rotatePointAboutAxis(ivertices1[v],node1_coord, \
+																		[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+														ivertices2.append([node2_coord[0]+vs*y_vec[0]*ir+vc*z_vec[0]*ir,
+																		   node2_coord[1]+vs*y_vec[1]*ir+vc*z_vec[1]*ir,
+																		   node2_coord[2]+vs*y_vec[2]*ir+vc*z_vec[2]*ir ])
+														ivertices2[v] = rotatePointAboutAxis(ivertices2[v],node2_coord, \
+																		[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+														ivertices2[v] = rotatePointAboutAxis(ivertices2[v],node2_coord, \
+																		[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+														ivertices2[v] = rotatePointAboutAxis(ivertices2[v],node2_coord, \
+																		[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+												lines = []
+												faces = []
+												for v in range(pnts):
+													lines.append([vertices1[v-1],vertices1[v]])
+													lines.append([vertices2[v-1],vertices2[v]])
+												lines.append([vertices1[0],vertices2[0]])
+
+												if ir != 0.:
+													for v in range(pnts):
+														lines.append([ivertices1[v-1],ivertices1[v]])
+														lines.append([ivertices2[v-1],ivertices2[v]])
+													lines.append([ivertices1[0],ivertices2[0]])
+													for v in range(pnts-1):
+														faces.append([ivertices1[v],vertices1[v],vertices1[v+1]])
+														faces.append([vertices1[v+1],ivertices1[v+1],ivertices1[v]])
+														faces.append([ivertices2[v],vertices2[v+1],vertices2[v]])
+														faces.append([vertices2[v+1],ivertices2[v],ivertices2[v+1]])
+														faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+														faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+														faces.append([ivertices1[v],ivertices1[v+1],ivertices2[v]])
+														faces.append([ivertices1[v+1],ivertices2[v+1],ivertices2[v]])
+													faces.append([ivertices1[-1],vertices1[-1],vertices1[0]])
+													faces.append([vertices1[0],ivertices1[0],ivertices1[-1]])
+													faces.append([ivertices2[-1],vertices2[0],vertices2[-1]])
+													faces.append([vertices2[0],ivertices2[-1],ivertices2[0]])
+													faces.append([vertices1[-1],vertices2[-1],vertices2[0]])
+													faces.append([vertices2[0],vertices1[0],vertices1[-1]])
+													faces.append([ivertices1[-1],ivertices1[0],ivertices2[-1]])
+													faces.append([ivertices1[0],ivertices2[0],ivertices2[-1]])
+													
+												else:
+													vertices1.append([node1_coord[0],
+																	  node1_coord[1],
+																	  node1_coord[2] ])
+													vertices1[-1] = rotatePointAboutAxis(vertices1[-1],node1_coord, \
+																		[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+													vertices1[-1] = rotatePointAboutAxis(vertices1[-1],node1_coord, \
+																		[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+													vertices1[-1] = rotatePointAboutAxis(vertices1[-1],node1_coord, \
+																		[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+													vertices2.append([node2_coord[0],
+																	  node2_coord[1],
+																	  node2_coord[2] ])
+													vertices2[-1] = rotatePointAboutAxis(vertices2[-1],node2_coord, \
+																		[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+													vertices2[-1] = rotatePointAboutAxis(vertices2[-1],node2_coord, \
+																		[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+													vertices2[-1] = rotatePointAboutAxis(vertices2[-1],node2_coord, \
+																		[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+													for v in range(pnts):
+														faces.append([vertices1[-1],vertices1[v],vertices1[v+1]])
+														faces.append([vertices2[-1],vertices2[v+1],vertices2[v]])
+														faces.append([vertices1[v],vertices2[v],vertices2[v+1]])
+														faces.append([vertices2[v+1],vertices1[v+1],vertices1[v]])
+													faces.append([vertices1[-1],vertices1[-2],vertices1[0]])
+													faces.append([vertices2[-1],vertices2[0],vertices2[-2]])
+													faces.append([vertices1[-2],vertices2[-2],vertices2[0]])
+													faces.append([vertices2[0],vertices1[0],vertices1[-2]])
+
+											elif elements[j].crossSection['Type'] == 'L-Beam':
+
+												bw = elements[j].crossSection['bottom width, bw']
+												bt = elements[j].crossSection['bottom thickness, bt']
+												st = elements[j].crossSection['side thickness, st']
+												h  = elements[j].crossSection['height, h']
+												A1  = st*(h-bt)
+												A2  = bt*bw
+												A   = A1+A2
+												yC1 = (h/2.)+bt
+												yC2 = bt/2.
+												zC1 = st/2.
+												zC2 = bw/2.
+												if A != 0.:
+													yC = (A1*yC1+A2*yC2)/A
+													zC = (A1*zC1+A2*zC2)/A
+												else:
+													yC = 0.
+													zC = 0.
+												v_11  = [node1_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+														 node1_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+														 node1_coord[2]-y_vec[2]*yC-z_vec[2]*zC ]
+												v_12  = [node1_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+														 node1_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+														 node1_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+												v_13  = [node1_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+														 node1_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+														 node1_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+												v_14  = [node1_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+														 node1_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+														 node1_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ]
+												v_15  = [node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+														 node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+														 node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ]
+												v_16  = [node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+														 node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+														 node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+												v_21  = [node2_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+														 node2_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+														 node2_coord[2]-y_vec[2]*yC-z_vec[2]*zC ]
+												v_22  = [node2_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+														 node2_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+														 node2_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+												v_23  = [node2_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+														 node2_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+														 node2_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+												v_24  = [node2_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-st),
+														 node2_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-st),
+														 node2_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-st) ]
+												v_25  = [node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*(zC-st),
+														 node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*(zC-st),
+														 node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*(zC-st) ]
+												v_26  = [node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+														 node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+														 node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+												lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],[v_15,v_16],[v_16,v_11],
+														 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],[v_25,v_26],[v_26,v_21],
+														 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],[v_15,v_25],[v_16,v_26]]
+												faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+														 [v_11,v_14,v_16],[v_16,v_14,v_15],
+														 [v_23,v_22,v_21],[v_21,v_24,v_23],
+														 [v_24,v_21,v_26],[v_24,v_26,v_25],
+														 [v_11,v_21,v_12],[v_12,v_21,v_22],
+														 [v_11,v_16,v_26],[v_26,v_21,v_11],
+														 [v_16,v_15,v_26],[v_26,v_15,v_25],
+														 [v_13,v_12,v_22],[v_22,v_23,v_13],
+														 [v_14,v_13,v_24],[v_24,v_13,v_23],
+														 [v_14,v_24,v_25],[v_25,v_15,v_14]]
+
+											elif elements[j].crossSection['Type'] == 'I-Beam':
+												tw = elements[j].crossSection['top width, tw']
+												tt = elements[j].crossSection['top thickness, tt']
+												mt = elements[j].crossSection['middle thickness, mt']
+												bw = elements[j].crossSection['bottom width, bw']
+												bt = elements[j].crossSection['bottom thickness, bt']
+												h  = elements[j].crossSection['height, h']
+												tw = tw/2.
+												tt = tt
+												mt = mt/2.
+												bw = bw/2.
+												bt = bt
+												h  = h/2.
+												v_11  = [node1_coord[0]-y_vec[0]*h-z_vec[0]*bw,
+														 node1_coord[1]-y_vec[1]*h-z_vec[1]*bw,
+														 node1_coord[2]-y_vec[2]*h-z_vec[2]*bw ]
+												v_12  = [node1_coord[0]-y_vec[0]*h+z_vec[0]*bw,
+														 node1_coord[1]-y_vec[1]*h+z_vec[1]*bw,
+														 node1_coord[2]-y_vec[2]*h+z_vec[2]*bw ]
+												v_13  = [node1_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+														 node1_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+														 node1_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*bw ]
+												v_14  = [node1_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+														 node1_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+														 node1_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*mt ]
+												v_15  = [node1_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+														 node1_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+														 node1_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*mt ]
+												v_16  = [node1_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+														 node1_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+														 node1_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*bw ]
+												v_17  = [node1_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*tw ]
+												v_18  = [node1_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+														 node1_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+														 node1_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*mt ]
+												v_19  = [node1_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+														 node1_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+														 node1_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*mt ]
+												v_110 = [node1_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*tw ]
+												v_111 = [node1_coord[0]+y_vec[0]*h+z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*h+z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*h+z_vec[2]*tw ]
+												v_112 = [node1_coord[0]+y_vec[0]*h-z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*h-z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*h-z_vec[2]*tw ]
+												v_21  = [node2_coord[0]-y_vec[0]*h-z_vec[0]*bw,
+														 node2_coord[1]-y_vec[1]*h-z_vec[1]*bw,
+														 node2_coord[2]-y_vec[2]*h-z_vec[2]*bw ]
+												v_22  = [node2_coord[0]-y_vec[0]*h+z_vec[0]*bw,
+														 node2_coord[1]-y_vec[1]*h+z_vec[1]*bw,
+														 node2_coord[2]-y_vec[2]*h+z_vec[2]*bw ]
+												v_23  = [node2_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*bw,
+														 node2_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*bw,
+														 node2_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*bw ]
+												v_24  = [node2_coord[0]-y_vec[0]*(h-bt)+z_vec[0]*mt,
+														 node2_coord[1]-y_vec[1]*(h-bt)+z_vec[1]*mt,
+														 node2_coord[2]-y_vec[2]*(h-bt)+z_vec[2]*mt ]
+												v_25  = [node2_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*mt,
+														 node2_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*mt,
+														 node2_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*mt ]
+												v_26  = [node2_coord[0]-y_vec[0]*(h-bt)-z_vec[0]*bw,
+														 node2_coord[1]-y_vec[1]*(h-bt)-z_vec[1]*bw,
+														 node2_coord[2]-y_vec[2]*(h-bt)-z_vec[2]*bw ]
+												v_27  = [node2_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*tw ]
+												v_28  = [node2_coord[0]+y_vec[0]*(h-tt)-z_vec[0]*mt,
+														 node2_coord[1]+y_vec[1]*(h-tt)-z_vec[1]*mt,
+														 node2_coord[2]+y_vec[2]*(h-tt)-z_vec[2]*mt ]
+												v_29  = [node2_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*mt,
+														 node2_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*mt,
+														 node2_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*mt ]
+												v_210 = [node2_coord[0]+y_vec[0]*(h-tt)+z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*(h-tt)+z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*(h-tt)+z_vec[2]*tw ]
+												v_211 = [node2_coord[0]+y_vec[0]*h+z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*h+z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*h+z_vec[2]*tw ]
+												v_212 = [node2_coord[0]+y_vec[0]*h-z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*h-z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*h-z_vec[2]*tw ]
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_19 = rotatePointAboutAxis(v_19,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_19 = rotatePointAboutAxis(v_19,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_19 = rotatePointAboutAxis(v_19,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_110 = rotatePointAboutAxis(v_110,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_110 = rotatePointAboutAxis(v_110,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_110 = rotatePointAboutAxis(v_110,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_111 = rotatePointAboutAxis(v_111,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_111 = rotatePointAboutAxis(v_111,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_111 = rotatePointAboutAxis(v_111,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_112 = rotatePointAboutAxis(v_112,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_112 = rotatePointAboutAxis(v_112,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_112 = rotatePointAboutAxis(v_112,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_29 = rotatePointAboutAxis(v_29,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_29 = rotatePointAboutAxis(v_29,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_29 = rotatePointAboutAxis(v_29,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_210 = rotatePointAboutAxis(v_210,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_210 = rotatePointAboutAxis(v_210,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_210 = rotatePointAboutAxis(v_210,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_211 = rotatePointAboutAxis(v_211,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_211 = rotatePointAboutAxis(v_211,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_211 = rotatePointAboutAxis(v_211,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_212 = rotatePointAboutAxis(v_212,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_212 = rotatePointAboutAxis(v_212,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_212 = rotatePointAboutAxis(v_212,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+												lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_19],
+														 [v_19,v_110],[v_110,v_111],[v_111,v_112],[v_112,v_17],
+														 [v_17,v_18],[v_18,v_15],[v_15,v_16],[v_16,v_11],
+														 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_29],
+														 [v_29,v_210],[v_210,v_211],[v_211,v_212],[v_212,v_27],
+														 [v_27,v_28],[v_28,v_25],[v_25,v_26],[v_26,v_21],
+														 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+														 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28],
+														 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+												faces = [[v_11,v_12,v_13],[v_13,v_16,v_11],
+														 [v_15,v_14,v_19],[v_19,v_18,v_15],
+														 [v_112,v_17,v_110],[v_110,v_111,v_112],
+														 [v_23,v_22,v_21],[v_21,v_26,v_23],
+														 [v_29,v_24,v_25],[v_25,v_28,v_29],
+														 [v_210,v_27,v_212],[v_212,v_211,v_210],
+														 [v_19,v_14,v_24],[v_24,v_29,v_19],
+														 [v_15,v_18,v_28],[v_28,v_25,v_15],
+														 [v_13,v_12,v_22],[v_22,v_23,v_13],
+														 [v_11,v_16,v_26],[v_26,v_21,v_11],
+														 [v_111,v_110,v_210],[v_210,v_211,v_111],
+														 [v_17,v_112,v_212],[v_212,v_27,v_17],
+														 [v_11,v_21,v_12],[v_21,v_22,v_12],
+														 [v_112,v_111,v_212],[v_212,v_111,v_211],
+														 [v_14,v_13,v_24],[v_24,v_13,v_23],
+														 [v_16,v_15,v_26],[v_26,v_15,v_25],
+														 [v_18,v_17,v_27],[v_27,v_28,v_18],
+														 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+											elif elements[j].crossSection['Type'] == 'C-Beam':
+												tw = elements[j].crossSection['top width, tw']
+												tt = elements[j].crossSection['top thickness, tt']
+												mt = elements[j].crossSection['middle thickness, mt']
+												bw = elements[j].crossSection['bottom width, bw']
+												bt = elements[j].crossSection['bottom thickness, bt']
+												h  = elements[j].crossSection['height, h']
+												A1  = tt*tw
+												A2  = mt*(h-tt-bt)
+												A3  = bt*bw
+												A   = A1+A2+A3
+												zC1 = tw/2.
+												zC2 = mt/2.
+												zC3 = bw/2.
+												yC1 = h-(tt/2.)
+												yC2 = (h-tt)/2.
+												yC3 = bt/2.
+												if A != 0.:
+													zC = (A1*zC1+A2*zC2+A3*zC3)/A
+													yC = (A1*yC1+A2*yC2+A3*yC3)/A
+												else:
+													zC = 0.
+													yC = 0.
+												v_11  = [node1_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+														 node1_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+														 node1_coord[2]-y_vec[2]*yC-z_vec[2]*zC ]
+												v_12  = [node1_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+														 node1_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+														 node1_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+												v_13  = [node1_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+														 node1_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+														 node1_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+												v_14  = [node1_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+														 node1_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+														 node1_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ]
+												v_15  = [node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+														 node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+														 node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ]
+												v_16  = [node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+														 node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+														 node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ]
+												v_17  = [node1_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+														 node1_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+														 node1_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ]
+												v_18  = [node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+														 node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+														 node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+												v_21  = [node2_coord[0]-y_vec[0]*yC-z_vec[0]*zC,
+														 node2_coord[1]-y_vec[1]*yC-z_vec[1]*zC,
+														 node2_coord[2]-y_vec[2]*yC-z_vec[2]*zC ]
+												v_22  = [node2_coord[0]-y_vec[0]*yC+z_vec[0]*(bw-zC),
+														 node2_coord[1]-y_vec[1]*yC+z_vec[1]*(bw-zC),
+														 node2_coord[2]-y_vec[2]*yC+z_vec[2]*(bw-zC) ]
+												v_23  = [node2_coord[0]-y_vec[0]*(yC-bt)+z_vec[0]*(bw-zC),
+														 node2_coord[1]-y_vec[1]*(yC-bt)+z_vec[1]*(bw-zC),
+														 node2_coord[2]-y_vec[2]*(yC-bt)+z_vec[2]*(bw-zC) ]
+												v_24  = [node2_coord[0]-y_vec[0]*(yC-bt)-z_vec[0]*(zC-mt),
+														 node2_coord[1]-y_vec[1]*(yC-bt)-z_vec[1]*(zC-mt),
+														 node2_coord[2]-y_vec[2]*(yC-bt)-z_vec[2]*(zC-mt) ]
+												v_25  = [node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*(zC-mt),
+														 node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*(zC-mt),
+														 node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*(zC-mt) ]
+												v_26  = [node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*(tw-zC),
+														 node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*(tw-zC),
+														 node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*(tw-zC) ]
+												v_27  = [node2_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*(tw-zC),
+														 node2_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*(tw-zC),
+														 node2_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*(tw-zC) ]
+												v_28  = [node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*zC,
+														 node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*zC,
+														 node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*zC ]
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_13 = rotatePointAboutAxis(v_13,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_14 = rotatePointAboutAxis(v_14,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_15 = rotatePointAboutAxis(v_15,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_16 = rotatePointAboutAxis(v_16,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_23 = rotatePointAboutAxis(v_23,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_24 = rotatePointAboutAxis(v_24,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_25 = rotatePointAboutAxis(v_25,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_26 = rotatePointAboutAxis(v_26,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												
+												lines = [[v_11,v_12],[v_12,v_13],[v_13,v_14],[v_14,v_15],
+														 [v_15,v_16],[v_16,v_17],[v_17,v_18],[v_18,v_11],
+														 [v_21,v_22],[v_22,v_23],[v_23,v_24],[v_24,v_25],
+														 [v_25,v_26],[v_26,v_27],[v_27,v_28],[v_28,v_21],
+														 [v_11,v_21],[v_12,v_22],[v_13,v_23],[v_14,v_24],
+														 [v_15,v_25],[v_16,v_26],[v_17,v_27],[v_18,v_28]]
+												faces = [[v_11,v_12,v_13],[v_13,v_14,v_11],
+														 [v_11,v_14,v_18],[v_18,v_14,v_15],
+														 [v_15,v_16,v_17],[v_17,v_18,v_15],
+														 [v_23,v_22,v_21],[v_21,v_24,v_23],
+														 [v_24,v_21,v_28],[v_24,v_28,v_25],
+														 [v_26,v_25,v_27],[v_28,v_27,v_25],
+														 [v_11,v_21,v_12],[v_12,v_21,v_22],
+														 [v_11,v_18,v_28],[v_28,v_21,v_11],
+														 [v_18,v_17,v_28],[v_28,v_17,v_27],
+														 [v_16,v_26,v_27],[v_27,v_17,v_16],
+														 [v_16,v_15,v_25],[v_25,v_26,v_16],
+														 [v_14,v_24,v_25],[v_25,v_15,v_14],
+														 [v_13,v_24,v_14],[v_24,v_13,v_23],
+														 [v_13,v_12,v_22],[v_22,v_23,v_13]]
+
+											elif elements[j].crossSection['Type'] == 'T-Beam':
+												tw = elements[j].crossSection['top width, tw']
+												tt = elements[j].crossSection['top thickness, tt']
+												mt = elements[j].crossSection['middle thickness, mt']
+												h  = elements[j].crossSection['height, h']
+												A1  = mt*(h-tt)
+												A2  = tt*tw
+												A   = A1+A2
+												yC1 = h-(tt/2.)
+												yC2 = (h-tt)/2.
+												if A != 0.:
+													yC = (A1*yC1+A2*yC2)/A
+												else:
+													yC = 0.
+												tw = tw/2.
+												tt = tt
+												mt = mt/2.
+												v_11  = [node1_coord[0]-y_vec[0]*yC-z_vec[0]*mt,
+														 node1_coord[1]-y_vec[1]*yC-z_vec[1]*mt,
+														 node1_coord[2]-y_vec[2]*yC-z_vec[2]*mt ]
+												v_12  = [node1_coord[0]-y_vec[0]*yC+z_vec[0]*mt,
+														 node1_coord[1]-y_vec[1]*yC+z_vec[1]*mt,
+														 node1_coord[2]-y_vec[2]*yC+z_vec[2]*mt ]
+												v_17  = [node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ]
+												v_18  = [node1_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+														 node1_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+														 node1_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ]
+												v_19  = [node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+														 node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+														 node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ]
+												v_110 = [node1_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ]
+												v_111 = [node1_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*tw ]
+												v_112 = [node1_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+														 node1_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+														 node1_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*tw ]
+												v_21  = [node2_coord[0]-y_vec[0]*yC-z_vec[0]*mt,
+														 node2_coord[1]-y_vec[1]*yC-z_vec[1]*mt,
+														 node2_coord[2]-y_vec[2]*yC-z_vec[2]*mt ]
+												v_22  = [node2_coord[0]-y_vec[0]*yC+z_vec[0]*mt,
+														 node2_coord[1]-y_vec[1]*yC+z_vec[1]*mt,
+														 node2_coord[2]-y_vec[2]*yC+z_vec[2]*mt ]
+												v_27  = [node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*tw ]
+												v_28  = [node2_coord[0]+y_vec[0]*(h-yC-tt)-z_vec[0]*mt,
+														 node2_coord[1]+y_vec[1]*(h-yC-tt)-z_vec[1]*mt,
+														 node2_coord[2]+y_vec[2]*(h-yC-tt)-z_vec[2]*mt ]
+												v_29  = [node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*mt,
+														 node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*mt,
+														 node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*mt ]
+												v_210 = [node2_coord[0]+y_vec[0]*(h-yC-tt)+z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*(h-yC-tt)+z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*(h-yC-tt)+z_vec[2]*tw ]
+												v_211 = [node2_coord[0]+y_vec[0]*(h-yC)+z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*(h-yC)+z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*(h-yC)+z_vec[2]*tw ]
+												v_212 = [node2_coord[0]+y_vec[0]*(h-yC)-z_vec[0]*tw,
+														 node2_coord[1]+y_vec[1]*(h-yC)-z_vec[1]*tw,
+														 node2_coord[2]+y_vec[2]*(h-yC)-z_vec[2]*tw ]
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_11 = rotatePointAboutAxis(v_11,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_12 = rotatePointAboutAxis(v_12,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_17 = rotatePointAboutAxis(v_17,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_18 = rotatePointAboutAxis(v_18,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_19 = rotatePointAboutAxis(v_19,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_19 = rotatePointAboutAxis(v_19,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_19 = rotatePointAboutAxis(v_19,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_110 = rotatePointAboutAxis(v_110,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_110 = rotatePointAboutAxis(v_110,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_110 = rotatePointAboutAxis(v_110,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_111 = rotatePointAboutAxis(v_111,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_111 = rotatePointAboutAxis(v_111,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_111 = rotatePointAboutAxis(v_111,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_112 = rotatePointAboutAxis(v_112,node1_coord,[node1_coord[0]+1,node1_coord[1],node1_coord[2]],node1_rotation[0])
+												v_112 = rotatePointAboutAxis(v_112,node1_coord,[node1_coord[0],node1_coord[1]+1,node1_coord[2]],node1_rotation[1])
+												v_112 = rotatePointAboutAxis(v_112,node1_coord,[node1_coord[0],node1_coord[1],node1_coord[2]+1],node1_rotation[2])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_21 = rotatePointAboutAxis(v_21,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_22 = rotatePointAboutAxis(v_22,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_27 = rotatePointAboutAxis(v_27,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_28 = rotatePointAboutAxis(v_28,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_29 = rotatePointAboutAxis(v_29,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_29 = rotatePointAboutAxis(v_29,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_29 = rotatePointAboutAxis(v_29,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_210 = rotatePointAboutAxis(v_210,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_210 = rotatePointAboutAxis(v_210,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_210 = rotatePointAboutAxis(v_210,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_211 = rotatePointAboutAxis(v_211,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_211 = rotatePointAboutAxis(v_211,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_211 = rotatePointAboutAxis(v_211,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+												v_212 = rotatePointAboutAxis(v_212,node2_coord,[node2_coord[0]+1,node2_coord[1],node2_coord[2]],node2_rotation[0])
+												v_212 = rotatePointAboutAxis(v_212,node2_coord,[node2_coord[0],node2_coord[1]+1,node2_coord[2]],node2_rotation[1])
+												v_212 = rotatePointAboutAxis(v_212,node2_coord,[node2_coord[0],node2_coord[1],node2_coord[2]+1],node2_rotation[2])
+
+												lines = [[v_11,v_12],[v_12,v_19],[v_19,v_110],[v_110,v_111],
+														 [v_111,v_112],[v_112,v_17],[v_17,v_18],[v_18,v_11],
+														 [v_21,v_22],[v_22,v_29],[v_29,v_210],[v_210,v_211],
+														 [v_211,v_212],[v_212,v_27],[v_27,v_28],[v_28,v_21],
+														 [v_11,v_21],[v_12,v_22],[v_17,v_27],[v_18,v_28],
+														 [v_19,v_29],[v_110,v_210],[v_111,v_211],[v_112,v_212]]
+												faces = [[v_11,v_12,v_19],[v_19,v_18,v_11],
+														 [v_112,v_17,v_110],[v_110,v_111,v_112],
+														 [v_29,v_22,v_21],[v_21,v_28,v_29],
+														 [v_210,v_27,v_212],[v_212,v_211,v_210],
+														 [v_19,v_12,v_22],[v_22,v_29,v_19],
+														 [v_11,v_18,v_28],[v_28,v_21,v_11],
+														 [v_111,v_110,v_210],[v_210,v_211,v_111],
+														 [v_17,v_112,v_212],[v_212,v_27,v_17],
+														 [v_11,v_21,v_12],[v_21,v_22,v_12],
+														 [v_112,v_111,v_212],[v_212,v_111,v_211],
+														 [v_18,v_17,v_27],[v_27,v_28,v_18],
+														 [v_110,v_19,v_29],[v_29,v_210,v_110]]
+
+											else:
+												pass
+
+											glLineWidth(2.0)
+											glColor3f(0.0, 0.2, 0.0)
+											for line in range(len(lines)):
+												glBegin(GL_LINES)
+												glVertex3f(lines[line][0][0],lines[line][0][1],lines[line][0][2])
+												glVertex3f(lines[line][1][0],lines[line][1][1],lines[line][1][2])
+												glEnd()
+
+											glColor3f(0.0, 0.7, 0.0)
+											for face in range(len(faces)):
+												glBegin(GL_TRIANGLES)
+												glVertex3f(faces[face][0][0],faces[face][0][1],faces[face][0][2])
+												glVertex3f(faces[face][1][0],faces[face][1][1],faces[face][1][2])
+												glVertex3f(faces[face][2][0],faces[face][2][1],faces[face][2][2])
+												glEnd()
+
 
 							glEndList()
 
