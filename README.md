@@ -1,7 +1,7 @@
 # solFEM_v3
 A small open source Finite Element program with basic mesh generation, solver and viewer.
 
-
+![alt text](https://github.com/MrMechanics/solFEM_v3/Splash/elements.png?raw=true)
 
 Description:
 ------------
