@@ -54,27 +54,27 @@ anaconda command prompth.
 
 <b>In windows 10:</b>
 
-..\solFEM_v3\work_directory> py program.py
+<i>..\solFEM_v3\work_directory></i> <b>py program.py</b>
 
 <b>In Ubuntu:</b>
 
-<i>user@user-computer:current_dir$</i> sudo apt install python3
+<i>user@user-computer:current_dir$</i> <b>sudo apt install python3</b>
 
-<i>user@user-computer:current_dir$</i> sudo apt install python3-numpy
+<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-numpy</b>
 
-<i>user@user-computer:current_dir$</i> sudo apt install python3-scipy
+<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-scipy</b>
 
-<i>user@user-computer:current_dir$</i> sudo apt install python3-matplotlib
+<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-matplotlib</b>
 
-<i>user@user-computer:current_dir$</i> sudo apt install python3-pyopengl
+<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-pyopengl</b>
 
-<i>user@user-computer:current_dir$</i> sudo apt install python3-pyqt5
+<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-pyqt5</b>
 
-<i>user@user-computer:current_dir$</i> sudo apt install python3-pyqt5.qtopengl
+<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-pyqt5.qtopengl</b>
 
-<i>user@user-computer:current_dir$</i> cd ...\solFEM_v3\work_directory
+<i>user@user-computer:current_dir$</i> <b>cd ...\solFEM_v3\work_directory</b>
 
-<i>user@user-computer:current_dir/../solFEM_v3/work_directory$</i> python3 program.py
+<i>user@user-computer:current_dir/../solFEM_v3/work_directory$</i> <b>python3 program.py</b>
 
 
 
