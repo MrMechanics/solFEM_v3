@@ -74,7 +74,7 @@ anaconda command prompth.
 
 <i>user@user-computer:current_dir$</i> cd ...\solFEM_v3\work_directory
 
-<i>user@user-computer:work_directory$</i> python3 program.py
+<i>user@user-computer:current_dir/../solFEM_v3/work_directory$</i> python3 program.py
 
 
 
