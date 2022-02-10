@@ -808,7 +808,7 @@ is an OpenGL widget running inside this framework.
 		self.setCentralWidget(parentWidget)
 
 		self.centerWindow()
-		self.resize(1300,650)
+		self.resize(1350,650)
 
 
 	def centerWindow(self):
