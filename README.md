@@ -11,8 +11,8 @@ Kind of like how you have a calculator easily accessible on your desktop, there
 should be a free open source FEM program which you can start up on your computer
 and quickly find the stiffness of a simple structure.
 
-The code is written in python primarily to be easy to read, so it is meant to be
-a resource for students or engineers who wish to dig into FEM code and build more 
+The code is written in python primarily to be easy to read, so it also is meant to
+be a resource for students or engineers who wish to dig into FEM code and build more 
 intuition for how the finite element method works. Maybe even use parts of this 
 code as inspiration for their own FEM code.
 
