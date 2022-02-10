@@ -32,8 +32,11 @@ Have fun!
 
 ![alt text](https://github.com/MrMechanics/solFEM_v3/blob/main/Splash/program.png?raw=true)
 
-Requirements:
+Installation:
 -------------
+
+Click the "Code" button above in the repository here and then "download as zip".
+Extract the zip file (and rename from "solFEM_v3-main" to solFEM_v3" if you want).
 
 Python3 with the following modules must be installed for the program to work:
 - numpy
