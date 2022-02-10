@@ -25,8 +25,8 @@ will take a long time.
 
 Also it is recommended to save your work regularly while you build your solutions.
 This creates .mdl files which can be loaded from your last save if the program
-should crash. Also if you want to save your mesh in a more robust format, you can
-export it directly into a .sol file.
+should crash. There is no undo-button. If you want to save your mesh in a more 
+robust format, you can export it directly into a .sol file (text format).
 
 Have fun!
 
