@@ -45,7 +45,9 @@ Python3 with the following modules must be installed for the program to work:
 
 With the above mentioned python modules installed, copy the solFEM_v3 folder to any location, 
 open a terminal window and navigate to '..\solFEM_v3\work_directory'. The program can then be
-started from the terminal by running the script 'program.py'.
+started from the terminal by running the script 'program.py'. Alternatively, Python3 with all
+these modules comes pre-installed with Anaconda if you run the 'program.py' script from an
+anaconda command prompth.
 
 In windows 10:
 ..\solFEM_v3\work_directory> py program.py
