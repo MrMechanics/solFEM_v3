@@ -28,7 +28,7 @@ is always safest to save your work in .sol files.
 
 Have fun!
 
-
+![alt text](https://github.com/MrMechanics/solFEM_v3/blob/main/Splash/program.png?raw=true)
 
 Requirements:
 -------------
@@ -36,9 +36,10 @@ Requirements:
 Python3 with the following modules must be installed for the program to work:
 - numpy
 - scipy
-- pyqt5
-- pyopengl
 - matplotlib
+- pyopengl
+- pyqt5
+- pyqt5.qtopengl
 
 With the above mentioned python modules installed, copy the solFEM_v3 folder to any location, 
 open a terminal window and navigate to '..\solFEM_v3\work_directory'. The program can then be
@@ -56,7 +57,7 @@ Tutorials:
 ----------
 
 - Written documentation accessed from inside the program -- READY!
-- Youtube video tutorials -- COMING SOON!
+- Youtube video tutorial -- COMING SOON!
 - Case files that can be used to see working examples (..\solFEM_v3\Example Mesh Files) -- READY!
 
 
