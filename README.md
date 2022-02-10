@@ -16,11 +16,12 @@ be a resource for students or engineers who wish to dig into FEM code and build 
 intuition for how the finite element method works. Maybe even use parts of this 
 code as inspiration for their own FEM code.
 
-PS! This program is primarily meant to be used on relatively small FEM solutions
-(100 000 DOFs takes more than 2 minutes to solve on a fast computer with lots of
-RAM, while 20 000 DOFs can take several minutes on a 10 year old laptop), because 
-it uses scipy.sparse.linalg, which only solves matrix equations using one CPU.
-No parallel computing.
+PS! This program should be used on relatively small FEM solutions (100 000 DOFs 
+takes more than 2 minutes to solve on a fast computer with lots of RAM, while 
+20 000 DOFs can take several minutes on a 10 year old laptop), because it uses 
+scipy.sparse.linalg, which only solves matrix equations using one CPU. No parallel 
+computing. It can run larger models also (unless you run out of RAM), but that
+will take a long time.
 
 Also it is recommended to save your work regularly while you build your solutions.
 This creates .mdl files which can be loaded from your last save if the program
