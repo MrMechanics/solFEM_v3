@@ -11,20 +11,21 @@ Kind of like how you have a calculator easily accessible on your desktop, there
 should be a free open source FEM program which you can start up on your computer
 and quickly find the stiffness of a simple structure.
 
-It is also meant as a resource for students or engineers who wish to dig into FEM 
-code and build more intuition for how the finite element method works. Maybe even 
-use parts of this code as a base for their own FEM code.
+The code is written in python primarily to be easy to read, so it is meant to be
+a resource for students or engineers who wish to dig into FEM code and build more 
+intuition for how the finite element method works. Maybe even use parts of this 
+code as inspiration for their own FEM code.
 
 PS! This program is primarily meant to be used on relatively small FEM solutions
-(100 000 DOFs takes more than 2 minutes to solve), because it uses
-scipy.sparse.linalg solvers, which only solves matrix equations using one CPU.
+(100 000 DOFs takes more than 2 minutes to solve on a fast computer with lots of
+RAM, while 20 000 DOFs can take several minutes on a 10 year old laptop), because 
+it uses scipy.sparse.linalg, which only solves matrix equations using one CPU.
 No parallel computing.
 
-Also it is generally not recommended to build big models with many parts, as the
-program can sometimes crash abruptly which might lose you all your work and cause 
-some frustration. It is possible to save your work in .mdl files, but they are 
-not a very robust format. Therefore if you need to save a solution for later, it 
-is always safest to save your work in .sol files.
+Also it is recommended to save your work regularly while you build your solutions.
+This creates .mdl files which can be loaded from your last save if the program
+should crash. Also if you want to save your mesh in a more robust format, you can
+export it directly into a .sol file.
 
 Have fun!
 
