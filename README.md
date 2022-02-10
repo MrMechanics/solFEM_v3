@@ -52,29 +52,29 @@ started from the terminal by running the script 'program.py'. Alternatively, Pyt
 these modules comes pre-installed with Anaconda if you run the 'program.py' script from an
 anaconda command prompth.
 
-In windows 10:
+<b>In windows 10:</b>
 
 ..\solFEM_v3\work_directory> py program.py
 
 <b>In Ubuntu:</b>
 
-user@user-computer:current_dir$ sudo apt install python3
+<i>user@user-computer:current_dir$</i> sudo apt install python3
 
-user@user-computer:current_dir$ sudo apt install python3-numpy
+<i>user@user-computer:current_dir$</i> sudo apt install python3-numpy
 
-user@user-computer:current_dir$ sudo apt install python3-scipy
+<i>user@user-computer:current_dir$</i> sudo apt install python3-scipy
 
-user@user-computer:current_dir$ sudo apt install python3-matplotlib
+<i>user@user-computer:current_dir$</i> sudo apt install python3-matplotlib
 
-user@user-computer:current_dir$ sudo apt install python3-pyopengl
+<i>user@user-computer:current_dir$</i> sudo apt install python3-pyopengl
 
-user@user-computer:current_dir$ sudo apt install python3-pyqt5
+<i>user@user-computer:current_dir$</i> sudo apt install python3-pyqt5
 
-user@user-computer:current_dir$ sudo apt install python3-pyqt5.qtopengl
+<i>user@user-computer:current_dir$</i> sudo apt install python3-pyqt5.qtopengl
 
-user@user-computer:current_dir$ cd ...\solFEM_v3\work_directory
+<i>user@user-computer:current_dir$</i> cd ...\solFEM_v3\work_directory
 
-user@user-computer:work_directory$ python3 program.py
+<i>user@user-computer:work_directory$</i> python3 program.py
 
 
 
