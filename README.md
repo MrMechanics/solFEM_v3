@@ -59,14 +59,21 @@ In windows 10:
 <b>In Ubuntu:</b>
 
 user@user-computer:current_dir$ sudo apt install python3
+
 user@user-computer:current_dir$ sudo apt install python3-numpy
+
 user@user-computer:current_dir$ sudo apt install python3-scipy
+
 user@user-computer:current_dir$ sudo apt install python3-matplotlib
+
 user@user-computer:current_dir$ sudo apt install python3-pyopengl
+
 user@user-computer:current_dir$ sudo apt install python3-pyqt5
+
 user@user-computer:current_dir$ sudo apt install python3-pyqt5.qtopengl
 
 user@user-computer:current_dir$ cd ...\solFEM_v3\work_directory
+
 user@user-computer:work_directory$ python3 program.py
 
 
