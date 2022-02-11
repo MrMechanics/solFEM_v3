@@ -58,19 +58,21 @@ anaconda command prompth.
 First install python3 with installer from www.python.org if you don't already have python3.
 Then open a terminal and install the extra modules with pip install:
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install numpy</b>
+<i>C:\Users\username\...\current_dir></i> <b>py -m pip install numpy</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install scipy</b>
+<i>C:\Users\username\...\current_dir></i> <b>py -m pip install scipy</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install matplotlib</b>
+<i>C:\Users\username\...\current_dir></i> <b>py -m pip install matplotlib</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyopengl</b>
+<i>C:\Users\username\...\current_dir></i> <b>py -m pip install pyopengl</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5</b>
+<i>C:\Users\username\...\current_dir></i> <b>py -m pip install pyqt5</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5.qtopengl</b>
+<i>C:\Users\username\...\current_dir></i> <b>py -m pip install pyqt5.qtopengl</b>
 
-<i>C:\Users\username\..\solFEM_v3\work_directory></i> <b>py program.py</b>
+<i>C:\Users\username\...\current_dir></i> <b>cd ...\solFEM_v3\work_directory</b>
+
+<i>C:\Users\username\...\solFEM_v3\work_directory></i> <b>py program.py</b>
 
 <b>Ubuntu:</b>
 
@@ -90,7 +92,7 @@ Then open a terminal and install the extra modules with pip install:
 
 <i>user@user-computer:current_dir$</i> <b>cd ...\solFEM_v3\work_directory</b>
 
-<i>user@user-computer:current_dir/../solFEM_v3/work_directory$</i> <b>python3 program.py</b>
+<i>user@user-computer:current_dir/.../solFEM_v3/work_directory$</i> <b>python3 program.py</b>
 
 
 
