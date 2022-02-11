@@ -59,43 +59,47 @@ First install python3 with installer from www.python.org if you don't already ha
 Then open a terminal and install the extra modules with pip install:
 
 ```diff
-#<i>C:\Users\username\...\current_dir></i> <b>py -m pip install numpy</b>
+C:\Users\username\...\current_dir> py -m pip install numpy
 
-#<i>C:\Users\username\...\current_dir></i> <b>py -m pip install scipy</b>
+C:\Users\username\...\current_dir> py -m pip install scipy
 
-#<i>C:\Users\username\...\current_dir></i> <b>py -m pip install matplotlib</b>
+C:\Users\username\...\current_dir> py -m pip install matplotlib
 
-#<i>C:\Users\username\...\current_dir></i> <b>py -m pip install pyopengl</b>
+C:\Users\username\...\current_dir> py -m pip install pyopengl
 
-#<i>C:\Users\username\...\current_dir></i> <b>py -m pip install pyqt5</b>
+C:\Users\username\...\current_dir> py -m pip install pyqt5
 
-#<i>C:\Users\username\...\current_dir></i> <b>py -m pip install pyqt5.qtopengl</b>
+C:\Users\username\...\current_dir> py -m pip install pyqt5.qtopengl
 
-#<i>C:\Users\username\...\current_dir></i> <b>cd ...\solFEM_v3\work_directory</b>
+C:\Users\username\...\current_dir> cd ...\solFEM_v3\work_directory
 
-#<i>C:\Users\username\...\solFEM_v3\work_directory></i> <b>py program.py</b>
+C:\Users\username\...\solFEM_v3\work_directory> py program.py
 ```
 
 <b>Ubuntu:</b>
 
-<i>user@user-computer:current_dir$</i> <b>sudo apt install python3</b>
+Just open a terminal and install everything from there. Python3 might already be installed.
+You can check by typing python3 in the terminal.
 
-<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-numpy</b>
+```diff
+user@user-computer:current_dir$ sudo apt install python3
 
-<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-scipy</b>
+user@user-computer:current_dir$ sudo apt install python3-numpy
 
-<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-matplotlib</b>
+user@user-computer:current_dir$ sudo apt install python3-scipy
 
-<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-pyopengl</b>
+user@user-computer:current_dir$ sudo apt install python3-matplotlib
 
-<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-pyqt5</b>
+user@user-computer:current_dir$ sudo apt install python3-pyopengl
 
-<i>user@user-computer:current_dir$</i> <b>sudo apt install python3-pyqt5.qtopengl</b>
+user@user-computer:current_dir$ sudo apt install python3-pyqt5
 
-<i>user@user-computer:current_dir$</i> <b>cd ...\solFEM_v3\work_directory</b>
+user@user-computer:current_dir$ sudo apt install python3-pyqt5.qtopengl
 
-<i>user@user-computer:current_dir/.../solFEM_v3/work_directory$</i> <b>python3 program.py</b>
+user@user-computer:current_dir$ cd ...\solFEM_v3\work_directory
 
+user@user-computer:current_dir/.../solFEM_v3/work_directory$ python3 program.py
+```
 
 
 Tutorials:
