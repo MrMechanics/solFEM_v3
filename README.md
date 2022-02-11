@@ -105,17 +105,17 @@ user@user-computer:current_dir/.../solFEM_v3/work_directory$ python3 program.py
 Tutorials:
 ----------
 
-- Written documentation accessed from inside the program -- READY!
-- Youtube video tutorials -- COMING SOON!
+- Written help and tutorials accessed from inside the program -- READY!
 - Case files that can be used to see working examples (..\solFEM_v3\Example Mesh Files) -- READY!
+- Youtube video tutorials https://www.youtube.com/channel/UCVrRl7h9ncYIPGLTtcv7few -- COMING SOON!
 
 
 
 Future Work:
 ------------
 
-- Modal Dynamics solver with base motion is too slow, should not be used on large models
-- Modal Effective Mass not calculated correctly
-- Non-linear Static Plastic solver
+- Modal Dynamics solver with base motion is too slow (should not be used on models with more than 1000 nodes)
+- Modal Effective Mass not calculated correctly (need to rewrite the code for this)
+- Non-linear Static Plastic solver (need to write code for this)
 
 
