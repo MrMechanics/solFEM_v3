@@ -54,7 +54,21 @@ anaconda command prompth.
 
 <b>In windows 10:</b>
 
-<i>..\solFEM_v3\work_directory></i> <b>py program.py</b>
+install python3 with installer from www.python.org
+
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install numpy<b>
+
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install scipy<b>
+
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install matplotlib<b>
+
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyopengl<b>
+
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5<b>
+
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5.qtopengl<b>
+
+<i>C:\Users\username\..\solFEM_v3\work_directory></i> <b>py program.py</b>
 
 <b>In Ubuntu:</b>
 
