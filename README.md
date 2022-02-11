@@ -53,25 +53,26 @@ started from the terminal by running the script 'program.py'. Alternatively, Pyt
 these modules comes pre-installed with Anaconda if you run the 'program.py' script from an
 anaconda command prompth.
 
-<b>In windows 10:</b>
+<b>Windows 10:</b>
 
-install python3 with installer from www.python.org
+First install python3 with installer from www.python.org if you don't already have python3.
+Then open a terminal and install the extra modules with pip install:
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install numpy<b>
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install numpy</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install scipy<b>
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install scipy</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install matplotlib<b>
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install matplotlib</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyopengl<b>
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyopengl</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5<b>
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5</b>
 
-<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5.qtopengl<b>
+<i>C:\Users\username\..\current_dir></i> <b>py -m pip install pyqt5.qtopengl</b>
 
 <i>C:\Users\username\..\solFEM_v3\work_directory></i> <b>py program.py</b>
 
-<b>In Ubuntu:</b>
+<b>Ubuntu:</b>
 
 <i>user@user-computer:current_dir$</i> <b>sudo apt install python3</b>
 
