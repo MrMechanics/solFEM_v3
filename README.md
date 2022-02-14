@@ -107,7 +107,7 @@ Tutorials:
 
 - Written help and tutorials accessed from inside the program -- READY!
 - Case files that can be used to see working examples (..\solFEM_v3\Example Mesh Files) -- READY!
-- Youtube video tutorials https://www.youtube.com/channel/UCVrRl7h9ncYIPGLTtcv7few -- COMING SOON!
+- Youtube video tutorials https://www.youtube.com/channel/UCIZFRO8nj9BOW28PBSShtiw -- COMING SOON!
 
 
 
