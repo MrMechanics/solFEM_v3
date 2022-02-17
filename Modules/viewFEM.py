@@ -5877,7 +5877,7 @@ or .sol-files.
 								extruded_elements[elm_num] = mesh.elements[elm_num]
 
 					self.selected_elements = extruded_elements
-			except TypeError:
+			except (TypeError, IndexError, AttributeError):
 				print('ERROR: That extrusion did not work')
 				print('Perhaps wrong direction, axis, angle or number of elements?')
 					
