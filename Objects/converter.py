@@ -114,15 +114,15 @@ used with viewFEM.
 				elif line[0] == 'CTRIA3':
 					self.elements[int(line[1])] = {'type':	  'TRI3N',
 												   'section': None,
-												   'nodes':   [int(line[3]), int(line[4]), int(line[5])]}
+												   'nodes':   [int(line[5]), int(line[4]), int(line[3])]}
 					if 'CTRIA3' not in self.elmTypes:
 						self.elmTypes.append('CTRIA3')
 
 				elif line[0] == 'CTRIA6':
 					self.elements[int(line[1])] = {'type':	  'TRI6N',
 												   'section': None,
-												   'nodes':   [int(line[3]), int(line[4]), int(line[5]),
-											  				   int(line[6]), int(line[7]), int(line[8])]}
+												   'nodes':   [int(line[8]), int(line[7]), int(line[6]),
+											  				   int(line[5]), int(line[4]), int(line[3])]}
 					if 'CTRIA6' not in self.elmTypes:
 						self.elmTypes.append('CTRIA6')
 
