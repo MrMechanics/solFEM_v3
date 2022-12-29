@@ -808,7 +808,7 @@ is an OpenGL widget running inside this framework.
 		self.setCentralWidget(parentWidget)
 
 		self.centerWindow()
-		self.resize(1350,650)
+		self.resize(1300,650)
 
 
 	def centerWindow(self):
@@ -818,8 +818,8 @@ is an OpenGL widget running inside this framework.
 	'''
 		self.showNormal()
 		window_geometry = self.frameGeometry()
-		self.resize(QtWidgets.QDesktopWidget().screenGeometry().width() // 1.3,
-					QtWidgets.QDesktopWidget().screenGeometry().height() // 1.5)
+		self.resize(int(QtWidgets.QDesktopWidget().screenGeometry().width() // 1.3),
+					int(QtWidgets.QDesktopWidget().screenGeometry().height() // 1.5))
 		mousepointer_position = QtWidgets.QApplication.desktop().cursor().pos()
 		screen = QtWidgets.QApplication.desktop().screenNumber(mousepointer_position)
 		centerPoint = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
@@ -4170,7 +4170,7 @@ animations, loads, etc.
 
 		if self.viewLoadingMessage == True:
 			glColor3f(1., 1., 1.)
-			self.renderText((self.width/2.)-50, self.height/2., 'Loading...', QtGui.QFont( 'helvetica', 16 ) )
+			self.renderText(int(self.width/2.)-50, int(self.height/2.), 'Loading...', QtGui.QFont( 'helvetica', 16 ) )
 
 		glFlush()
 
@@ -4396,8 +4396,8 @@ animations, loads, etc.
 					inset = 420
 				else:
 					pass
-		h = (self.height/2.)-180
-		w = self.width-inset
+		h = int((self.height/2.)-180)
+		w = int(self.width-inset)
 		glColor3f(1., 1., 1.)
 		if mesh == None:
 			self.renderText(w, h, 'No mesh selected', QtGui.QFont( 'helvetica', 14 ))
@@ -4500,47 +4500,47 @@ animations, loads, etc.
 			bc = (0.5, 0.1, 0.5)
 			disp_colors = [ bc, bc, bc, bc, bc, bc, bc, bc, bc, bc, bc, bc, bc ]
 		glColor3f(disp_colors[0][0], disp_colors[0][1], disp_colors[0][2])
-		glRectf(self.width-80, (self.height/2.)+180, self.width-40, (self.height/2.)+150)
+		glRectf(self.width-80, int(self.height/2.)+180, self.width-40, int(self.height/2.)+150)
 		glColor3f(disp_colors[1][0], disp_colors[1][1], disp_colors[1][2])
-		glRectf(self.width-80, (self.height/2.)+150, self.width-40, (self.height/2.)+120)
+		glRectf(self.width-80, int(self.height/2.)+150, self.width-40, int(self.height/2.)+120)
 		glColor3f(disp_colors[2][0], disp_colors[2][1], disp_colors[2][2])
-		glRectf(self.width-80, (self.height/2.)+120, self.width-40, (self.height/2.)+ 90)
+		glRectf(self.width-80, int(self.height/2.)+120, self.width-40, int(self.height/2.)+ 90)
 		glColor3f(disp_colors[3][0], disp_colors[3][1], disp_colors[3][2])
-		glRectf(self.width-80, (self.height/2.)+ 90, self.width-40, (self.height/2.)+ 60)
+		glRectf(self.width-80, int(self.height/2.)+ 90, self.width-40, int(self.height/2.)+ 60)
 		glColor3f(disp_colors[4][0], disp_colors[4][1], disp_colors[4][2])
-		glRectf(self.width-80, (self.height/2.)+ 60, self.width-40, (self.height/2.)- 30)
+		glRectf(self.width-80, int(self.height/2.)+ 60, self.width-40, int(self.height/2.)- 30)
 		glColor3f(disp_colors[5][0], disp_colors[5][1], disp_colors[5][2])
-		glRectf(self.width-80, (self.height/2.)- 30, self.width-40, (self.height/2.)-  0)
+		glRectf(self.width-80, int(self.height/2.)- 30, self.width-40, int(self.height/2.)-  0)
 		glColor3f(disp_colors[6][0], disp_colors[6][1], disp_colors[6][2])
-		glRectf(self.width-80, (self.height/2.)-  0, self.width-40, (self.height/2.)- 30)
+		glRectf(self.width-80, int(self.height/2.)-  0, self.width-40, int(self.height/2.)- 30)
 		glColor3f(disp_colors[7][0], disp_colors[7][1], disp_colors[7][2])
-		glRectf(self.width-80, (self.height/2.)- 30, self.width-40, (self.height/2.)- 60)
+		glRectf(self.width-80, int(self.height/2.)- 30, self.width-40, int(self.height/2.)- 60)
 		glColor3f(disp_colors[8][0], disp_colors[8][1], disp_colors[8][2])
-		glRectf(self.width-80, (self.height/2.)- 60, self.width-40, (self.height/2.)- 90)
+		glRectf(self.width-80, int(self.height/2.)- 60, self.width-40, int(self.height/2.)- 90)
 		glColor3f(disp_colors[9][0], disp_colors[9][1], disp_colors[9][2])
-		glRectf(self.width-80, (self.height/2.)- 90, self.width-40, (self.height/2.)-120)
+		glRectf(self.width-80, int(self.height/2.)- 90, self.width-40, int(self.height/2.)-120)
 		glColor3f(disp_colors[10][0], disp_colors[10][1], disp_colors[10][2])
-		glRectf(self.width-80, (self.height/2.)-120, self.width-40, (self.height/2.)-150)
+		glRectf(self.width-80, int(self.height/2.)-120, self.width-40, int(self.height/2.)-150)
 		glColor3f(disp_colors[11][0], disp_colors[11][1], disp_colors[11][2])
-		glRectf(self.width-80, (self.height/2.)-150, self.width-40, (self.height/2.)-180)
+		glRectf(self.width-80, int(self.height/2.)-150, self.width-40, int(self.height/2.)-180)
 		glColor3f(disp_colors[12][0], disp_colors[12][1], disp_colors[12][2])
-		glRectf(self.width-80, (self.height/2.)-180, self.width-40, (self.height/2.)-210)
+		glRectf(self.width-80, int(self.height/2.)-180, self.width-40, int(self.height/2.)-210)
 
 		# values
 		glColor3f(1., 1., 1.)
-		self.renderText(self.width-190, (self.height/2.)-185, '%6.3E' % (max_val), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)-155, '%6.3E' % (min_val+(max_val-min_val)*11./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)-125, '%6.3E' % (min_val+(max_val-min_val)*10./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)- 95, '%6.3E' % (min_val+(max_val-min_val)*9./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)- 65, '%6.3E' % (min_val+(max_val-min_val)*8./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)- 35, '%6.3E' % (min_val+(max_val-min_val)*7./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)-  5, '%6.3E' % (min_val+(max_val-min_val)*6./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)+ 25, '%6.3E' % (min_val+(max_val-min_val)*5./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)+ 55, '%6.3E' % (min_val+(max_val-min_val)*4./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)+ 85, '%6.3E' % (min_val+(max_val-min_val)*3./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)+115, '%6.3E' % (min_val+(max_val-min_val)*2./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)+145, '%6.3E' % (min_val+(max_val-min_val)*1./12.), QtGui.QFont( 'helvetica', 13 ) )
-		self.renderText(self.width-190, (self.height/2.)+175, '%6.3E' % (min_val), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)-185, '%6.3E' % (max_val), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)-155, '%6.3E' % (min_val+(max_val-min_val)*11./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)-125, '%6.3E' % (min_val+(max_val-min_val)*10./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)- 95, '%6.3E' % (min_val+(max_val-min_val)*9./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)- 65, '%6.3E' % (min_val+(max_val-min_val)*8./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)- 35, '%6.3E' % (min_val+(max_val-min_val)*7./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)-  5, '%6.3E' % (min_val+(max_val-min_val)*6./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)+ 25, '%6.3E' % (min_val+(max_val-min_val)*5./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)+ 55, '%6.3E' % (min_val+(max_val-min_val)*4./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)+ 85, '%6.3E' % (min_val+(max_val-min_val)*3./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)+115, '%6.3E' % (min_val+(max_val-min_val)*2./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)+145, '%6.3E' % (min_val+(max_val-min_val)*1./12.), QtGui.QFont( 'helvetica', 13 ) )
+		self.renderText(self.width-190, int(self.height/2.)+175, '%6.3E' % (min_val), QtGui.QFont( 'helvetica', 13 ) )
 
 
 	def writeInfo(self,solution,result=None,subresult=None,info=None):
@@ -4549,16 +4549,16 @@ animations, loads, etc.
 	and/or result in a 2D overlay.
 	'''
 		glColor3f(1., 1., 1.)
-		self.renderText(self.width/3-60, self.height-90, 'Solution: '+solution, QtGui.QFont( 'helvetica', 15 ) )
+		self.renderText(int(self.width/3)-60, self.height-90, 'Solution: '+solution, QtGui.QFont( 'helvetica', 15 ) )
 		if result == None:
 			pass
 		else:
 			if subresult == None:
-				self.renderText(self.width/3-60, self.height-60, 'Result: '+result, QtGui.QFont( 'helvetica', 15 ) )
-				self.renderText(self.width/3-60, self.height-30, 'Deform scale factor: '+str(self.model.scale_factor), QtGui.QFont( 'helvetica', 15 ) )
+				self.renderText(int(self.width/3)-60, self.height-60, 'Result: '+result, QtGui.QFont( 'helvetica', 15 ) )
+				self.renderText(int(self.width/3)-60, self.height-30, 'Deform scale factor: '+str(self.model.scale_factor), QtGui.QFont( 'helvetica', 15 ) )
 			else:
-				self.renderText(self.width/3-60, self.height-60, 'Result: '+result+', '+subresult, QtGui.QFont( 'helvetica', 15 ) )
-				self.renderText(self.width/3-60, self.height-30, 'Deform scale factor: '+str(self.model.scale_factor), QtGui.QFont( 'helvetica', 15 ) )
+				self.renderText(int(self.width/3)-60, self.height-60, 'Result: '+result+', '+subresult, QtGui.QFont( 'helvetica', 15 ) )
+				self.renderText(int(self.width/3)-60, self.height-30, 'Deform scale factor: '+str(self.model.scale_factor), QtGui.QFont( 'helvetica', 15 ) )
 				if info != None:
 					self.renderText(60, 60, info, QtGui.QFont( 'helvetica', 15 ) )
 		
@@ -5417,470 +5417,466 @@ or .sol-files.
 		if self.gui.new_extrusion['Extrude direction'] == self.gui.new_extrusion['Extrude angle axis'] and self.gui.new_extrusion['Extrude scenario'] == 'angled':
 			print('\n\tExtrude direction cannot be the same as Extrude angle axis')
 		elif self.gui.new_extrusion['Element type'] in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D', 'QUAD4N', 'HEX8N']:
-			try:
-				print('\n\tExtruding new element(s):',end=' ')
-				# first find the four nodes in each element
-				# that lie furthest in the extrude direction
-				# by using a coordinate system set in the
-				# middle of the selected element
-				# then create four new nodes from those four
-				# nodes, or less if any of them have already
-				# been extruded
-				# finally create a new element with the first
-				# four nodes and the four new nodes
-				extr_dir = self.gui.new_extrusion['Extrude direction'].split(',')
-				extr_dir = np.array([float(extr_dir[0]), float(extr_dir[1]), float(extr_dir[2])])
-				extr_dir /= np.linalg.norm(extr_dir)
-				x_axis = Vector3D(extr_dir[0],extr_dir[1],extr_dir[2])
-				y_axis = Vector3D(0,0,0)
-				r_angle = np.radians(float(self.gui.new_extrusion['Extrude angle']))/int(self.gui.new_extrusion['Extrude number'])
-				r_axis = self.gui.new_extrusion['Extrude angle axis'].split(',')
-				r_axis = np.array([float(r_axis[0]), float(r_axis[1]), float(r_axis[2])])
-				r_axis /= np.linalg.norm(r_axis)
-				if self.gui.new_extrusion['Element type'] in ['BEAM2N2D', 'ROD2N2D', 'QUAD4N']:
-					if r_axis[0] != 0. or r_axis[1] != 0:
-						r_axis = np.array([0,0,1])
-						print('\n\t2D elements can only rotate around z-axis,')
-						print('\tmeaning [0,0,-1] or [0,0,1]')
-						print('\tRotation axis changed to [0,0,1]')
-				r_radius = float(self.gui.new_extrusion['Extrude angle radius'])
-				rot_origin = False
-				rot_axis_point0 = False
-				rot_axis_point1 = False
-				elm_size = None
-				extr_num_check = None
-				for extr_num in range(int(self.gui.new_extrusion['Extrude number'])):
-					elm_extr_nodes = {}
-					extruded_elements = {}
-					for element in self.selected_elements:
-						elm_extr_nodes[element] = []
-						x_min = y_min = z_min = x_max = y_max = z_max = None
-						for node in mesh.elements[element].nodes:
-							if x_min == None:
+			print('\n\tExtruding new element(s):',end=' ')
+			# first find the four nodes in each element
+			# that lie furthest in the extrude direction
+			# by using a coordinate system set in the
+			# middle of the selected element
+			# then create four new nodes from those four
+			# nodes, or less if any of them have already
+			# been extruded
+			# finally create a new element with the first
+			# four nodes and the four new nodes
+			extr_dir = self.gui.new_extrusion['Extrude direction'].split(',')
+			extr_dir = np.array([float(extr_dir[0]), float(extr_dir[1]), float(extr_dir[2])])
+			extr_dir /= np.linalg.norm(extr_dir)
+			x_axis = Vector3D(extr_dir[0],extr_dir[1],extr_dir[2])
+			y_axis = Vector3D(0,0,0)
+			r_angle = np.radians(float(self.gui.new_extrusion['Extrude angle']))/int(self.gui.new_extrusion['Extrude number'])
+			r_axis = self.gui.new_extrusion['Extrude angle axis'].split(',')
+			r_axis = np.array([float(r_axis[0]), float(r_axis[1]), float(r_axis[2])])
+			r_axis /= np.linalg.norm(r_axis)
+			if self.gui.new_extrusion['Element type'] in ['BEAM2N2D', 'ROD2N2D', 'QUAD4N']:
+				if r_axis[0] != 0. or r_axis[1] != 0:
+					r_axis = np.array([0,0,1])
+					print('\n\t2D elements can only rotate around z-axis,')
+					print('\tmeaning [0,0,-1] or [0,0,1]')
+					print('\tRotation axis changed to [0,0,1]')
+			r_radius = float(self.gui.new_extrusion['Extrude angle radius'])
+			rot_origin = False
+			rot_axis_point0 = False
+			rot_axis_point1 = False
+			elm_size = None
+			extr_num_check = None
+			for extr_num in range(int(self.gui.new_extrusion['Extrude number'])):
+				elm_extr_nodes = {}
+				extruded_elements = {}
+				for element in self.selected_elements:
+					elm_extr_nodes[element] = []
+					x_min = y_min = z_min = x_max = y_max = z_max = None
+					for node in mesh.elements[element].nodes:
+						if x_min == None:
+							x_min = node.coord[0][0]
+							y_min = node.coord[1][0]
+							z_min = node.coord[2][0]
+							x_max = node.coord[0][0]
+							y_max = node.coord[1][0]
+							z_max = node.coord[2][0]
+						else:
+							if x_min > node.coord[0][0]:
 								x_min = node.coord[0][0]
-								y_min = node.coord[1][0]
-								z_min = node.coord[2][0]
+							if x_max < node.coord[0][0]:
 								x_max = node.coord[0][0]
+							if y_min > node.coord[1][0]:
+								y_min = node.coord[1][0]
+							if y_max < node.coord[1][0]:
 								y_max = node.coord[1][0]
+							if z_min > node.coord[2][0]:
+								z_min = node.coord[2][0]
+							if z_max < node.coord[2][0]:
 								z_max = node.coord[2][0]
-							else:
-								if x_min > node.coord[0][0]:
-									x_min = node.coord[0][0]
-								if x_max < node.coord[0][0]:
-									x_max = node.coord[0][0]
-								if y_min > node.coord[1][0]:
-									y_min = node.coord[1][0]
-								if y_max < node.coord[1][0]:
-									y_max = node.coord[1][0]
-								if z_min > node.coord[2][0]:
-									z_min = node.coord[2][0]
-								if z_max < node.coord[2][0]:
-									z_max = node.coord[2][0]
-						origin = Point3D(x_min+(x_max-x_min)/2., y_min+(y_max-y_min)/2., z_min+(z_max-z_min)/2.)
-
-						if extr_num_check != extr_num:
-							extr_num_check = extr_num
-							quat_x_axis = Quaternion()
-							quat_x_axis.vectorToQuat(x_axis.coordinates)
-							r_quat = Quaternion()
-							r_quat.axisAngleToQuat(r_axis, r_angle)
-							quat_new_dir = r_quat.multi(quat_x_axis.multi(r_quat.conj()))
-							x_axis = np.array([quat_new_dir.i, quat_new_dir.j, quat_new_dir.k])
-							x_axis /= np.linalg.norm(extr_dir)
-							y_axis = np.random.randn(3)
-							y_axis -= y_axis.dot(x_axis)*x_axis
-							x_axis /= np.linalg.norm(x_axis)
-							x_axis = Vector3D(x_axis[0],x_axis[1],x_axis[2])
-							y_axis /= np.linalg.norm(y_axis)
-							y_axis = Vector3D(y_axis[0],y_axis[1],y_axis[2])
-						elm_center_csys = CoordSys3D(origin, x_axis, y_axis)
-						for node in mesh.elements[element].nodes:
-							if elm_center_csys.mapFrom(self.gui.viewer.coordSys0,Point3D(node.coord[0][0],node.coord[1][0],node.coord[2][0])).x() > 0:
-								elm_extr_nodes[element].append([node.number,mesh.elements[element].nodes.index(node)])
-								if float(self.gui.new_extrusion['Extrude angle']) != 0.:
-									if rot_origin == False:
-										rot_origin = True
-										radius_vect = np.cross(r_axis,extr_dir)
-										radius_vect /= np.linalg.norm(radius_vect)
-										rot_axis_point0 = [mesh.nodes[node.number].coord[0][0]+radius_vect[0]*r_radius,
-														   mesh.nodes[node.number].coord[1][0]+radius_vect[1]*r_radius,
-														   mesh.nodes[node.number].coord[2][0]+radius_vect[2]*r_radius]
-										rot_axis_point1 = [rot_axis_point0[0]+r_axis[0],
-														   rot_axis_point0[1]+r_axis[1],
-														   rot_axis_point0[2]+r_axis[2]]
-					extr_nodes = {}
-					if float(self.gui.new_extrusion['Extrude angle']) == 0.:
-						for element in elm_extr_nodes:
-							if elm_size == None:
-								elm_size = np.sqrt((mesh.elements[element].nodes[1].coord[0][0] - mesh.elements[element].nodes[0].coord[0][0])**2 + \
-												   (mesh.elements[element].nodes[1].coord[1][0] - mesh.elements[element].nodes[0].coord[1][0])**2 + \
-												   (mesh.elements[element].nodes[1].coord[2][0] - mesh.elements[element].nodes[0].coord[2][0])**2)
-							elm_nodes = elm_extr_nodes[element]
-							for node in range(len(elm_extr_nodes[element])):
-								if elm_extr_nodes[element][node][0] not in extr_nodes:
-									extr_nodes[elm_extr_nodes[element][node][0]] = max(mesh.nodes)+1
-									mesh.nodes[extr_nodes[elm_extr_nodes[element][node][0]]] = Node(extr_nodes[elm_extr_nodes[element][node][0]],
-																								 mesh.nodes[elm_extr_nodes[element][node][0]].coord[0][0] + elm_size*extr_dir[0],
-																								 mesh.nodes[elm_extr_nodes[element][node][0]].coord[1][0] + elm_size*extr_dir[1],
-																								 mesh.nodes[elm_extr_nodes[element][node][0]].coord[2][0] + elm_size*extr_dir[2])
-									elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
-								else:
-									elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
-
-							if self.gui.new_extrusion['Element type'] == 'HEX8N':
-								new_node_internal = [elm_extr_nodes[element][i][1] for i in range(4)]
-								# index the nodes inside the element
-								# by using the fact that node X with
-								# index I in the old element will 
-								# extrude to node Y with index I in
-								# the new element. node X in the new
-								# element can only be extruded from
-								# one of three nodes on the old element,
-								# which means node X can only have one
-								# of three index locations in the new
-								# element. Two of these will be occupied
-								# already by the other extruded nodes,
-								# leaving one possible index location
-								# for node X in the new element.
-								for node in range(4):
-									internal = None
-									if elm_extr_nodes[element][node][1] == 0:
-										# 1, 3 or 4
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3
-										elif 4 not in new_node_internal:
-											internal = 4								
-									if elm_extr_nodes[element][node][1] == 1:
-										# 0, 2 or 5
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-										elif 5 not in new_node_internal:
-											internal = 5
-									if elm_extr_nodes[element][node][1] == 2:
-										# 1, 3 or 6
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3
-										elif 6 not in new_node_internal:
-											internal = 6
-									if elm_extr_nodes[element][node][1] == 3:
-										# 0, 2 or 7
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-										elif 7 not in new_node_internal:
-											internal = 7
-									if elm_extr_nodes[element][node][1] == 4:
-										# 0, 5 or 7
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 5 not in new_node_internal:
-											internal = 5
-										elif 7 not in new_node_internal:
-											internal = 7
-									if elm_extr_nodes[element][node][1] == 5:
-										# 1, 4 or 6
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 4 not in new_node_internal:
-											internal = 4
-										elif 6 not in new_node_internal:
-											internal = 6
-									if elm_extr_nodes[element][node][1] == 6:
-										# 2, 5 or 7
-										if 2 not in new_node_internal:
-											internal = 2
-										elif 5 not in new_node_internal:
-											internal = 5
-										elif 7 not in new_node_internal:
-											internal = 7
-									if elm_extr_nodes[element][node][1] == 7:
-										# 3, 4 or 6
-										if 3 not in new_node_internal:
-											internal = 3
-										elif 4 not in new_node_internal:
-											internal = 4
-										elif 6 not in new_node_internal:
-											internal = 6
-									elm_extr_nodes[element][node][1] = internal
-								new_node_order = {}
-								for node in range(8):
-									new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
-								for node in new_node_order:
-									elm_nodes[node] = mesh.nodes[new_node_order[node]]
-
-								elm_num = max(mesh.elements)+1
-								elements.append(elm_num)
-								mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
-								mesh.elements[elm_num].type = 'HEX8N'
-								extruded_elements[elm_num] = mesh.elements[elm_num]
-
-							elif self.gui.new_extrusion['Element type'] in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D']:
-								for node in range(2):
-									elm_nodes[node] = mesh.nodes[elm_nodes[node][0]]
-								elm_num = max(mesh.elements)+1
-								elements.append(elm_num)
-								mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
-								mesh.elements[elm_num].type = self.gui.new_extrusion['Element type']
-								extruded_elements[elm_num] = mesh.elements[elm_num]
-
-							else:
-								new_node_internal = [elm_extr_nodes[element][i][1] for i in range(2)]
-								# index the nodes inside the element
-								# by using the fact that node A with
-								# index I in the old element will 
-								# extrude to node B with index I in
-								# the new element. node A in the new
-								# element can only be extruded from
-								# one of two nodes on the old element,
-								# which means node B can only have one
-								# of two index locations in the new
-								# element. One of these will be occupied
-								# already by the other extruded node,
-								# leaving one possible index location
-								# for node A in the new element.
-								for node in range(2):
-									internal = None
-									if elm_extr_nodes[element][node][1] == 0:
-										# 2 or 4
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3								
-									if elm_extr_nodes[element][node][1] == 1:
-										# 1 or 3
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-									if elm_extr_nodes[element][node][1] == 2:
-										# 2 or 4
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3
-									if elm_extr_nodes[element][node][1] == 3:
-										# 1 or 3
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-									elm_extr_nodes[element][node][1] = internal
-								new_node_order = {}
-								for node in range(4):
-									new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
-								for node in new_node_order:
-									elm_nodes[node] = mesh.nodes[new_node_order[node]]
-
-								elm_num = max(mesh.elements)+1
-								elements.append(elm_num)
-								mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
-								mesh.elements[elm_num].type = 'QUAD4N'
-								extruded_elements[elm_num] = mesh.elements[elm_num]
-
-					else:
-						# extrude with angle
-						# recalculate extrude direction
-						# for every increment
-						quat_extr_dir = Quaternion()
-						quat_extr_dir.vectorToQuat(extr_dir)
-
+					origin = Point3D(x_min+(x_max-x_min)/2., y_min+(y_max-y_min)/2., z_min+(z_max-z_min)/2.)
+					
+					if extr_num_check != extr_num:
+						extr_num_check = extr_num
+						quat_x_axis = Quaternion()
+						quat_x_axis.vectorToQuat(x_axis.coordinates)
 						r_quat = Quaternion()
 						r_quat.axisAngleToQuat(r_axis, r_angle)
-						quat_new_dir = r_quat.multi(quat_extr_dir.multi(r_quat.conj()))
-						extr_dir = np.array([quat_new_dir.i, quat_new_dir.j, quat_new_dir.k])
-						extr_dir /= np.linalg.norm(extr_dir)
-						for element in elm_extr_nodes:
-							if elm_size == None:
-								elm_size = np.sqrt((mesh.elements[element].nodes[1].coord[0][0] - mesh.elements[element].nodes[0].coord[0][0])**2 + \
-												   (mesh.elements[element].nodes[1].coord[1][0] - mesh.elements[element].nodes[0].coord[1][0])**2 + \
-												   (mesh.elements[element].nodes[1].coord[2][0] - mesh.elements[element].nodes[0].coord[2][0])**2)
-							elm_nodes = elm_extr_nodes[element]
-							for node in range(len(elm_extr_nodes[element])):
-								if elm_extr_nodes[element][node][0] not in extr_nodes:
-									# use quaternions to create new nodes by
-									# rotating the old nodes around the radius
-									# and rotation axis specified by the user
-									# (rot_axis_point0 and rot_axis_point1)
-									extr_nodes[elm_extr_nodes[element][node][0]] = max(mesh.nodes)+1
-									point0 = [mesh.nodes[elm_extr_nodes[element][node][0]].coord[0][0],
-											  mesh.nodes[elm_extr_nodes[element][node][0]].coord[1][0],
-											  mesh.nodes[elm_extr_nodes[element][node][0]].coord[2][0]]
-									point1 = rotatePointAboutAxis(point0,rot_axis_point0,rot_axis_point1,r_angle)
-									mesh.nodes[extr_nodes[elm_extr_nodes[element][node][0]]] = Node(extr_nodes[elm_extr_nodes[element][node][0]], point1[0], point1[1], point1[2])
-									elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
-								else:
-									elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
-
-							if self.gui.new_extrusion['Element type'] == 'HEX8N':
-								new_node_internal = [elm_extr_nodes[element][i][1] for i in range(4)]
-								# index the nodes inside the element
-								# by using the fact that node X with
-								# index I in the old element will 
-								# extrude to node Y with index I in
-								# the new element. node X in the new
-								# element can only be extruded from
-								# one of three nodes on the old element,
-								# which means node X can only have one
-								# of three index locations in the new
-								# element. Two of these will be occupied
-								# already by the other extruded nodes,
-								# leaving one possible index location
-								# for node X in the new element.
-								for node in range(4):
-									internal = None
-									if elm_extr_nodes[element][node][1] == 0:
-										# 1, 3 or 4
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3
-										elif 4 not in new_node_internal:
-											internal = 4								
-									if elm_extr_nodes[element][node][1] == 1:
-										# 0, 2 or 5
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-										elif 5 not in new_node_internal:
-											internal = 5
-									if elm_extr_nodes[element][node][1] == 2:
-										# 1, 3 or 6
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3
-										elif 6 not in new_node_internal:
-											internal = 6
-									if elm_extr_nodes[element][node][1] == 3:
-										# 0, 2 or 7
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-										elif 7 not in new_node_internal:
-											internal = 7
-									if elm_extr_nodes[element][node][1] == 4:
-										# 0, 5 or 7
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 5 not in new_node_internal:
-											internal = 5
-										elif 7 not in new_node_internal:
-											internal = 7
-									if elm_extr_nodes[element][node][1] == 5:
-										# 1, 4 or 6
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 4 not in new_node_internal:
-											internal = 4
-										elif 6 not in new_node_internal:
-											internal = 6
-									if elm_extr_nodes[element][node][1] == 6:
-										# 2, 5 or 7
-										if 2 not in new_node_internal:
-											internal = 2
-										elif 5 not in new_node_internal:
-											internal = 5
-										elif 7 not in new_node_internal:
-											internal = 7
-									if elm_extr_nodes[element][node][1] == 7:
-										# 3, 4 or 6
-										if 3 not in new_node_internal:
-											internal = 3
-										elif 4 not in new_node_internal:
-											internal = 4
-										elif 6 not in new_node_internal:
-											internal = 6
-									elm_extr_nodes[element][node][1] = internal
-								new_node_order = {}
-								for node in range(8):
-									new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
-								for node in new_node_order:
-									elm_nodes[node] = mesh.nodes[new_node_order[node]]
-
-								elm_num = max(mesh.elements)+1
-								elements.append(elm_num)
-								mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
-								mesh.elements[elm_num].type = 'HEX8N'
-								extruded_elements[elm_num] = mesh.elements[elm_num]
-
-
-							elif self.gui.new_extrusion['Element type'] in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D']:
-								for node in range(2):
-									elm_nodes[node] = mesh.nodes[elm_nodes[node][0]]
-								elm_num = max(mesh.elements)+1
-								elements.append(elm_num)
-								mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
-								mesh.elements[elm_num].type = self.gui.new_extrusion['Element type']
-								extruded_elements[elm_num] = mesh.elements[elm_num]
-
+						quat_new_dir = r_quat.multi(quat_x_axis.multi(r_quat.conj()))
+						x_axis = np.array([quat_new_dir.i, quat_new_dir.j, quat_new_dir.k])
+						x_axis /= np.linalg.norm(extr_dir)
+						y_axis = np.random.randn(3)
+						y_axis -= y_axis.dot(x_axis)*x_axis
+						x_axis /= np.linalg.norm(x_axis)
+						x_axis = Vector3D(x_axis[0],x_axis[1],x_axis[2])
+						y_axis /= np.linalg.norm(y_axis)
+						y_axis = Vector3D(y_axis[0],y_axis[1],y_axis[2])
+					elm_center_csys = CoordSys3D(origin, x_axis, y_axis)
+					for node in mesh.elements[element].nodes:
+						if elm_center_csys.mapFrom(self.gui.viewer.coordSys0,Point3D(node.coord[0][0],node.coord[1][0],node.coord[2][0])).x() > 0:
+							elm_extr_nodes[element].append([node.number,mesh.elements[element].nodes.index(node)])
+							if float(self.gui.new_extrusion['Extrude angle']) != 0.:
+								if rot_origin == False:
+									rot_origin = True
+									radius_vect = np.cross(r_axis,extr_dir)
+									radius_vect /= np.linalg.norm(radius_vect)
+									rot_axis_point0 = [mesh.nodes[node.number].coord[0][0]+radius_vect[0]*r_radius,
+													   mesh.nodes[node.number].coord[1][0]+radius_vect[1]*r_radius,
+													   mesh.nodes[node.number].coord[2][0]+radius_vect[2]*r_radius]
+									rot_axis_point1 = [rot_axis_point0[0]+r_axis[0],
+													   rot_axis_point0[1]+r_axis[1],
+													   rot_axis_point0[2]+r_axis[2]]
+				extr_nodes = {}
+				if float(self.gui.new_extrusion['Extrude angle']) == 0.:
+					for element in elm_extr_nodes:
+						if elm_size == None:
+							elm_size = np.sqrt((mesh.elements[element].nodes[1].coord[0][0] - mesh.elements[element].nodes[0].coord[0][0])**2 + \
+											   (mesh.elements[element].nodes[1].coord[1][0] - mesh.elements[element].nodes[0].coord[1][0])**2 + \
+											   (mesh.elements[element].nodes[1].coord[2][0] - mesh.elements[element].nodes[0].coord[2][0])**2)
+						elm_nodes = elm_extr_nodes[element]
+						for node in range(len(elm_extr_nodes[element])):
+							if elm_extr_nodes[element][node][0] not in extr_nodes:
+								extr_nodes[elm_extr_nodes[element][node][0]] = max(mesh.nodes)+1
+								mesh.nodes[extr_nodes[elm_extr_nodes[element][node][0]]] = Node(extr_nodes[elm_extr_nodes[element][node][0]],
+																							 mesh.nodes[elm_extr_nodes[element][node][0]].coord[0][0] + elm_size*extr_dir[0],
+																							 mesh.nodes[elm_extr_nodes[element][node][0]].coord[1][0] + elm_size*extr_dir[1],
+																							 mesh.nodes[elm_extr_nodes[element][node][0]].coord[2][0] + elm_size*extr_dir[2])
+								elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
 							else:
-								new_node_internal = [elm_extr_nodes[element][i][1] for i in range(2)]
-								# index the nodes inside the element
-								# by using the fact that node A with
-								# index I in the old element will 
-								# extrude to node B with index I in
-								# the new element. node A in the new
-								# element can only be extruded from
-								# one of two nodes on the old element,
-								# which means node B can only have one
-								# of two index locations in the new
-								# element. One of these will be occupied
-								# already by the other extruded node,
-								# leaving one possible index location
-								# for node A in the new element.
-								for node in range(2):
-									internal = None
-									if elm_extr_nodes[element][node][1] == 0:
-										# 2 or 4
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3								
-									if elm_extr_nodes[element][node][1] == 1:
-										# 1 or 3
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-									if elm_extr_nodes[element][node][1] == 2:
-										# 2 or 4
-										if 1 not in new_node_internal:
-											internal = 1
-										elif 3 not in new_node_internal:
-											internal = 3
-									if elm_extr_nodes[element][node][1] == 3:
-										# 1 or 3
-										if 0 not in new_node_internal:
-											internal = 0
-										elif 2 not in new_node_internal:
-											internal = 2
-									elm_extr_nodes[element][node][1] = internal
-								new_node_order = {}
-								for node in range(4):
-									new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
-								for node in new_node_order:
-									elm_nodes[node] = mesh.nodes[new_node_order[node]]
+								elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
 
-								elm_num = max(mesh.elements)+1
-								elements.append(elm_num)
-								mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
-								mesh.elements[elm_num].type = 'QUAD4N'
-								extruded_elements[elm_num] = mesh.elements[elm_num]
+						if self.gui.new_extrusion['Element type'] == 'HEX8N':
+							new_node_internal = [elm_extr_nodes[element][i][1] for i in range(4)]
+							# index the nodes inside the element
+							# by using the fact that node X with
+							# index I in the old element will 
+							# extrude to node Y with index I in
+							# the new element. node X in the new
+							# element can only be extruded from
+							# one of three nodes on the old element,
+							# which means node X can only have one
+							# of three index locations in the new
+							# element. Two of these will be occupied
+							# already by the other extruded nodes,
+							# leaving one possible index location
+							# for node X in the new element.
+							for node in range(4):
+								internal = None
+								if elm_extr_nodes[element][node][1] == 0:
+									# 1, 3 or 4
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3
+									elif 4 not in new_node_internal:
+										internal = 4								
+								if elm_extr_nodes[element][node][1] == 1:
+									# 0, 2 or 5
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+									elif 5 not in new_node_internal:
+										internal = 5
+								if elm_extr_nodes[element][node][1] == 2:
+									# 1, 3 or 6
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3
+									elif 6 not in new_node_internal:
+										internal = 6
+								if elm_extr_nodes[element][node][1] == 3:
+									# 0, 2 or 7
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+									elif 7 not in new_node_internal:
+										internal = 7
+								if elm_extr_nodes[element][node][1] == 4:
+									# 0, 5 or 7
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 5 not in new_node_internal:
+										internal = 5
+									elif 7 not in new_node_internal:
+										internal = 7
+								if elm_extr_nodes[element][node][1] == 5:
+									# 1, 4 or 6
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 4 not in new_node_internal:
+										internal = 4
+									elif 6 not in new_node_internal:
+										internal = 6
+								if elm_extr_nodes[element][node][1] == 6:
+									# 2, 5 or 7
+									if 2 not in new_node_internal:
+										internal = 2
+									elif 5 not in new_node_internal:
+										internal = 5
+									elif 7 not in new_node_internal:
+										internal = 7
+								if elm_extr_nodes[element][node][1] == 7:
+									# 3, 4 or 6
+									if 3 not in new_node_internal:
+										internal = 3
+									elif 4 not in new_node_internal:
+										internal = 4
+									elif 6 not in new_node_internal:
+										internal = 6
+								elm_extr_nodes[element][node][1] = internal
+							new_node_order = {}
+							for node in range(8):
+								new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
+							for node in new_node_order:
+								elm_nodes[node] = mesh.nodes[new_node_order[node]]
+													
+							elm_num = max(mesh.elements)+1
+							elements.append(elm_num)
+							mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
+							mesh.elements[elm_num].type = 'HEX8N'
+							extruded_elements[elm_num] = mesh.elements[elm_num]
 
-					self.selected_elements = extruded_elements
-			except (TypeError, IndexError, AttributeError):
-				print('ERROR: That extrusion did not work')
-				print('Perhaps wrong direction, axis, angle or number of elements?')
-					
+						elif self.gui.new_extrusion['Element type'] in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D']:
+							for node in range(2):
+								elm_nodes[node] = mesh.nodes[elm_nodes[node][0]]
+							elm_num = max(mesh.elements)+1
+							elements.append(elm_num)
+							mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
+							mesh.elements[elm_num].type = self.gui.new_extrusion['Element type']
+							extruded_elements[elm_num] = mesh.elements[elm_num]
+						
+						else:
+							new_node_internal = [elm_extr_nodes[element][i][1] for i in range(2)]
+							# index the nodes inside the element
+							# by using the fact that node A with
+							# index I in the old element will 
+							# extrude to node B with index I in
+							# the new element. node A in the new
+							# element can only be extruded from
+							# one of two nodes on the old element,
+							# which means node B can only have one
+							# of two index locations in the new
+							# element. One of these will be occupied
+							# already by the other extruded node,
+							# leaving one possible index location
+							# for node A in the new element.
+							for node in range(2):
+								internal = None
+								if elm_extr_nodes[element][node][1] == 0:
+									# 2 or 4
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3								
+								if elm_extr_nodes[element][node][1] == 1:
+									# 1 or 3
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+								if elm_extr_nodes[element][node][1] == 2:
+									# 2 or 4
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3
+								if elm_extr_nodes[element][node][1] == 3:
+									# 1 or 3
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+								elm_extr_nodes[element][node][1] = internal
+							new_node_order = {}
+							for node in range(4):
+								new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
+							for node in new_node_order:
+								elm_nodes[node] = mesh.nodes[new_node_order[node]]
+
+							elm_num = max(mesh.elements)+1
+							elements.append(elm_num)
+							mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
+							mesh.elements[elm_num].type = 'QUAD4N'
+							extruded_elements[elm_num] = mesh.elements[elm_num]
+							
+				else:
+					# extrude with angle
+					# recalculate extrude direction
+					# for every increment
+					quat_extr_dir = Quaternion()
+					quat_extr_dir.vectorToQuat(extr_dir)
+
+					r_quat = Quaternion()
+					r_quat.axisAngleToQuat(r_axis, r_angle)
+					quat_new_dir = r_quat.multi(quat_extr_dir.multi(r_quat.conj()))
+					extr_dir = np.array([quat_new_dir.i, quat_new_dir.j, quat_new_dir.k])
+					extr_dir /= np.linalg.norm(extr_dir)
+					for element in elm_extr_nodes:
+						if elm_size == None:
+							elm_size = np.sqrt((mesh.elements[element].nodes[1].coord[0][0] - mesh.elements[element].nodes[0].coord[0][0])**2 + \
+											   (mesh.elements[element].nodes[1].coord[1][0] - mesh.elements[element].nodes[0].coord[1][0])**2 + \
+											   (mesh.elements[element].nodes[1].coord[2][0] - mesh.elements[element].nodes[0].coord[2][0])**2)
+						elm_nodes = elm_extr_nodes[element]
+						for node in range(len(elm_extr_nodes[element])):
+							if elm_extr_nodes[element][node][0] not in extr_nodes:
+								# use quaternions to create new nodes by
+								# rotating the old nodes around the radius
+								# and rotation axis specified by the user
+								# (rot_axis_point0 and rot_axis_point1)
+								extr_nodes[elm_extr_nodes[element][node][0]] = max(mesh.nodes)+1
+								point0 = [mesh.nodes[elm_extr_nodes[element][node][0]].coord[0][0],
+										  mesh.nodes[elm_extr_nodes[element][node][0]].coord[1][0],
+										  mesh.nodes[elm_extr_nodes[element][node][0]].coord[2][0]]
+								point1 = rotatePointAboutAxis(point0,rot_axis_point0,rot_axis_point1,r_angle)
+								mesh.nodes[extr_nodes[elm_extr_nodes[element][node][0]]] = Node(extr_nodes[elm_extr_nodes[element][node][0]], point1[0], point1[1], point1[2])
+								elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
+							else:
+								elm_nodes.append([extr_nodes[elm_extr_nodes[element][node][0]],elm_extr_nodes[element][node][1]])
+
+						if self.gui.new_extrusion['Element type'] == 'HEX8N':
+							new_node_internal = [elm_extr_nodes[element][i][1] for i in range(4)]
+							# index the nodes inside the element
+							# by using the fact that node X with
+							# index I in the old element will 
+							# extrude to node Y with index I in
+							# the new element. node X in the new
+							# element can only be extruded from
+							# one of three nodes on the old element,
+							# which means node X can only have one
+							# of three index locations in the new
+							# element. Two of these will be occupied
+							# already by the other extruded nodes,
+							# leaving one possible index location
+							# for node X in the new element.
+							for node in range(4):
+								internal = None
+								if elm_extr_nodes[element][node][1] == 0:
+									# 1, 3 or 4
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3
+									elif 4 not in new_node_internal:
+										internal = 4								
+								if elm_extr_nodes[element][node][1] == 1:
+									# 0, 2 or 5
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+									elif 5 not in new_node_internal:
+										internal = 5
+								if elm_extr_nodes[element][node][1] == 2:
+									# 1, 3 or 6
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3
+									elif 6 not in new_node_internal:
+										internal = 6
+								if elm_extr_nodes[element][node][1] == 3:
+									# 0, 2 or 7
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+									elif 7 not in new_node_internal:
+										internal = 7
+								if elm_extr_nodes[element][node][1] == 4:
+									# 0, 5 or 7
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 5 not in new_node_internal:
+										internal = 5
+									elif 7 not in new_node_internal:
+										internal = 7
+								if elm_extr_nodes[element][node][1] == 5:
+									# 1, 4 or 6
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 4 not in new_node_internal:
+										internal = 4
+									elif 6 not in new_node_internal:
+										internal = 6
+								if elm_extr_nodes[element][node][1] == 6:
+									# 2, 5 or 7
+									if 2 not in new_node_internal:
+										internal = 2
+									elif 5 not in new_node_internal:
+										internal = 5
+									elif 7 not in new_node_internal:
+										internal = 7
+								if elm_extr_nodes[element][node][1] == 7:
+									# 3, 4 or 6
+									if 3 not in new_node_internal:
+										internal = 3
+									elif 4 not in new_node_internal:
+										internal = 4
+									elif 6 not in new_node_internal:
+										internal = 6
+								elm_extr_nodes[element][node][1] = internal
+							new_node_order = {}
+							for node in range(8):
+								new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
+							for node in new_node_order:
+								elm_nodes[node] = mesh.nodes[new_node_order[node]]
+
+							elm_num = max(mesh.elements)+1
+							elements.append(elm_num)
+							mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
+							mesh.elements[elm_num].type = 'HEX8N'
+							extruded_elements[elm_num] = mesh.elements[elm_num]
+
+
+						elif self.gui.new_extrusion['Element type'] in ['BEAM2N', 'BEAM2N2D', 'ROD2N', 'ROD2N2D']:
+							for node in range(2):
+								elm_nodes[node] = mesh.nodes[elm_nodes[node][0]]
+							elm_num = max(mesh.elements)+1
+							elements.append(elm_num)
+							mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
+							mesh.elements[elm_num].type = self.gui.new_extrusion['Element type']
+							extruded_elements[elm_num] = mesh.elements[elm_num]
+						
+						else:
+							new_node_internal = [elm_extr_nodes[element][i][1] for i in range(2)]
+							# index the nodes inside the element
+							# by using the fact that node A with
+							# index I in the old element will 
+							# extrude to node B with index I in
+							# the new element. node A in the new
+							# element can only be extruded from
+							# one of two nodes on the old element,
+							# which means node B can only have one
+							# of two index locations in the new
+							# element. One of these will be occupied
+							# already by the other extruded node,
+							# leaving one possible index location
+							# for node A in the new element.
+							for node in range(2):
+								internal = None
+								if elm_extr_nodes[element][node][1] == 0:
+									# 2 or 4
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3								
+								if elm_extr_nodes[element][node][1] == 1:
+									# 1 or 3
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+								if elm_extr_nodes[element][node][1] == 2:
+									# 2 or 4
+									if 1 not in new_node_internal:
+										internal = 1
+									elif 3 not in new_node_internal:
+										internal = 3
+								if elm_extr_nodes[element][node][1] == 3:
+									# 1 or 3
+									if 0 not in new_node_internal:
+										internal = 0
+									elif 2 not in new_node_internal:
+										internal = 2
+								elm_extr_nodes[element][node][1] = internal
+							new_node_order = {}
+							for node in range(4):
+								new_node_order[elm_extr_nodes[element][node][1]] = elm_extr_nodes[element][node][0]
+							for node in new_node_order:
+								elm_nodes[node] = mesh.nodes[new_node_order[node]]
+
+							elm_num = max(mesh.elements)+1
+							elements.append(elm_num)
+							mesh.elements[elm_num] = Element(elm_num,None,elm_nodes)
+							mesh.elements[elm_num].type = 'QUAD4N'
+							extruded_elements[elm_num] = mesh.elements[elm_num]
+
+				self.selected_elements = extruded_elements
+				
 		else:
 			print('\n\tCannot extrude this element type:', self.gui.new_extrusion['Element type'])
 
