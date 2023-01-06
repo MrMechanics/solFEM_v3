@@ -749,7 +749,7 @@ modified mass matrix, M_11.
 		self.mesh.centerOfMass = self.mesh.centerOfMass*(1.0/self.mesh.totalMass[0])
 
 
-	def calcInertiaTensor(self):	# WRONG RESULTS?? NOT THE SAME AS CALCULATED IN FREECAD
+	def calcInertiaTensor(self):
 		'''
 	Calculate the inertia tensor for the
 	mesh used in this solution. Both about
@@ -854,11 +854,12 @@ modified mass matrix, M_11.
 				self.eigenvectors = np.insert(self.eigenvectors,DOF,0.,axis=0)
 
 
-	def calcModalEffectiveMass(self):	### WRONG!!!
+	def calcModalEffectiveMass(self):
 		'''
 	Calculate the modal effective mass for
-	every eigenmode using the normalized
-	eigenvectors.
+	every eigenmode in all six directions
+	(X, Y, Z, ROTX, ROTY, ROTZ) using the 
+	normalized eigenvectors.
 	'''
 		nModes = self.results['modeshapes']
 		nDOFs = self.mesh.nDOFs
@@ -866,7 +867,7 @@ modified mass matrix, M_11.
 		NFAT = self.mesh.NFAT
 
 		self.massOfFixedDOFs = np.zeros(3)
-#		self.centerOfFixedDOFs = np.zeros(3)
+		self.centerOfFixedDOFs = np.zeros(3)
 		x_count = 0
 		y_count = 0
 		z_count = 0
@@ -882,15 +883,15 @@ modified mass matrix, M_11.
 						if NFAT[previous_node][dof] == 1:
 							if NFMT[previous_node]+dof_count == DOF:
 								if dof_count == 0:
-#									self.centerOfFixedDOFs[0] += self.mesh.nodes[previous_node].coord[0][0]
+									self.centerOfFixedDOFs[0] += self.mesh.nodes[previous_node].coord[0][0]
 									self.massOfFixedDOFs[0] += self.mesh.M[DOF]
 									x_count += 1
 								elif dof_count == 1:
-#									self.centerOfFixedDOFs[1] += self.mesh.nodes[previous_node].coord[1][0]
+									self.centerOfFixedDOFs[1] += self.mesh.nodes[previous_node].coord[1][0]
 									self.massOfFixedDOFs[1] += self.mesh.M[DOF]
 									y_count += 1
 								elif dof_count == 2:
-#									self.centerOfFixedDOFs[2] += self.mesh.nodes[previous_node].coord[2][0]
+									self.centerOfFixedDOFs[2] += self.mesh.nodes[previous_node].coord[2][0]
 									self.massOfFixedDOFs[2] += self.mesh.M[DOF]
 									z_count += 1
 								else:
@@ -902,15 +903,15 @@ modified mass matrix, M_11.
 						if NFAT[node][dof] == 1:
 							if NFMT[node]+dof_count == DOF:
 								if dof_count == 0:
-#									self.centerOfFixedDOFs[0] += self.mesh.nodes[node].coord[0][0]
+									self.centerOfFixedDOFs[0] += self.mesh.nodes[node].coord[0][0]
 									self.massOfFixedDOFs[0] += self.mesh.M[DOF]
 									x_count += 1
 								elif dof_count == 1:
-#									self.centerOfFixedDOFs[1] += self.mesh.nodes[node].coord[1][0]
+									self.centerOfFixedDOFs[1] += self.mesh.nodes[node].coord[1][0]
 									self.massOfFixedDOFs[1] += self.mesh.M[DOF]
 									y_count += 1
 								elif dof_count == 2:
-#									self.centerOfFixedDOFs[2] += self.mesh.nodes[node].coord[2][0]
+									self.centerOfFixedDOFs[2] += self.mesh.nodes[node].coord[2][0]
 									self.massOfFixedDOFs[2] += self.mesh.M[DOF]
 									z_count += 1
 								else:
@@ -920,32 +921,81 @@ modified mass matrix, M_11.
 					pass
 				previous_node = node
 
-		r = np.ones(nDOFs+len(self.MPCs)-len(self.fixedDOFs))
-		r = sp.diags(r,0)
-		r = r.tocsc()
+		if x_count != 0:
+			self.centerOfFixedDOFs[0] /= x_count
+		if y_count != 0:
+			self.centerOfFixedDOFs[1] /= y_count
+		if z_count != 0:
+			self.centerOfFixedDOFs[2] /= z_count
+		x_c0 = self.centerOfFixedDOFs[0]
+		y_c0 = self.centerOfFixedDOFs[1]
+		z_c0 = self.centerOfFixedDOFs[2]
 
-		self.evecs = sp.csc_matrix(self.X)
-		del self.X
-		L = self.evecs.T.dot(self.M_11.dot(r))
-		L = L.toarray()
-		L = L.T
-		for DOF in range(self.mesh.nDOFs):
-			if DOF not in self.fixedDOFs:
-				pass
-			else:
-				L = np.insert(L,DOF,0.,axis=0)
-		L = L.T
+		# Define e, the 6x1 matrix with a single non-zero element
+		e = [np.array([[1.], [0.], [0.], [0.], [0.], [0.]]),
+			 np.array([[0.], [1.], [0.], [0.], [0.], [0.]]),
+			 np.array([[0.], [0.], [1.], [0.], [0.], [0.]]),
+			 np.array([[0.], [0.], [0.], [1.], [0.], [0.]]),
+			 np.array([[0.], [0.], [0.], [0.], [1.], [0.]]),
+			 np.array([[0.], [0.], [0.], [0.], [0.], [1.]])]
 
+		# Calculate the base excitation vectors
+		excitation_vectors = np.zeros((nDOFs,6))
+		for node in self.mesh.nodes:
+			dx = self.mesh.nodes[node].coord[0][0] - x_c0
+			dy = self.mesh.nodes[node].coord[1][0] - y_c0
+			dz = self.mesh.nodes[node].coord[2][0] - z_c0
+			v = np.array([[1., 0., 0., 0., dz, -dy],
+						  [0., 1., 0., -dz, 0., dx],
+						  [0., 0., 1., dy, -dx, 0.],
+						  [0., 0., 0., 1., 0., 0.],
+						  [0., 0., 0., 0., 1., 0.],
+						  [0., 0., 0., 0., 0., 1.]])
+			n_dof = 0
+			for dof in range(6):
+				if NFAT[node][dof] == 1:
+					DOF = NFMT[node] + n_dof
+					n_dof += 1
+					if dof == 0:
+						T = v.dot(e[0])
+						for i in range(6):
+							excitation_vectors[DOF][i] += T[i][0]
+					elif dof == 1:
+						T = v.dot(e[1])
+						for i in range(6):
+							excitation_vectors[DOF][i] += T[i][0]
+					elif dof == 2:
+						T = v.dot(e[2])
+						for i in range(6):
+							excitation_vectors[DOF][i] += T[i][0]
+					elif dof == 3:
+						T = v.dot(e[3])
+						excitation_vectors[DOF][dof] += T[dof][0]
+#						for i in range(6):
+#							excitation_vectors[DOF][i] += T[i][0]
+					elif dof == 4:
+						T = v.dot(e[4])
+						excitation_vectors[DOF][dof] += T[dof][0]
+#						for i in range(6):
+#							excitation_vectors[DOF][i] += T[i][0]
+					elif dof == 5:
+						T = v.dot(e[5])
+						excitation_vectors[DOF][dof] += T[dof][0]
+#						for i in range(6):
+#							excitation_vectors[DOF][i] += T[i][0]
+					else:
+						pass
+				else:
+					pass
+		excitation_vectors = excitation_vectors[self.index11]
+		excitation_vectors = excitation_vectors[:nDOFs+len(self.MPCs)-len(self.fixedDOFs)]
+		
+		# Calculate the modal effective masses
 		self.modalMass = {}
 		for mode in range(nModes):
 			self.modalMass[mode+1] = [0., 0., 0., 0., 0., 0.]
-			for node in NFMT:
-				dof_count = 0
-				for dof in range(6):
-					if NFAT[node][dof] == 1:
-						dof_count += 1
-						self.modalMass[mode+1][dof] += L[mode][NFMT[node]+dof_count-1]**2
-		del self.evecs
+			for dof in range(6):
+				self.modalMass[mode+1][dof] = (self.X[:,mode] @ self.M_11 @ excitation_vectors[:,dof])**2
 
 
 	def calcStrainEnergyDensity(self):
@@ -1002,7 +1052,7 @@ modified mass matrix, M_11.
 			for i in self.results:
 				if i == 'modeshapes':
 					header = (' MODE ', ' EIGENFREQUENCY ', '  M_EFF_X', '  M_EFF_Y', '  M_EFF_Z', '  M_EFF_RX', '  M_EFF_RY', '  M_EFF_RZ')
-					fobj.write('\n\n\n\t\tEIGENMODES:  ### WRONG MODAL EFFECTIVE MASS ###\n')
+					fobj.write('\n\n\n\t\tEIGENMODES / EIGENFREQUENCY / MODAL EFFECTIVE MASS\n')
 					fobj.write(line11+'\n')
 					fobj.write(template1.format(*header)+'\n')
 					fobj.write(line12+'\n')
@@ -1037,7 +1087,7 @@ modified mass matrix, M_11.
 					nodeRes.append(' %.4E' % (m_effRY_total))
 					nodeRes.append(' %.4E' % (m_effRZ_total))
 					fobj.write(template2.format(*nodeRes)+'\n')
-					nodeRes = ['     (IN PERCENT)']
+					nodeRes = [' (% OF NON-FIXED MASS)']
 					nodeRes.append(' %.2f' % (100*m_effX_total/(self.mesh.totalMass[0] - self.massOfFixedDOFs[0])))
 					nodeRes.append(' %.2f' % (100*m_effY_total/(self.mesh.totalMass[0] - self.massOfFixedDOFs[1])))
 					nodeRes.append(' %.2f' % (100*m_effZ_total/(self.mesh.totalMass[0] - self.massOfFixedDOFs[2])))
