@@ -107,7 +107,7 @@ Tutorials:
 
 - Written help and tutorials accessed from inside the program -- READY!
 - Case files that can be used to see working examples (..\solFEM_v3\Example Mesh Files) -- READY!
-- Youtube video tutorials https://www.youtube.com/channel/UCIZFRO8nj9BOW28PBSShtiw -- WORK IN PROGRESS!
+- Youtube video tutorials https://www.youtube.com/channel/UCIZFRO8nj9BOW28PBSShtiw -- READY!
 
 
 
@@ -115,7 +115,6 @@ Future Work:
 ------------
 
 - Modal Dynamics solver with base motion is too slow (should not be used on models with more than 1000 nodes)
-- Modal Effective Mass not calculated correctly (need to rewrite the code for this)
 - Non-linear Static Plastic solver (need to write code for this)
 
 
