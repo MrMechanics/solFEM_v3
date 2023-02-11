@@ -14,6 +14,8 @@
 
 
 import sys
+import re
+from math import floor, ceil
 from copy import deepcopy
 
 sys.path.insert(1, '../Objects')
@@ -75,6 +77,7 @@ is an OpenGL widget running inside this framework.
 		self.new_position = {}
 		self.new_rotation = {}
 		self.new_mesh_view = {}
+		self.new_geometry_view = {}
 		self.new_material = {}
 		self.new_section = {}
 		self.new_section_assignment = {}
@@ -220,6 +223,30 @@ is an OpenGL widget running inside this framework.
 		selectelements.setStatusTip('Select elements')
 		selectelements.triggered.connect(self.selectElements)
 
+		selectlines = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_select_lines.png'),'Select Lines', self)
+		selectlines.setStatusTip('Select lines')
+		selectlines.triggered.connect(self.selectLines)
+
+		selectfaces = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_select_faces.png'),'Select Faces', self)
+		selectfaces.setStatusTip('Select faces')
+		selectfaces.triggered.connect(self.selectFaces)
+
+		seedlines = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_seed_lines.png'),'Seed Lines', self)
+		seedlines.setStatusTip('Seed lines')
+		seedlines.triggered.connect(self.seedLines)
+
+		seedgeometry = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_seed_geometry.png'),'Seed Geometry', self)
+		seedgeometry.setStatusTip('Seed geometry')
+		seedgeometry.triggered.connect(self.seedGeometry)
+
+		meshfaces = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_mesh_face.png'),'Mesh Faces', self)
+		meshfaces.setStatusTip('Mesh faces')
+		meshfaces.triggered.connect(self.meshFaces)
+
+		meshgeometry = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_mesh_geometry.png'),'Mesh Geometry', self)
+		meshgeometry.setStatusTip('Mesh geometry')
+		meshgeometry.triggered.connect(self.meshGeometry)
+
 		delete = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_delete.png'),'Delete', self)
 		delete.setStatusTip('Delete sets, mesh, material, solutions, boundaries, loads...')
 		delete.triggered.connect(self.deleteItem)
@@ -270,6 +297,10 @@ is an OpenGL widget running inside this framework.
 		meshtree.setStatusTip('Toggle Mesh Tree On/Off')
 		meshtree.triggered.connect(self.showMeshTree)
 
+		geometryview = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_current_geometry.png'),'Current Geometry...', self)
+		geometryview.setStatusTip('Select what geometry to view')
+		geometryview.triggered.connect(self.selectGeometry)
+
 		meshview = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_current_mesh.png'),'Current Mesh...', self)
 		meshview.setStatusTip('Select what mesh to view')
 		meshview.triggered.connect(self.selectMesh)
@@ -290,11 +321,11 @@ is an OpenGL widget running inside this framework.
 		highlightelement.setStatusTip('Highlight element')
 		highlightelement.triggered.connect(self.highlightElement)
 
-		highlightnodeset = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_highlight_nodeset.png'),'Nodeset', self)
+		highlightnodeset = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_highlight_nodeset.png'),'Highlight Nodeset', self)
 		highlightnodeset.setStatusTip('Highlight nodeset')
 		highlightnodeset.triggered.connect(self.highlightNodeSet)
 
-		highlightelementset = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_highlight_elementset.png'),'Elementset', self)
+		highlightelementset = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_highlight_elementset.png'),'Highlight Elementset', self)
 		highlightelementset.setStatusTip('Highlight elementset')
 		highlightelementset.triggered.connect(self.highlightElementSet)
 
@@ -510,6 +541,28 @@ is an OpenGL widget running inside this framework.
 		empty4.setEnabled(False)
 		empty5 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
 		empty5.setEnabled(False)
+		empty6 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty6.setEnabled(False)
+		empty7 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty7.setEnabled(False)
+		empty8 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty8.setEnabled(False)
+		empty9 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty9.setEnabled(False)
+		empty10 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty10.setEnabled(False)
+		empty11 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty11.setEnabled(False)
+		empty12 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty12.setEnabled(False)
+		empty13 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty13.setEnabled(False)
+		empty14 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty14.setEnabled(False)
+		empty15 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty15.setEnabled(False)
+		empty16 = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_empty.png'),' ', self)
+		empty16.setEnabled(False)
 
 		menubar = self.menuBar()
 		fileMenu = menubar.addMenu('&File')
@@ -523,6 +576,8 @@ is an OpenGL widget running inside this framework.
 		editMenu = menubar.addMenu('&Edit')
 		editMenu.addAction(selectnodes)
 		editMenu.addAction(selectelements)
+		editMenu.addAction(selectlines)
+		editMenu.addAction(selectfaces)
 		editMenu.addAction(delete)
 		viewMenu = menubar.addMenu('&View')
 		viewMenu.addAction(resetview)
@@ -537,6 +592,12 @@ is an OpenGL widget running inside this framework.
 		highlightMenu.addAction(highlightelement)
 		highlightMenu.addAction(highlightnodeset)
 		highlightMenu.addAction(highlightelementset)
+		geometryMenu = menubar.addMenu('&Geometry')
+		geometryMenu.addAction(geometryview)
+		geometryMenu.addAction(seedlines)
+		geometryMenu.addAction(seedgeometry)
+		geometryMenu.addAction(meshfaces)
+		geometryMenu.addAction(meshgeometry)
 		meshMenu = menubar.addMenu('&Mesh')
 		meshMenu.addAction(meshview)
 		meshMenu.addAction(mesh)
@@ -633,14 +694,14 @@ is an OpenGL widget running inside this framework.
 		main_toolbar1.setMovable(False)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
+		main_toolbar1.addAction(geometryview)
 		main_toolbar1.addAction(meshview)
 		main_toolbar1.addAction(solutionview)
 		main_toolbar1.addAction(resultview)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
 		main_toolbar1.addAction(resetview)
-		main_toolbar1.addAction(centerview)
-		main_toolbar1.addAction(origin)
+		main_toolbar1.addAction(shaded)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
 		main_toolbar1.addAction(highlightnode)
@@ -653,11 +714,9 @@ is an OpenGL widget running inside this framework.
 		main_toolbar1.addAction(insert)
 		main_toolbar1.addAction(convert)
 		main_toolbar1.addAction(resizeelements)
-		main_toolbar1.addAction(beamorient)
-		main_toolbar1.addAction(splitbeams)
+		main_toolbar1.addAction(rotate)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
-		main_toolbar1.addAction(getinfo)
 		main_toolbar1.addAction(nodeset)
 		main_toolbar1.addAction(elementset)
 		main_toolbar1.addSeparator()
@@ -668,7 +727,6 @@ is an OpenGL widget running inside this framework.
 		main_toolbar1.addSeparator()
 		main_toolbar1.addAction(static)
 		main_toolbar1.addAction(plastic)
-#		main_toolbar1.addAction(heattransfer)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
 		main_toolbar1.addAction(touchlock)
@@ -677,30 +735,30 @@ is an OpenGL widget running inside this framework.
 		main_toolbar1.addSeparator()
 		main_toolbar1.addAction(uniformload)
 		main_toolbar1.addAction(concentratedload)
-		main_toolbar1.addAction(dynamicload)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
 		main_toolbar1.addAction(average)
-		main_toolbar1.addAction(scalefactor)
-		main_toolbar1.addAction(scalediagram)
+		main_toolbar1.addAction(animationonoff)
+		main_toolbar1.addAction(animationspeed)
+		main_toolbar1.addSeparator()
+		main_toolbar1.addSeparator()
 		main_toolbar1.addAction(newsolfile)
-		main_toolbar1.addAction(runsolver)
 		main_toolbar1.addSeparator()
 		main_toolbar1.addSeparator()
 
-		main_toolbar2 = QtWidgets.QToolBar('Main Toolbar Lower')
+		main_toolbar2 = QtWidgets.QToolBar('Main Toolbar Middle')
 		main_toolbar2.setIconSize(QtCore.QSize(24,24))
 		main_toolbar2.setMovable(False)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
+		main_toolbar2.addAction(selectlines)
+		main_toolbar2.addAction(selectfaces)
 		main_toolbar2.addAction(selectnodes)
 		main_toolbar2.addAction(selectelements)
-		main_toolbar2.addAction(delete)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
-		main_toolbar2.addAction(shaded)
+		main_toolbar2.addAction(centerview)
 		main_toolbar2.addAction(wireframe)
-		main_toolbar2.addAction(nodesview)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
 		main_toolbar2.addAction(highlightnodeset)
@@ -714,10 +772,8 @@ is an OpenGL widget running inside this framework.
 		main_toolbar2.addAction(copy)
 		main_toolbar2.addAction(mirrorcopy)
 		main_toolbar2.addAction(move)
-		main_toolbar2.addAction(rotate)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
-		main_toolbar2.addAction(distance)
 		main_toolbar2.addAction(hide)
 		main_toolbar2.addAction(show)
 		main_toolbar2.addSeparator()
@@ -736,17 +792,78 @@ is an OpenGL widget running inside this framework.
 		main_toolbar2.addSeparator()
 		main_toolbar2.addAction(distributedload)
 		main_toolbar2.addAction(torqueload)
-		main_toolbar2.addAction(gravityload)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
+		main_toolbar2.addAction(scalefactor)
 		main_toolbar2.addAction(previousmode)
 		main_toolbar2.addAction(nextmode)
-		main_toolbar2.addAction(animationonoff)
-		main_toolbar2.addAction(animationspeed)
-		main_toolbar2.addAction(empty1)
+		main_toolbar2.addSeparator()
+		main_toolbar2.addSeparator()
+		main_toolbar2.addAction(runsolver)
 		main_toolbar2.addSeparator()
 		main_toolbar2.addSeparator()
 
+		main_toolbar3 = QtWidgets.QToolBar('Main Toolbar Lower')
+		main_toolbar3.setIconSize(QtCore.QSize(24,24))
+		main_toolbar3.setMovable(False)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(delete)
+		main_toolbar3.addAction(empty2)
+		main_toolbar3.addAction(empty3)
+		main_toolbar3.addAction(empty4)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(origin)
+		main_toolbar3.addAction(nodesview)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(getinfo)
+		main_toolbar3.addAction(distance)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(seedlines)
+		main_toolbar3.addAction(seedgeometry)
+		main_toolbar3.addAction(meshfaces)
+		main_toolbar3.addAction(meshgeometry)
+		main_toolbar3.addAction(empty5)
+		main_toolbar3.addAction(beamorient)
+		main_toolbar3.addAction(splitbeams)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(empty6)
+		main_toolbar3.addAction(empty7)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(empty8)
+		main_toolbar3.addAction(empty9)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(heattransfer)
+		main_toolbar3.addAction(empty10)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(empty11)
+		main_toolbar3.addAction(empty12)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(gravityload)
+		main_toolbar3.addAction(dynamicload)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(scalediagram)
+		main_toolbar3.addAction(empty13)
+		main_toolbar3.addAction(empty14)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+		main_toolbar3.addAction(empty15)
+		main_toolbar3.addSeparator()
+		main_toolbar3.addSeparator()
+
+
+		btnViewGeometry = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_view_geometry.png'),'Change view to Geometry', self)
+		btnViewGeometry.triggered.connect(self.btnViewGeometryAction)
+		btnViewGeometry.setStatusTip('Change view to Geometry')
 		btnViewMesh = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_view_mesh.png'),'Change view to Mesh', self)
 		btnViewMesh.triggered.connect(self.btnViewMeshAction)
 		btnViewMesh.setStatusTip('Change view to Mesh')
@@ -772,6 +889,8 @@ is an OpenGL widget running inside this framework.
 		view_toolbar.addAction(empty1)
 		view_toolbar.addAction(empty2)
 		view_toolbar.addSeparator()
+		view_toolbar.addAction(btnViewGeometry)
+		view_toolbar.addSeparator()
 		view_toolbar.addAction(btnViewMesh)
 		view_toolbar.addSeparator()
 		view_toolbar.addAction(btnViewConstraint)
@@ -784,7 +903,6 @@ is an OpenGL widget running inside this framework.
 		view_toolbar.addSeparator()
 		view_toolbar.addAction(btnViewResult)
 		view_toolbar.addSeparator()
-		view_toolbar.addSeparator()
 
 		self.addToolBar(QtCore.Qt.LeftToolBarArea, view_toolbar)
 
@@ -793,6 +911,8 @@ is an OpenGL widget running inside this framework.
 		tool1.addWidget(main_toolbar1)
 		tool2 = QtWidgets.QToolBar()
 		tool2.addWidget(main_toolbar2)
+		tool3 = QtWidgets.QToolBar()
+		tool3.addWidget(main_toolbar3)
 
 		vbox = QtWidgets.QVBoxLayout()
 		vbox.setContentsMargins(0,5,5,5)
@@ -800,6 +920,7 @@ is an OpenGL widget running inside this framework.
 
 		vbox.addWidget(tool1)
 		vbox.addWidget(tool2)
+		vbox.addWidget(tool3)
 
 		self.viewer.setSizePolicy( QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding )
 		vbox.addWidget(self.viewer)
@@ -808,7 +929,7 @@ is an OpenGL widget running inside this framework.
 		self.setCentralWidget(parentWidget)
 
 		self.centerWindow()
-		self.resize(1300,650)
+		self.resize(1200,800)
 
 
 	def centerWindow(self):
@@ -957,6 +1078,9 @@ is an OpenGL widget running inside this framework.
 			self.new_file_import['file'] = filename
 			self.viewer.update()
 		elif filename[-4:] == '.inp':
+			self.new_file_import['file'] = filename
+			self.viewer.update()
+		elif (filename[-4:] == '.stp') or (filename[-5:] == '.step'):
 			self.new_file_import['file'] = filename
 			self.viewer.update()
 		elif filename[-4:] == '.mdl':
@@ -1162,6 +1286,28 @@ is an OpenGL widget running inside this framework.
 			print('\tThere are no meshes. Nothing to delete.')
 
 
+	def selectLines(self):
+		'''
+	Set mouse pointer to select lines.
+	'''
+		if len(self.model.selected_lines) != 0:
+			self.model.selected_lines.clear()
+			self.viewer.update()
+		self.model.geoSelectOption = 'Lines'
+		self.statusBar().showMessage('  Selecting... lines' )
+
+
+	def selectFaces(self):
+		'''
+	Set mouse pointer to select faces.
+	'''
+		if len(self.model.selected_faces) != 0:
+			self.model.selected_faces.clear()
+			self.viewer.update()
+		self.model.geoSelectOption = 'Faces'
+		self.statusBar().showMessage('  Selecting... faces' )
+
+
 	def selectNodes(self):
 		'''
 	Set mouse pointer to select nodes.
@@ -1260,9 +1406,115 @@ is an OpenGL widget running inside this framework.
 #					print('\tElement orientation:', self.model.selected_elements[element].orientation['x-vec'],
 #													self.model.selected_elements[element].orientation['y-vec'],
 #													self.model.selected_elements[element].orientation['z-vec'])
+		elif len(self.model.selected_lines) == 1:
+			for line in self.model.selected_lines:
+				print('\n\tLine length:', self.model.selected_lines[line]['length'])
+				print('\tLine number of seeds:', self.model.selected_lines[line]['n_seed'])
 		else:
 			print('\n\tPlease select the node or element you wish')
 			print('\tto print out the information about.')
+
+
+	def seedLines(self):
+		'''
+	Seed selected lines with input from
+	the user using a dialog box.
+	'''
+		if self.model.linesSelected:
+			n_seeds = 3
+			text, ok = QtWidgets.QInputDialog.getText(self, 'Seed Lines', 'Number of seeds:', text=str(n_seeds))
+			if ok and (len(self.model.selected_lines) != 0):
+				if str(text).isdigit():
+					for line in self.model.selected_lines:
+						self.model.selected_lines[line]['n_seed'] = int(text)
+						self.model.seedLine(line)
+						print('\n\tLine length:', self.model.selected_lines[line]['length'])
+						print('\tLine number of seeds:', self.model.selected_lines[line]['n_seed'])
+				else:
+					print('\n\t'+text+' is not a valid number of seeds.')
+		else:
+			print('\n\tNo lines selected.')
+
+
+	def seedGeometry(self):
+		'''
+	Seed selected geometry with input from
+	the user using a dialog box.
+	'''
+		if len(self.model.geometry) != 0:
+			element_size = 5
+			text, ok = QtWidgets.QInputDialog.getText(self, 'Seed Geometry', 'Element size:', text=str(element_size))
+			if ok:
+				try:
+					element_size = float(str(text))
+				except ValueError:
+					print('\n\tElement size must be a number. Try again.')
+				else:
+					geom = self.model.geometry[self.viewer.currentGeometry]
+					for line in geom['lines']:
+						length = geom['lines'][line]['length']
+						if length < element_size:
+							n_seed = 2
+						elif length <= 2*element_size:
+							n_seed = 3
+						else:
+							n_seed = floor(length/element_size)
+						geom['lines'][line]['n_seed'] = n_seed
+						print()
+						print('length:', geom['lines'][line]['length'])
+						print('n_seed:', geom['lines'][line]['n_seed'])
+						self.model.seedLine(line)					
+		else:
+			print('\n\tNo geometry currently selected.')
+
+
+	def meshFaces(self):
+		'''
+	Mesh selected faces with input from
+	the user using a dialog box.
+	'''
+		print('functionality not written yet')
+
+
+	def meshGeometry(self):
+		'''
+	Mesh selected geometry with input from
+	the user using a dialog box.
+	'''
+		print('functionality not written yet')
+
+
+	def selectGeometry(self):
+		'''
+	Select the current geometry to be seen in 
+	the viewer from a dialog box.
+	'''
+		if len(self.model.geometry) != 0:
+			self.model.nodesSelected = False
+			self.model.elementsSelected = False
+			self.model.selected_nodes.clear()
+			self.model.selected_elements.clear()
+			self.model.linesSelected = False
+			self.model.facesSelected = False
+			self.model.volumesSelected = False
+			self.model.selected_lines.clear()
+			self.model.selected_faces.clear()
+			self.model.selected_volumes.clear()
+			selectGeometry = {}
+			selectGeometry['inputs'] = {}
+			selectGeometry['choices'] = [ ['Geometry'], [] ]
+			for geom in	self.model.geometry:
+				selectGeometry['choices'][1].append(geom)
+			if self.viewer.currentGeometry == 'None':
+				self.viewer.currentGeometry = selectGeometry['choices'][1][0]
+			selectGeometry['current'] = {'Geometry': self.viewer.currentGeometry}
+			selectGeometry['inOrder'] = ['Geometry']
+			self.new_geometry_view = {}
+			self.selectionWidget = InputDialog(selectGeometry, 'Current Geometry', self.new_geometry_view)
+			self.selectionWidget.window_closed.connect(self.viewer.update)
+			self.selectionWidget.show()
+		else:
+			print('\tNo geometries to select.')
 
 
 	def selectMesh(self):
@@ -1275,6 +1527,12 @@ is an OpenGL widget running inside this framework.
 			self.model.elementsSelected = False
 			self.model.selected_nodes.clear()
 			self.model.selected_elements.clear()
+			self.model.linesSelected = False
+			self.model.facesSelected = False
+			self.model.volumesSelected = False
+			self.model.selected_lines.clear()
+			self.model.selected_faces.clear()
+			self.model.selected_volumes.clear()
 			selectMesh = {}
 			selectMesh['inputs'] = {}
 			selectMesh['choices'] = [ ['Mesh'], [] ]
@@ -1302,6 +1560,12 @@ is an OpenGL widget running inside this framework.
 			self.model.elementsSelected = False
 			self.model.selected_nodes.clear()
 			self.model.selected_elements.clear()
+			self.model.linesSelected = False
+			self.model.facesSelected = False
+			self.model.volumesSelected = False
+			self.model.selected_lines.clear()
+			self.model.selected_faces.clear()
+			self.model.selected_volumes.clear()
 			selectSolution = {}
 			selectSolution['inputs'] = {}
 			selectSolution['choices'] = [ ['Mesh', 'Solution'], {} ]
@@ -1349,6 +1613,12 @@ is an OpenGL widget running inside this framework.
 			self.model.elementsSelected = False
 			self.model.selected_nodes.clear()
 			self.model.selected_elements.clear()
+			self.model.linesSelected = False
+			self.model.facesSelected = False
+			self.model.volumesSelected = False
+			self.model.selected_lines.clear()
+			self.model.selected_faces.clear()
+			self.model.selected_volumes.clear()
 			selectResult = {}
 			selectResult['inputs'] = {}
 			selectResult['choices'] = [ ['Solution', 'Result', 'Subresult'], {} ]
@@ -3277,14 +3547,19 @@ is an OpenGL widget running inside this framework.
 
 	def updateDisplayList(self,view_geometry,view_mesh,view_results):
 		if view_geometry:
-			self.viewer.currentDisplayList['view radius'] = 2
-			self.viewer.currentDisplayList['view scope'] = { 'max': [ 1., 1., 1.],
-													  		 'min': [-1.,-1.,-1.] }
-			self.viewer.currentDisplayList['displaylist'] = { 'nodes':		 None,
-															  'wireframe':	 None,
-															  'shaded':		 None,
-															  'average':	 None,
-															  'orientation': self.viewer.currentDisplayList['displaylist']['orientation']}
+			self.viewer.currentDisplayList['max_val'] = None
+			self.viewer.currentDisplayList['min_val'] = None
+			self.viewer.currentDisplayList['avg_max_val'] = None
+			self.viewer.currentDisplayList['avg_min_val'] = None
+			self.viewer.viewAverage = False
+			if self.viewer.currentDisplayList['geometry'] != None:
+				self.viewer.currentDisplayList['view radius'] = self.viewer.currentDisplayList['geometry']['viewRadius']
+				self.viewer.currentDisplayList['view scope'] = self.viewer.currentDisplayList['geometry']['viewScope']
+				self.viewer.currentDisplayList['displaylist'] = { 'nodes':		 self.viewer.currentDisplayList['geometry']['displayLists']['nodes'],
+																  'wireframe':	 self.viewer.currentDisplayList['geometry']['displayLists']['wireframe'],
+																  'shaded':		 self.viewer.currentDisplayList['geometry']['displayLists']['shaded'],
+																  'average':	 None,
+																  'orientation': self.viewer.currentDisplayList['displaylist']['orientation']}
 
 		elif view_results:
 			if self.current_results['Solution'] == 'None':
@@ -3513,6 +3788,16 @@ is an OpenGL widget running inside this framework.
 			self.viewer.viewAnimationSpeed += self.viewer.viewAnimationSpeed[:0:-1]
 			print('\n\tNew frame to frame time for animation:', text)
 
+	def btnViewGeometryAction(self):
+		self.updateDisplayList(True,False,False)
+		self.statusBar().showMessage('  GEOMETRY  ')
+		self.viewer.viewGeometry = True
+		self.viewer.viewMesh = self.viewer.viewBoundaries = self.viewer.viewConstraints = \
+			self.viewer.viewLoads = self.viewer.viewSolutions = self.viewer.viewResults = False
+#		glClearColor(0.33, 0.43, 0.33, 1.0)
+#		glClearDepth(1.0)
+		self.viewer.update()
+		
 	def btnViewMeshAction(self):
 		self.updateDisplayList(False,True,False)
 		self.statusBar().showMessage('  MESH  ')
@@ -3585,6 +3870,7 @@ animations, loads, etc.
 		self.width = 100
 		self.height = 100
 
+		self.currentGeometry = 'None'
 		self.currentMesh = 'None'
 		self.currentSolution = 'None'
 		self.currentResults = 'None'
@@ -3621,6 +3907,7 @@ animations, loads, etc.
 		self.selectionRectangleEnd = [0,0]
 
 		self.currentDisplayList = { 'mesh':			None,
+							        'geometry':		None,
 									'solution': 	'None',
 									'result': 		'None',
 									'subresult':	'None',
@@ -3679,7 +3966,11 @@ animations, loads, etc.
 				self.viewLoadingMessage = True
 				self.update()
 			else:
-				self.model.importMesh(self.gui.new_file_import['file'])
+				if '.step' in self.gui.new_file_import['file'] or \
+					'.stp' in self.gui.new_file_import['file']:
+					self.model.importGeometry(self.gui.new_file_import['file'])
+				else:
+					self.model.importMesh(self.gui.new_file_import['file'])
 				self.viewLoadingMessage = False
 				self.gui.new_file_import.clear()
 
@@ -3709,6 +4000,29 @@ animations, loads, etc.
 			self.model.writeSolFile(self.currentMesh)
 			self.gui.new_solfile.clear()
 
+		if len(self.gui.new_geometry_view) != 0:
+			self.currentDisplayList['geometry'] = self.model.geometry[self.gui.new_geometry_view['Geometry']]
+#			self.currentDisplayList['mesh'] = self.model.meshes[self.gui.new_mesh_view['Mesh']]
+			self.currentDisplayList['solution'] = 'None'
+			self.currentDisplayList['result'] = 'None'
+			self.currentDisplayList['subresult'] = 'None'
+			self.gui.updateDisplayList(True,False,False)
+			self.gui.statusBar().showMessage('  GEOMETRY  ')
+			self.viewMesh = self.viewBoundaries = self.viewConstraints = self.viewLoads = self.viewSolutions = self.viewResults = False
+			self.viewGeometry = True
+			self.model.elementsSelected = False
+			self.currentGeometry = self.gui.new_geometry_view['Geometry']
+			self.currentSolution = 'None'
+			self.gui.new_geometry_view.clear()
+			pos = deepcopy(self.camera.position)
+			trg = deepcopy(self.camera.target)
+			self.gui.centerModel()
+			self.camera.reset()
+			self.gui.centerModel()
+			self.camera.position = pos
+			self.camera.target = trg			
+			self.update()
+			
 		if len(self.gui.new_mesh_view) != 0:
 			self.currentDisplayList['mesh'] = self.model.meshes[self.gui.new_mesh_view['Mesh']]
 			self.currentDisplayList['solution'] = 'None'
@@ -4017,8 +4331,23 @@ animations, loads, etc.
 				self.model.selected_elements.clear()
 				self.model.elementsSelected = False
 
+		elif self.model.linesSelected:
+			if len(self.model.geometry) > 0:
+				glCallList(self.currentDisplayList['geometry']['displayLists']['selected lines'])
+			else:
+				self.model.selected_lines.clear()
+				self.model.linesSelected = False
+		
+		elif self.model.facesSelected:
+			if len(self.model.geometry) > 0:
+				glCallList(self.currentDisplayList['geometry']['displayLists']['selected faces'])
+			else:
+				self.model.selected_faces.clear()
+				self.model.facesSelected = False
+
 		else:
 			pass
+
 
 		# Draw RGB triad in left corner
 		glViewport(0, 0, self.width//3, self.height//3)
@@ -4102,7 +4431,10 @@ animations, loads, etc.
 
 		if self.viewGeometry:
 			glColor3f(1., 1., 1.)
-			self.renderText(40, self.height-40, 'geometry viewing/editing not supported ...', QtGui.QFont( 'helvetica', 18 ) )
+			if self.currentDisplayList['geometry'] != None:
+				self.renderText(40, self.height-40, self.currentDisplayList['geometry']['name'], QtGui.QFont( 'helvetica', 18 ) )
+			if self.viewMeshTree:
+				self.drawGeometryTree()
 			
 		elif self.viewMesh:
 			if self.currentMesh == None:
@@ -4222,9 +4554,68 @@ animations, loads, etc.
 
 
 	def mouseReleaseEvent(self, e):
-
 		self.mouseButtonPressed = False
-		if self.activeSelection == True and self.currentDisplayList['mesh'] != None:
+		if self.activeSelection and self.viewGeometry:
+			geom =  self.currentDisplayList['geometry']
+			selected_lines = self.lineSelect()
+			for line in geom['lines']:
+				if line in selected_lines:
+					if self.activeCTRL:
+						if self.model.geoSelectOption == 'Lines':
+							if (line in self.model.selected_lines):
+								del self.model.selected_lines[line]
+					elif self.activeSHIFT:
+						self.model.selected_lines[line] = geom['lines'][line]
+					else:
+						self.model.selected_lines[line] = geom['lines'][line]
+				else:
+					if self.activeCTRL:
+						pass
+					elif self.activeSHIFT:
+						pass
+					else:
+						if (line in self.model.selected_lines):
+							del self.model.selected_lines[line]
+			if self.model.geoSelectOption == 'Lines':
+				self.model.linesSelected = True
+				self.model.facesSelected = False
+				self.model.volumesSelected = False
+				self.model.selectedGeometryDisplay(self.currentDisplayList['geometry'])
+			elif self.model.geoSelectOption == 'Faces' and geom != None:
+				for face in geom['faces']:
+					selected = True
+					for edge in geom['faces'][face]['edges']:
+						for line in geom['faces'][face]['edges'][edge]['lines']:
+							if line not in selected_lines:
+								selected = False
+								break
+					if selected:
+						if self.activeCTRL:
+							if (face in self.model.selected_faces):
+								del self.model.selected_faces[face]
+						elif self.activeSHIFT:
+							self.model.selected_faces[face] = geom['faces'][face]
+						else:
+							self.model.selected_faces[face] = geom['faces'][face]
+					else:
+						if self.activeCTRL:
+							pass
+						elif self.activeSHIFT:
+							pass
+						else:
+							if (face in self.model.selected_faces):
+								del self.model.selected_faces[face]
+				self.model.linesSelected = False
+				self.model.facesSelected = True
+				self.model.volumesSelected = False
+				self.model.selectedGeometryDisplay(self.currentDisplayList['geometry'])
+			else:
+				pass
+			self.activeSelection = False
+			self.update()
+
+			
+		elif self.activeSelection and self.currentDisplayList['mesh'] != None:
 			nodes = self.nodeSelect()
 			for node in self.currentDisplayList['mesh'].nodes:
 				if node in nodes:
@@ -4278,7 +4669,84 @@ animations, loads, etc.
 				pass
 			self.activeSelection = False
 			self.update()
+		else:
+			pass
 		
+
+	def lineSelect(self):
+		if self.currentDisplayList['geometry'] != None:
+			if self.selectionRectangleEnd[0] < self.selectionRectangleStart[0]:
+				x = [self.selectionRectangleEnd[0], self.selectionRectangleStart[0],
+					 self.selectionRectangleEnd[0], self.selectionRectangleStart[0]]
+			else:
+				x = [self.selectionRectangleStart[0], self.selectionRectangleEnd[0],
+					 self.selectionRectangleStart[0], self.selectionRectangleEnd[0]]
+			if self.selectionRectangleEnd[1] < self.selectionRectangleStart[1]:
+				y = [self.height-self.selectionRectangleEnd[1], self.height-self.selectionRectangleEnd[1],
+					 self.height-self.selectionRectangleStart[1], self.height-self.selectionRectangleStart[1]]
+			else:
+				y = [self.height-self.selectionRectangleStart[1], self.height-self.selectionRectangleStart[1],
+					 self.height-self.selectionRectangleEnd[1], self.height-self.selectionRectangleEnd[1]]
+			startpoint = [(0.,0.,0.),(0.,0.,0.),(0.,0.,0.),(0.,0.,0.)]
+			endpoint = [(0.,0.,0.),(0.,0.,0.),(0.,0.,0.),(0.,0.,0.)]
+			for i in range(4):
+				try:
+					startpoint[i] = gluUnProject(x[i], y[i], 0., self.view_matrix, self.projection, self.viewport)
+					endpoint[i] = gluUnProject(x[i], y[i], 1., self.view_matrix, self.projection, self.viewport)
+				except ValueError:
+					pass
+				else:
+					ray_direction = (endpoint[i][0] - startpoint[i][0],
+									 endpoint[i][1] - startpoint[i][1],
+									 endpoint[i][2] - startpoint[i][2])
+					endpoint[i] = (startpoint[i][0] + ray_direction[0],
+								   startpoint[i][1] + ray_direction[1],
+								   startpoint[i][2] + ray_direction[2])
+			P = np.zeros((8,3))
+			P[0] = np.array([startpoint[0][0], startpoint[0][1], startpoint[0][2]]) # front top left
+			P[1] = np.array([startpoint[1][0], startpoint[1][1], startpoint[1][2]]) # front top right
+			P[2] = np.array([startpoint[2][0], startpoint[2][1], startpoint[2][2]]) # front bottom left
+			P[3] = np.array([startpoint[3][0], startpoint[3][1], startpoint[3][2]]) # front bottom right
+			P[4] = np.array([  endpoint[0][0],   endpoint[0][1],   endpoint[0][2]]) # back top left
+			P[5] = np.array([  endpoint[1][0],   endpoint[1][1],   endpoint[1][2]]) # back top right
+			P[6] = np.array([  endpoint[2][0],   endpoint[2][1],   endpoint[2][2]]) # back bottom left
+			P[7] = np.array([  endpoint[3][0],   endpoint[3][1],   endpoint[3][2]]) # back bottom right
+			Frustum = []
+			Frustum.append(np.cross((P[5]-P[1]),(P[4]-P[0]))) # top plane normal vector
+			Frustum.append(np.cross((P[7]-P[3]),(P[5]-P[1]))) # right plane normal vector
+			Frustum.append(np.cross((P[6]-P[2]),(P[7]-P[3]))) # bottom plane normal vector
+			Frustum.append(np.cross((P[4]-P[0]),(P[6]-P[2]))) # left plane normal vector
+			selected_lines = {}
+			lines = self.currentDisplayList['geometry']['lines']
+			for line in lines:
+				all_line_points_selected = True
+				for point in range(len(lines[line]['points'])):
+					if self.modelCentered:
+						point_to_check = np.array([lines[line]['points'][point][0]+self.coordSys0_centered.origin.x(),
+												   lines[line]['points'][point][1]+self.coordSys0_centered.origin.y(),
+												   lines[line]['points'][point][2]+self.coordSys0_centered.origin.z()])
+					else:
+						point_to_check = np.array([lines[line]['points'][point][0], 
+												   lines[line]['points'][point][1], 
+												   lines[line]['points'][point][2]])
+					if np.dot(P[0]-point_to_check,Frustum[0]) < 0:
+						all_line_points_selected = False
+						break
+					elif np.dot(P[1]-point_to_check,Frustum[1]) < 0:
+						all_line_points_selected = False
+						break
+					elif np.dot(P[3]-point_to_check,Frustum[2]) < 0:
+						all_line_points_selected = False
+						break
+					elif np.dot(P[2]-point_to_check,Frustum[3]) < 0:
+						all_line_points_selected = False
+						break
+					else:
+						pass
+				if all_line_points_selected:
+					selected_lines[line] = lines[line]
+			return selected_lines
+
 
 	def nodeSelect(self):
 		if self.currentDisplayList['mesh'] != None:
@@ -4324,7 +4792,11 @@ animations, loads, etc.
 			Frustum.append(np.cross((P[6]-P[2]),(P[7]-P[3]))) # bottom plane normal vector
 			Frustum.append(np.cross((P[4]-P[0]),(P[6]-P[2]))) # left plane normal vector
 			nodes = {}
-			for node in self.currentDisplayList['mesh'].nodes:
+			if hasattr(self.currentDisplayList['mesh'],'external'):
+				meshnodes = self.currentDisplayList['mesh'].external
+			else:
+				meshnodes = self.currentDisplayList['mesh'].nodes
+			for node in meshnodes:
 				if self.modelCentered:
 					point_to_check = np.array([self.currentDisplayList['mesh'].nodes[node].coord[0][0]+self.coordSys0_centered.origin.x(),
 											   self.currentDisplayList['mesh'].nodes[node].coord[1][0]+self.coordSys0_centered.origin.y(),
@@ -4363,6 +4835,14 @@ animations, loads, etc.
 		glEnd()
 
 		glDisable(GL_LINE_STIPPLE)
+
+
+	def drawGeometryTree(self):
+		'''
+	Write up a tree of geometries with
+	mesh, nodes and elements.
+	'''
+		pass
 
 		
 	def drawMeshTree(self,mesh=None):
@@ -4590,12 +5070,21 @@ or .sol-files.
 		self.sections = {}
 		self.meshes = {}
 		self.results = {}
+		self.geometry = {}
 
 		self.nodesSelected = False
 		self.selected_nodes = {}
 		self.elementsSelected = False
 		self.selected_elements = {}
 		self.selectOption = 'Nodes'
+		
+		self.linesSelected = False
+		self.selected_lines = {}
+		self.facesSelected = False
+		self.selected_faces = {}
+		self.volumesSelected = False
+		self.selected_volumes = {}
+		self.geoSelectOption = 'Lines'
 
 		self.scaleShearBendDiagram = 1.
 		self.scale_factor = 20.
@@ -4607,6 +5096,7 @@ or .sol-files.
 	Clears out all data in model from
 	current session.
 	'''
+		self.gui.viewer.currentGeometry = 'None'
 		self.gui.viewer.currentMesh = 'None'
 		self.gui.viewer.currentSolution = 'None'
 		self.gui.viewer.currentResults = 'None'
@@ -4636,8 +5126,16 @@ or .sol-files.
 		self.elementsSelected = False
 		self.selected_elements = {}
 
+		self.linesSelected = False
+		self.selected_lines = {}
+		self.facesSelected = False
+		self.selected_faces = {}
+		self.volumesSelected = False
+		self.selected_volumes = {}
+
 		self.nodesets.clear()
 		self.elementsets.clear()
+		self.geometry.clear()
 		self.results.clear()
 		self.meshes.clear()
 		self.materials = {'6061-T6_aluminum (N m kg)': 	 {'Elasticity':   689e8, 'Poisson ratio': 0.35, 'Density':   2700.},
@@ -4823,6 +5321,76 @@ or .sol-files.
 			print('\n\tUnknown delete category:', self.gui.new_deletion['Delete...'])
 
 
+	def externalNodes(self,mesh):
+		'''
+	Loop through the mesh and find all the 
+	external nodes so they can be used to
+	create a displaylist of the mesh.
+	'''
+		nodes = mesh.nodes
+		elements = mesh.elements
+		if not hasattr(mesh,'external'):
+			mesh.external = {}
+		oneFaceOnly = list(mesh.nodes.keys())
+		elementFaces = {}
+		for j in elements:
+			if elements[j].type in ['ROD2N2D', 'ROD2N', 'BEAM2N', 'BEAM2N2D', 'TRI3N', 'QUAD4N', 'QUAD8N']:
+#				print('element type:', elements[j].type)
+				for node in elements[j].nodes:
+#					print('node number:', elements[j].nodes[node].number)
+#					print('mesh.external:', mesh.external)
+					if node.number not in mesh.external:
+#						print('adding node to mesh external')
+						mesh.external[node.number] = nodes[node.number]
+			else:
+				facenodes = []
+				if elements[j].type == 'TET4N':
+					facenodes = [[0,1,3], [1,2,3], [2,0,3], [0,2,1]]
+				elif elements[j].type == 'TET10N':
+					facenodes = [[0,4,7], [7,4,8], [8,4,1], [7,8,3], [1,5,8], [8,5,9], [9,3,8], [5,2,9],
+								 [2,6,9], [9,6,7], [6,0,7], [9,7,3], [5,6,2], [4,0,6], [6,5,4], [4,5,1]]
+				elif elements[j].type == 'HEX8N':
+					facenodes = [[0,1,2,3], [0,1,4,5], [1,2,5,6], [2,3,6,7], [0,3,4,7], [4,5,6,7]]
+				elif elements[j].type == 'HEX20N':
+					facenodes = [[0,1,2,3,8,9,10,11], [0,1,4,5,8,12,13,16], [1,2,5,6,9,13,14,17], 
+						         [2,3,6,7,10,14,15,18], [0,3,4,7,11,12,15,19], [4,5,6,7,16,17,18,19]]
+				else:
+					print('Unknown element type:', elements[j].type)
+				
+				for k in range(len(facenodes)):
+					face = []
+					if elements[j].type == 'HEX8N':
+						face = [elements[j].nodes[facenodes[k][0]].number,
+								elements[j].nodes[facenodes[k][1]].number,
+								elements[j].nodes[facenodes[k][2]].number,
+								elements[j].nodes[facenodes[k][3]].number]
+					elif elements[j].type == 'HEX20N':
+						face = [elements[j].nodes[facenodes[k][0]].number,
+								elements[j].nodes[facenodes[k][1]].number,
+								elements[j].nodes[facenodes[k][2]].number,
+								elements[j].nodes[facenodes[k][3]].number,
+								elements[j].nodes[facenodes[k][4]].number,
+								elements[j].nodes[facenodes[k][5]].number,
+								elements[j].nodes[facenodes[k][6]].number,
+								elements[j].nodes[facenodes[k][7]].number]
+					else:
+						face = [elements[j].nodes[facenodes[k][0]].number,
+								elements[j].nodes[facenodes[k][1]].number,
+								elements[j].nodes[facenodes[k][2]].number]
+					face = sorted(face)
+					face = tuple(face)
+					if face in elementFaces:
+						elementFaces[face] += 1
+					else:
+						elementFaces[face] = 1
+		for face in elementFaces:
+			if elementFaces[face] == 1:
+				for n in range(len(face)):
+					if face[n] not in mesh.external:
+						mesh.external[face[n]] = nodes[face[n]]
+		print('External nodes:', list(mesh.external.keys())[:42])
+
+	
 	def createNewNode(self):
 		'''
 	Creates a new node from user input.
@@ -5889,6 +6457,7 @@ or .sol-files.
 		mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
 		mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
 		self.buildDisplayList(mesh)
+#		self.externalNodes(mesh)
 		self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
 		self.elementOrientation()
 		for mesh in self.meshes:
@@ -6050,6 +6619,493 @@ or .sol-files.
 							print('\n\tNo node(s) by that number:', node1, node2)
 		else:
 			print('\n\tNo elements selected.')
+
+
+	def importGeometry(self,filename):
+		'''
+	Imports geometry from step file and
+	generates a displaylist to be shown
+	in the viewer.
+	'''
+		self.linesSelected = False
+		self.selected_lines.clear()
+		self.facesSelected = False
+		self.selected_faces.clear()
+		self.volumesSelected = False
+		self.selected_volumes.clear()
+		not_with_path = True
+		for i in range(len(filename)):
+			if filename[-i-1] == '/' or filename[-i-1] == '\\':
+				shortname = filename[-i:]
+				not_with_path = False
+				break
+		if not_with_path:
+			shortname = filename
+		if '.step' in shortname:
+			shortname = shortname[:-5]
+		else:
+			shortname = shortname[:-4]
+
+		self.geometry[shortname] = {'name': shortname}
+		geom = self.geometry[shortname]
+
+		# Initialize dictionaries to store data
+		geom['ADVANCED_BREP_SHAPE_REPRESENTATION'] = {}
+		geom['AXIS2_PLACEMENT_2D'] = {}
+		geom['AXIS2_PLACEMENT_3D'] = {}
+		geom['CARTESIAN_POINT'] = {}
+		geom['DIRECTION'] = {}
+		geom['MANIFOLD_SOLID_BREP'] = {}
+		geom['CLOSED_SHELL'] = {}
+		geom['ADVANCED_FACE'] = {}
+		geom['FACE_BOUND'] = {}
+		geom['EDGE_LOOP'] = {}
+		geom['ORIENTED_EDGE'] = {}
+		geom['EDGE_CURVE'] = {}
+		geom['VERTEX_POINT'] = {}
+		geom['SURFACE_CURVE'] = {}
+		geom['SEAM_CURVE'] = {}
+		geom['LINE'] = {}
+		geom['PCURVE'] = {}
+		geom['CIRCLE'] = {}
+		geom['PLANE'] = {}
+
+	    # Open the STEP file
+		with open(filename, 'r') as f:
+			readData = False
+			delimiters = " ", "(", ",", ")"
+			regex_pattern = '|'.join(map(re.escape, delimiters))
+			# Read through the file line by line
+			for line in f:
+				if not readData:
+					if line[:4] == 'DATA':
+						readData = True
+				else:
+					if line[:6] == 'ENDSEC':
+						break
+					# Split the line into a list of fields
+					fields = re.split(regex_pattern,line)
+					print(fields)
+					if '#' not in fields[0]:
+						# add to last entry
+						pass
+					
+					elif 'ADVANCED_BREP_SHAPE_REPRESENTATION' == fields[2]:
+						absr_id = int(fields[0][1:])
+						axis_id = int(fields[5][1:])
+						manifold_id = int(fields[6][1:])
+						geom['ADVANCED_BREP_SHAPE_REPRESENTATION'][absr_id] = (axis_id, manifold_id)
+
+					elif 'AXIS2_PLACEMENT_2D' == fields[2]:
+						axis_id = int(fields[0][1:])
+						origin = int(fields[4][1:])
+						direction1 = int(fields[5][1:])
+						geom['AXIS2_PLACEMENT_2D'][axis_id] = (origin, direction1)
+
+					elif 'AXIS2_PLACEMENT_3D' == fields[2]:
+						axis_id = int(fields[0][1:])
+						origin = int(fields[4][1:])
+						direction1 = int(fields[5][1:])
+						direction2 = int(fields[6][1:])
+						geom['AXIS2_PLACEMENT_3D'][axis_id] = (origin, direction1, direction2)
+
+					elif 'CARTESIAN_POINT' == fields[2]:
+						point_id = int(fields[0][1:])
+						x = float(fields[5])
+						y = float(fields[6])
+						if fields[7] != '':
+							z = float(fields[7])
+							geom['CARTESIAN_POINT'][point_id] = (x, y, z)
+						else:
+							geom['CARTESIAN_POINT'][point_id] = (x, y)
+		
+					elif 'DIRECTION' == fields[2]:
+						direction_id = int(fields[0][1:])
+						x = float(fields[5])
+						y = float(fields[6])
+						if fields[7] != '':
+							z = float(fields[7])
+							geom['DIRECTION'][direction_id] = (x, y, z)
+						else:
+							geom['DIRECTION'][direction_id] = (x, y)
+
+					elif 'VERTEX_POINT' == fields[2]:
+						vertex_id = int(fields[0][1:])
+						cartesian_id = int(fields[4][1:])
+						geom['VERTEX_POINT'][vertex_id] = cartesian_id
+		
+					elif 'ADVANCED_FACE' == fields[2]:
+						face_id = int(fields[0][1:])
+						boundary_ids = []
+						for i in range(len(fields)-3):
+							if fields[i+3][1:].isdigit():
+								boundary_ids.append(int(fields[i+3][1:]))
+						geom['ADVANCED_FACE'][face_id] = tuple(boundary_ids)
+		
+					elif 'FACE_BOUND' == fields[2]:
+						boundary_id = int(fields[0][1:])
+						edge_id = int(fields[4][1:])
+						geom['FACE_BOUND'][boundary_id] = (edge_id)
+		
+					elif 'EDGE_LOOP' == fields[2]:
+						edge_id = int(fields[0][1:])
+						orient_ids = []
+						for i in range(len(fields)-3):
+							if fields[i+3][1:].isdigit():
+								orient_ids.append(int(fields[i+3][1:]))
+						geom['EDGE_LOOP'][edge_id] = tuple(orient_ids)
+		
+					elif 'ORIENTED_EDGE' == fields[2]:
+						orient_id = int(fields[0][1:])
+						edge_curve_id = int(fields[6][1:])
+						geom['ORIENTED_EDGE'][orient_id] = (edge_curve_id)
+		
+					elif 'EDGE_CURVE' == fields[2]:
+						edge_id = int(fields[0][1:])
+						vertex1_id = int(fields[4][1:])
+						vertex2_id = int(fields[5][1:])
+						s_curve_id = int(fields[6][1:])
+						geom['EDGE_CURVE'][edge_id] = (vertex1_id, vertex2_id, s_curve_id)
+		
+					elif 'SURFACE_CURVE' == fields[2]:
+						curve_id = int(fields[0][1:])
+						geometry_id = int(fields[4][1:])
+						pcurve1_id = int(fields[6][1:])
+						if fields[7] != '':
+							pcurve2_id = int(fields[7][1:])
+						else:
+							pcurve2_id = 0
+						geom['SURFACE_CURVE'][curve_id] = (geometry_id, pcurve1_id, pcurve2_id)
+		
+					elif 'SEAM_CURVE' == fields[2]:
+						curve_id = int(fields[0][1:])
+						geometry_id = int(fields[4][1:])
+						pcurve1_id = int(fields[6][1:])
+						pcurve2_id = int(fields[7][1:])
+						geom['SEAM_CURVE'][curve_id] = (geometry_id, pcurve1_id, pcurve2_id)
+		
+					elif 'CIRCLE' == fields[2]:
+						circle_id = int(fields[0][1:])
+						axis_id = int(fields[4][1:])
+						radius = float(fields[5])
+						geom['CIRCLE'][circle_id] = (axis_id, radius)
+		
+					# Read line data
+					elif 'LINE' == fields[2]:
+						line_id = int(fields[0][1:])
+						cartesian_id = int(fields[4][1:])
+						vector_id = int(fields[5][1:])
+						geom['LINE'][line_id] = (cartesian_id, vector_id)
+					
+					else:
+						pass
+
+#		print('ADVANCED_FACE:', geom['ADVANCED_FACE'])
+#		print('FACE_BOUND:', geom['FACE_BOUND'])
+#		print('ORIENTED_EDGE:', geom['ORIENTED_EDGE'])
+#		print('EDGE_LOOP:', geom['EDGE_LOOP'])
+#		print('EDGE_CURVE:', geom['EDGE_CURVE'])
+#		print('SURFACE_CURVE:', geom['SURFACE_CURVE'])
+#		print('LINE:', geom['LINE'])
+
+		n_circles = 0
+
+		# Draw up the points, lines and faces
+		geom['displayLists'] = {'nodes': 	 glGenLists(1),
+							    'wireframe': glGenLists(1),
+								'shaded':	 glGenLists(1)}
+		geom['lines'] = {}
+		geom['faces'] = {}
+		geom['volume'] = {}
+		
+		nodes = {}
+		elements = {}
+		self.meshes[shortname] = Mesh(nodes,elements)
+		mesh = self.meshes[shortname]
+		geom['mesh'] = mesh
+
+
+		for face in geom['ADVANCED_FACE']:
+			geom['faces'][face] = {}
+			geom['faces'][face]['edges'] = {}
+			face_bounds = geom['ADVANCED_FACE'][face][:-1]
+			for bound in face_bounds:
+				edge = geom['FACE_BOUND'][bound]
+				geom['faces'][face]['edges'][edge] = {}
+				geom['faces'][face]['edges'][edge]['lines'] = []
+				for line in geom['EDGE_LOOP'][geom['FACE_BOUND'][bound]]:
+					if geom['EDGE_CURVE'][geom['ORIENTED_EDGE'][line]][2] in geom['SURFACE_CURVE']:
+						geom['faces'][face]['edges'][edge]['lines'].append(geom['SURFACE_CURVE'][geom['EDGE_CURVE'][geom['ORIENTED_EDGE'][line]][2]][0])
+					elif geom['EDGE_CURVE'][geom['ORIENTED_EDGE'][line]][2] in geom['SEAM_CURVE']:
+						geom['faces'][face]['edges'][edge]['lines'].append(geom['SEAM_CURVE'][geom['EDGE_CURVE'][geom['ORIENTED_EDGE'][line]][2]][0])
+					else:
+						pass
+			
+#		print('faces:')
+#		for face in geom['faces']:
+#			print('\n\n', face, '\n - edges:', end='')
+#			for edge in geom['faces'][face]['edges']:
+#				print('\n\t', edge, '- lines: ', end='')
+#				for line in geom['faces'][face]['edges'][edge]['lines']:
+#					print(line, end=' ')
+		
+
+		# wireframe mode, original model, lines only
+		glNewList(geom['displayLists']['wireframe'], GL_COMPILE)
+
+		glLineWidth(3.0)
+		for i in geom['EDGE_CURVE']:
+			# draw straight lines
+			if geom['EDGE_CURVE'][i][2] in geom['SURFACE_CURVE']:
+				primitive = geom['SURFACE_CURVE'][geom['EDGE_CURVE'][i][2]][0]
+			elif geom['EDGE_CURVE'][i][2] in geom['SEAM_CURVE']:
+				primitive = geom['SEAM_CURVE'][geom['EDGE_CURVE'][i][2]][0]
+			else:
+				primitive = 0
+			if primitive in geom['LINE']:
+				geom['lines'][primitive] = {}
+				geom['lines'][primitive]['points'] = []
+				geom['lines'][primitive]['n_seed'] = 0
+				geom['lines'][primitive]['seeds'] = []
+				glBegin(GL_LINES)
+				glColor3f(0.05, 0.1, 0.05)
+				coord1 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][0]]]
+				geom['lines'][primitive]['points'].append(coord1)
+				glVertex3f(coord1[0],coord1[1],coord1[2])
+				coord2 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][1]]]
+				geom['lines'][primitive]['points'].append(coord2)
+				glVertex3f(coord2[0],coord2[1],coord2[2])
+				glEnd()
+				geom['lines'][primitive]['length'] = np.sqrt((coord2[0]-coord1[0])**2 + \
+															 (coord2[1]-coord1[1])**2 + \
+															 (coord2[2]-coord1[2])**2)
+				geom['lines'][primitive]['seeds'].append(geom['lines'][primitive]['points'][0])
+				geom['lines'][primitive]['seeds'].append(geom['lines'][primitive]['points'][-1])
+
+			# draw circles
+			elif primitive in geom['CIRCLE']:
+				geom['lines'][primitive] = {}
+				geom['lines'][primitive]['points'] = []
+				geom['lines'][primitive]['n_seed'] = 0
+				geom['lines'][primitive]['seeds'] = []
+				if geom['CIRCLE'][primitive][0] in geom['AXIS2_PLACEMENT_3D']:
+					radi = geom['CIRCLE'][primitive][1]
+					orig = geom['CARTESIAN_POINT'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][0]]
+					yvec = geom['DIRECTION'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][1]]
+					zvec = geom['DIRECTION'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][2]]
+					xvec = np.cross(yvec,zvec)
+					pnts = 36
+					pnt1 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][0]]]
+					pnt2 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][1]]]
+					n_circles += 1
+					vrts = []
+					if pnt1 == pnt2:
+						geom['lines'][primitive]['length'] = 2*np.pi*radi
+						for v in range(pnts):
+							d = pnts/(v+1)
+							vc = np.cos(2*np.pi/d)
+							vs = np.sin(2*np.pi/d)
+							vrts.append((orig[0]+vs*xvec[0]*radi+vc*zvec[0]*radi,
+										 orig[1]+vs*xvec[1]*radi+vc*zvec[1]*radi,
+										 orig[2]+vs*xvec[2]*radi+vc*zvec[2]*radi))
+						for v in range(pnts):
+							glBegin(GL_LINES)
+							glColor3f(0.05, 0.1, 0.05)
+							coord1 = vrts[v-1]
+							geom['lines'][primitive]['points'].append(coord1)
+							glVertex3f(coord1[0],coord1[1],coord1[2])
+							coord2 = vrts[v]
+							geom['lines'][primitive]['points'].append(coord2)
+							glVertex3f(coord2[0],coord2[1],coord2[2])
+							glEnd()
+					else:
+#						print()
+#						print('line:', primitive)
+						pnt0 = (orig[0]+zvec[0]*radi, orig[1]+zvec[1]*radi, orig[2]+zvec[2]*radi)
+						v0 = [pnt0[0]-orig[0],pnt0[1]-orig[1],pnt0[2]-orig[2]]
+						v0 = v0 / np.linalg.norm(v0)
+#						print('v0:', v0)
+						v1 = [pnt1[0]-orig[0],pnt1[1]-orig[1],pnt1[2]-orig[2]]
+						v1 = v1 / np.linalg.norm(v1)
+#						print('v1:', v1)
+						v2 = [pnt2[0]-orig[0],pnt2[1]-orig[1],pnt2[2]-orig[2]]
+						v2 = v2 / np.linalg.norm(v2)
+#						print('v2:', v2)
+						dot_product1 = np.dot(v0,v1)
+#						print('dot_product1:', dot_product1)
+						dot_product1 = np.clip(dot_product1,-1,1)
+#						print('dot_product1:', dot_product1)
+						ang1 = np.arccos(dot_product1)
+						dot_product2 = np.dot(v0,v2)
+#						print('dot_product2:', dot_product2)
+						dot_product2 = np.clip(dot_product2,-1,1)
+#						print('dot_product2:', dot_product2)
+						ang2 = np.arccos(dot_product2)
+
+						geom['lines'][primitive]['length'] = abs(ang2-ang1)*radi
+						pnts = abs(floor((18/(np.pi))*(ang2 - ang1)))
+#						print('pnts:', pnts)
+#						print('ang1:', ang1)
+#						print('ang2:', ang2)
+						vc = np.cos(ang1)
+						vs = np.sin(ang1)
+						if ang2 < ang1:
+							vs = -np.sin(ang1)
+						vrts.append((orig[0]+vs*xvec[0]*radi+vc*zvec[0]*radi,
+									 orig[1]+vs*xvec[1]*radi+vc*zvec[1]*radi,
+									 orig[2]+vs*xvec[2]*radi+vc*zvec[2]*radi))
+						for v in range(pnts):
+							d = pnts/(v+1)
+							vc = np.cos(ang1 + (ang2 - ang1)/d)
+							vs = np.sin(ang1 + (ang2 - ang1)/d)
+							if ang2 < ang1:
+								vs = -np.sin(ang1 + (ang2 - ang1)/d)
+							if v == pnts-1:
+								vc = np.cos(ang2)
+								vs = np.sin(ang2)
+								if ang2 < ang1:
+									vs = -np.sin(ang2)
+							vrts.append((orig[0]+vs*xvec[0]*radi+vc*zvec[0]*radi,
+										 orig[1]+vs*xvec[1]*radi+vc*zvec[1]*radi,
+										 orig[2]+vs*xvec[2]*radi+vc*zvec[2]*radi))
+						for v in range(pnts):
+							glBegin(GL_LINES)
+							glColor3f(0.05, 0.1, 0.05)
+							coord1 = vrts[v]
+							geom['lines'][primitive]['points'].append(coord1)
+							glVertex3f(coord1[0],coord1[1],coord1[2])
+							coord2 = vrts[v+1]
+							geom['lines'][primitive]['points'].append(coord2)
+							glVertex3f(coord2[0],coord2[1],coord2[2])
+							glEnd()
+					geom['lines'][primitive]['seeds'].append(geom['lines'][primitive]['points'][0])
+					geom['lines'][primitive]['seeds'].append(geom['lines'][primitive]['points'][-1])
+
+
+			else:
+				geom['lines'][primitive] = {}
+				geom['lines'][primitive]['points'] = []
+				geom['lines'][primitive]['n_seed'] = 0
+				geom['lines'][primitive]['seeds'] = []
+				glBegin(GL_LINES)
+				glColor3f(0.05, 0.1, 0.05)
+				coord1 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][0]]]
+				geom['lines'][primitive]['points'].append(coord1)
+				glVertex3f(coord1[0],coord1[1],coord1[2])
+				coord2 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][1]]]
+				geom['lines'][primitive]['points'].append(coord2)
+				glVertex3f(coord2[0],coord2[1],coord2[2])
+				glEnd()
+				geom['lines'][primitive]['length'] = np.sqrt((coord2[0]-coord1[0])**2 + \
+															 (coord2[1]-coord1[1])**2 + \
+															 (coord2[2]-coord1[2])**2)
+				geom['lines'][primitive]['seeds'].append(geom['lines'][primitive]['points'][0])
+				geom['lines'][primitive]['seeds'].append(geom['lines'][primitive]['points'][-1])
+
+		glEndList()
+
+		# seeds
+		glNewList(geom['displayLists']['nodes'], GL_COMPILE)
+
+		glPointSize(8.0)
+		glBegin(GL_POINTS)
+		glColor3f(0.4, 0.65, 0.4)
+		for i in geom['VERTEX_POINT']:
+			coord = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][i]]
+			glVertex3f(coord[0],coord[1],coord[2])
+		glEnd()
+		glEndList()
+
+		vpts = []
+		for i in geom['VERTEX_POINT']:
+			vpts.append(i)
+
+
+		glNewList(geom['displayLists']['shaded'], GL_COMPILE)
+
+		glBegin(GL_TRIANGLES)
+		glColor3f(0.32, 0.43, 0.49)
+		coord = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][vpts[0]]]
+		glVertex3f(coord[0],coord[1],coord[2])
+		coord = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][vpts[1]]]
+		glVertex3f(coord[0],coord[1],coord[2])
+		coord = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][vpts[2]]]
+		glVertex3f(coord[0],coord[1],coord[2])
+		glEnd()
+
+		glEndList()
+
+
+		x_max = max(geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][i]][0] for i in geom['VERTEX_POINT'] )
+		x_min = min(geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][i]][0] for i in geom['VERTEX_POINT'] )
+		y_max = max(geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][i]][1] for i in geom['VERTEX_POINT'] )
+		y_min = min(geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][i]][1] for i in geom['VERTEX_POINT'] )
+		z_max = max(geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][i]][2] for i in geom['VERTEX_POINT'] )
+		z_min = min(geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][i]][2] for i in geom['VERTEX_POINT'] )
+		geom['viewScope'] = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+		mesh.viewScope = geom['viewScope']
+		geom['viewRadius'] = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+		mesh.viewRadius = geom['viewRadius']
+		mesh.displayLists = {'nodes': 		None,
+					         'wireframe': 	None,
+							 'shaded':		None}
+
+		self.gui.new_geometry_view = {'Geometry': shortname}
+		self.gui.viewer.update()
+
+
+	def seedLine(self,line_num):
+		'''
+	Calculate the coordinates of the
+	mesh seeds on the specified line.
+	'''
+		geom = self.geometry[self.gui.viewer.currentGeometry]
+		length = geom['lines'][line_num]['length']
+		points = geom['lines'][line_num]['points']
+		n_seed = geom['lines'][line_num]['n_seed']
+		seeds  = geom['lines'][line_num]['seeds']
+
+		seeds.clear()
+		if n_seed <= 2:
+			seeds = [points[0], points[-1]]
+		else:
+			seeds.append(points[0])
+			if len(points) == 2:
+				n_split = n_seed-1
+				for i in range(n_seed-2):
+					seeds.append((points[0][0]+(i+1)*(points[1][0]-points[0][0])/n_split,
+								  points[0][1]+(i+1)*(points[1][1]-points[0][1])/n_split,
+								  points[0][2]+(i+1)*(points[1][2]-points[0][2])/n_split))
+			else:
+				n_points = len(points)
+				for i in range(n_seed-2):
+					if n_points%(n_seed-1) == 0:
+						p1 = int((i+1)*n_points/(n_seed-1))
+						p2 = 0
+						seeds.append(points[p1])
+					else:
+						p1 = floor((i+1)*n_points/(n_seed-1))
+						p2 = ceil((i+1)*n_points/(n_seed-1))
+						seeds.append((points[p1][0]+(i+1)*(points[p2][0]-points[p1][0])/2,
+									  points[p1][1]+(i+1)*(points[p2][1]-points[p1][1])/2,
+									  points[p1][2]+(i+1)*(points[p2][2]-points[p1][2])/2))
+			seeds.append(points[-1])
+
+
+		geom['displayLists']['nodes'] = glGenLists(1)
+		glNewList(geom['displayLists']['nodes'], GL_COMPILE)
+
+		glPointSize(8.0)
+		glBegin(GL_POINTS)
+		glColor3f(0.4, 0.65, 0.4)
+		for line in geom['lines']:
+			for i in range(len(geom['lines'][line]['seeds'])):
+				coord = geom['lines'][line]['seeds'][i]
+				glVertex3f(coord[0],coord[1],coord[2])
+		glEnd()
+		glEndList()
+		self.gui.viewer.currentDisplayList['displaylist']['nodes'] = geom['displayLists']['nodes']
+		self.gui.viewer.update()
 
 
 	def importMesh(self,filename):
@@ -6391,6 +7447,7 @@ or .sol-files.
 				z_min = min(self.meshes[meshname].nodes[i].coord[2][0] for i in self.meshes[meshname].nodes )
 				self.meshes[meshname].viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
 				self.meshes[meshname].viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+				self.externalNodes(self.meshes[meshname])
 				self.buildDisplayList(self.meshes[meshname])
 				self.gui.new_mesh_view = {'Mesh': meshname}
 				self.elementOrientation()
@@ -8036,6 +9093,54 @@ or .sol-files.
 		fobj.close()
 
 
+	def selectedGeometryDisplay(self,geom):
+		'''
+	Create a displaylist for the currently selected
+	lines, faces or volumes.
+	'''
+
+		lines = self.selected_lines
+		faces = self.selected_faces
+		volumes = self.selected_volumes
+		
+		glLineWidth(5.0)
+		if self.linesSelected:
+			geom['displayLists']['selected lines'] = glGenLists(1)
+			glNewList(geom['displayLists']['selected lines'], GL_COMPILE)
+			for line in lines:
+				for point in range(len(lines[line]['points'])-1):
+					glBegin(GL_LINES)
+					glColor3f(1.0, 0.0, 0.0)
+					coord = self.selected_lines[line]['points'][point]
+					glVertex3f(coord[0],coord[1],coord[2])
+					coord = self.selected_lines[line]['points'][point+1]
+					glVertex3f(coord[0],coord[1],coord[2])
+					glEnd()
+			
+		elif self.facesSelected:
+			geom['displayLists']['selected faces'] = glGenLists(1)
+			glNewList(geom['displayLists']['selected faces'], GL_COMPILE)
+			for face in faces:
+				for edge in faces[face]['edges']:
+					for line in lines:
+						if line in faces[face]['edges'][edge]['lines']:
+							for point in range(len(lines[line]['points'])-1):
+								glBegin(GL_LINES)
+								glColor3f(1.0, 0.0, 0.0)
+								coord = self.selected_lines[line]['points'][point]
+								glVertex3f(coord[0],coord[1],coord[2])
+								coord = self.selected_lines[line]['points'][point+1]
+								glVertex3f(coord[0],coord[1],coord[2])
+								glEnd()
+
+		elif self.volumesSelected:
+			pass
+		else:
+			pass
+
+		glEndList()		
+
+
 	def selectedElementsDisplay(self,mesh):
 		'''
 	Create a displaylist for the currently selected elements.
@@ -8109,7 +9214,13 @@ or .sol-files.
 			if solution in self.results[newResults].solutions:
 				newResult = newResults
 
-		nodes = mesh.nodes
+		nodes = {}
+		allexternal = set()
+		if hasattr(mesh,'external'):
+			nodes = mesh.external
+			allexternal.update(set(nodes.keys()))
+		else:
+			nodes = mesh.nodes
 		elements = mesh.elements
 
 		if solution == None:
@@ -8164,15 +9275,28 @@ or .sol-files.
 								 [ 4,16], [16, 5], [ 5,17], [17, 6], [ 6,18], [18, 7], [ 7,19], [19, 4]]
 
 				for k in range(len(nodelines)):
-					glBegin(GL_LINES)
-					glColor3f(0.05, 0.1, 0.05)
-					glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0],
-							   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0],
-							   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0])
-					glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0],
-							   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0],
-							   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0])
-					glEnd()
+					if len(allexternal) != 0:
+						if set([elements[j].nodes[nodelines[k][0]].number,
+							    elements[j].nodes[nodelines[k][1]].number]).issubset(allexternal):
+							glBegin(GL_LINES)
+							glColor3f(0.05, 0.1, 0.05)
+							glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0],
+									   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0],
+									   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0])
+							glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0],
+									   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0],
+									   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0])
+							glEnd()
+					else:
+						glBegin(GL_LINES)
+						glColor3f(0.05, 0.1, 0.05)
+						glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0],
+								   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0],
+								   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0])
+						glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0],
+								   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0],
+								   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0])
+						glEnd()
 			glEndList()
 
 
@@ -8206,18 +9330,36 @@ or .sol-files.
 								 [ 5,17,16], [17, 6,18], [18, 7,19], [19, 4,16], [16,17,18], [18,19,16]]
 
 				for k in range(len(facenodes)):
-					glBegin(GL_TRIANGLES)
-					glColor3f(0.2, 0.4, 0.2)
-					glVertex3f(nodes[elements[j].nodes[facenodes[k][0]].number].coord[0][0],
-							   nodes[elements[j].nodes[facenodes[k][0]].number].coord[1][0],
-							   nodes[elements[j].nodes[facenodes[k][0]].number].coord[2][0])
-					glVertex3f(nodes[elements[j].nodes[facenodes[k][1]].number].coord[0][0],
-							   nodes[elements[j].nodes[facenodes[k][1]].number].coord[1][0],
-							   nodes[elements[j].nodes[facenodes[k][1]].number].coord[2][0])
-					glVertex3f(nodes[elements[j].nodes[facenodes[k][2]].number].coord[0][0],
-							   nodes[elements[j].nodes[facenodes[k][2]].number].coord[1][0],
-							   nodes[elements[j].nodes[facenodes[k][2]].number].coord[2][0])
-					glEnd()
+					if len(allexternal) != 0:
+						if set([elements[j].nodes[facenodes[k][0]].number,
+							    elements[j].nodes[facenodes[k][1]].number,
+							    elements[j].nodes[facenodes[k][2]].number]).issubset(allexternal):					
+							glBegin(GL_TRIANGLES)
+							glColor3f(0.2, 0.4, 0.2)
+							glVertex3f(nodes[elements[j].nodes[facenodes[k][0]].number].coord[0][0],
+									   nodes[elements[j].nodes[facenodes[k][0]].number].coord[1][0],
+									   nodes[elements[j].nodes[facenodes[k][0]].number].coord[2][0])
+							glVertex3f(nodes[elements[j].nodes[facenodes[k][1]].number].coord[0][0],
+									   nodes[elements[j].nodes[facenodes[k][1]].number].coord[1][0],
+									   nodes[elements[j].nodes[facenodes[k][1]].number].coord[2][0])
+							glVertex3f(nodes[elements[j].nodes[facenodes[k][2]].number].coord[0][0],
+									   nodes[elements[j].nodes[facenodes[k][2]].number].coord[1][0],
+									   nodes[elements[j].nodes[facenodes[k][2]].number].coord[2][0])
+							glEnd()
+					else:
+						glBegin(GL_TRIANGLES)
+						glColor3f(0.2, 0.4, 0.2)
+						glVertex3f(nodes[elements[j].nodes[facenodes[k][0]].number].coord[0][0],
+								   nodes[elements[j].nodes[facenodes[k][0]].number].coord[1][0],
+								   nodes[elements[j].nodes[facenodes[k][0]].number].coord[2][0])
+						glVertex3f(nodes[elements[j].nodes[facenodes[k][1]].number].coord[0][0],
+								   nodes[elements[j].nodes[facenodes[k][1]].number].coord[1][0],
+								   nodes[elements[j].nodes[facenodes[k][1]].number].coord[2][0])
+						glVertex3f(nodes[elements[j].nodes[facenodes[k][2]].number].coord[0][0],
+								   nodes[elements[j].nodes[facenodes[k][2]].number].coord[1][0],
+								   nodes[elements[j].nodes[facenodes[k][2]].number].coord[2][0])
+						glEnd()
+
 
 				if elements[j].type in ['BEAM2N2D', 'BEAM2N', 'ROD2N2D', 'ROD2N']:
 					if elements[j].section != None:
@@ -12566,21 +13708,40 @@ or .sol-files.
 
 								if is3D:
 									for k in range(len(nodelines)):
-										glBegin(GL_LINES)
-										glColor3f(0.0, 0.2, 0.0)
-										glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0] + 
-													move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]],
-												   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0] +
-													move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]+1],
-												   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0] +
-													move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]+2])
-										glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0] +
-													move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]],
-												   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0] +
-													move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]+1],
-												   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0] +
-													move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]+2])
-										glEnd()
+										if len(allexternal) != 0:
+											if set([elements[j].nodes[nodelines[k][0]].number,
+												    elements[j].nodes[nodelines[k][1]].number]).issubset(allexternal):										
+												glBegin(GL_LINES)
+												glColor3f(0.0, 0.2, 0.0)
+												glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0] + 
+															move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]],
+														   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0] +
+															move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]+1],
+														   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0] +
+															move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]+2])
+												glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0] +
+															move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]],
+														   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0] +
+															move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]+1],
+														   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0] +
+															move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]+2])
+												glEnd()
+										else:
+											glBegin(GL_LINES)
+											glColor3f(0.0, 0.2, 0.0)
+											glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0] + 
+														move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]],
+													   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0] +
+														move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]+1],
+													   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0] +
+														move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][0]].number].number]+2])
+											glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0] +
+														move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]],
+													   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0] +
+														move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]+1],
+													   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0] +
+														move*eigenvector[mesh.NFMT[nodes[elements[j].nodes[nodelines[k][1]].number].number]+2])
+											glEnd()
 								else:
 									for k in range(len(nodelines)):
 										glBegin(GL_LINES)
@@ -12596,6 +13757,7 @@ or .sol-files.
 										glEnd()
 
 							glEndList()
+
 
 							# shaded mode, model with displacement, green elements
 							glNewList(self.displayLists[solution][result][subresult][frame]['shaded'], GL_COMPILE)
@@ -12628,30 +13790,59 @@ or .sol-files.
 
 								if is3D:
 									for l in range(len(facenodes)):
-										glBegin(GL_TRIANGLES)
-
-										glColor3f(0.0, 0.7, 0.0)
-										glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]],
-												   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]+1],
-												   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]+2])
-
-										glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]],
-												   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]+1],
-												   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]+2])
-
-										glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]],
-												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]+1],
-												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
-													move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]+2])
-										glEnd()
+										if len(allexternal) != 0:
+											if set([elements[j].nodes[facenodes[k][0]].number,
+												    elements[j].nodes[facenodes[k][1]].number,
+												    elements[j].nodes[facenodes[k][2]].number]).issubset(allexternal):		
+												glBegin(GL_TRIANGLES)
+		
+												glColor3f(0.0, 0.7, 0.0)
+												glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]],
+														   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]+1],
+														   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]+2])
+		
+												glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]],
+														   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]+1],
+														   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]+2])
+		
+												glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]],
+														   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]+1],
+														   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+															move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]+2])
+												glEnd()
+										else:
+											glBegin(GL_TRIANGLES)
+	
+											glColor3f(0.0, 0.7, 0.0)
+											glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]],
+													   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]+1],
+													   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][0]].number]+2])
+	
+											glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]],
+													   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]+1],
+													   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][1]].number]+2])
+	
+											glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]],
+													   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]+1],
+													   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+														move*eigenvector[mesh.NFMT[elements[j].nodes[facenodes[l][2]].number]+2])
+											glEnd()
 								else:
 									for l in range(len(facenodes)):
 										glBegin(GL_TRIANGLES)
