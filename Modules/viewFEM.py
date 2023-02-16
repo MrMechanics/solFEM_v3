@@ -1408,8 +1408,21 @@ is an OpenGL widget running inside this framework.
 #													self.model.selected_elements[element].orientation['z-vec'])
 		elif len(self.model.selected_lines) == 1:
 			for line in self.model.selected_lines:
-				print('\n\tLine length:', self.model.selected_lines[line]['length'])
+				print('\n\tLine number:', line)
+				print('\tLine length:', self.model.selected_lines[line]['length'])
 				print('\tLine number of seeds:', self.model.selected_lines[line]['n_seed'])
+
+		elif len(self.model.selected_faces) == 1:
+			for face in self.model.selected_faces:
+				print('\n\tFace number:', face)
+				print('\tFace area: ...?')
+				print('\tFace boundary seeds:')
+				for edge in self.model.selected_faces[face]['edges']:
+					print('edge:', edge)
+					for line in self.model.selected_faces[face]['edges'][edge]['lines']:
+						for seed in self.model.selected_lines[line]['seeds']:
+							print('(', seed[0], ',', seed[1], '),')
+
 		else:
 			print('\n\tPlease select the node or element you wish')
 			print('\tto print out the information about.')
@@ -1455,11 +1468,10 @@ is an OpenGL widget running inside this framework.
 						length = geom['lines'][line]['length']
 						if length < element_size:
 							n_seed = 2
-						elif length <= 2*element_size:
-							n_seed = 3
 						else:
-							n_seed = floor(length/element_size)
+							n_seed = round((length+0.1)/element_size)
 						geom['lines'][line]['n_seed'] = n_seed
+						geom['lines'][line]['seeds'].clear()
 						print()
 						print('length:', geom['lines'][line]['length'])
 						print('n_seed:', geom['lines'][line]['n_seed'])
@@ -6890,10 +6902,14 @@ or .sol-files.
 				geom['lines'][primitive]['seeds'] = []
 				if geom['CIRCLE'][primitive][0] in geom['AXIS2_PLACEMENT_3D']:
 					radi = geom['CIRCLE'][primitive][1]
+					geom['lines'][primitive]['radius'] = radi
 					orig = geom['CARTESIAN_POINT'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][0]]
-					yvec = geom['DIRECTION'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][1]]
-					zvec = geom['DIRECTION'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][2]]
-					xvec = np.cross(yvec,zvec)
+					geom['lines'][primitive]['center'] = orig
+					zvec = geom['DIRECTION'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][1]]
+					xvec = geom['DIRECTION'][geom['AXIS2_PLACEMENT_3D'][geom['CIRCLE'][primitive][0]][2]]
+					yvec = np.cross(zvec,xvec)
+					geom['lines'][primitive]['x_vect'] = xvec
+					geom['lines'][primitive]['y_vect'] = yvec
 					pnts = 36
 					pnt1 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][0]]]
 					pnt2 = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][geom['EDGE_CURVE'][i][1]]]
@@ -6905,9 +6921,12 @@ or .sol-files.
 							d = pnts/(v+1)
 							vc = np.cos(2*np.pi/d)
 							vs = np.sin(2*np.pi/d)
-							vrts.append((orig[0]+vs*xvec[0]*radi+vc*zvec[0]*radi,
-										 orig[1]+vs*xvec[1]*radi+vc*zvec[1]*radi,
-										 orig[2]+vs*xvec[2]*radi+vc*zvec[2]*radi))
+							vrts.append((orig[0]+vs*yvec[0]*radi+vc*xvec[0]*radi,
+										 orig[1]+vs*yvec[1]*radi+vc*xvec[1]*radi,
+										 orig[2]+vs*yvec[2]*radi+vc*xvec[2]*radi))
+						geom['lines'][primitive]['angle1'] = 0
+						geom['lines'][primitive]['angle2'] = 2*np.pi
+						geom['lines'][primitive]['d_angle'] = 2*np.pi
 						for v in range(pnts):
 							glBegin(GL_LINES)
 							glColor3f(0.05, 0.1, 0.05)
@@ -6919,9 +6938,15 @@ or .sol-files.
 							glVertex3f(coord2[0],coord2[1],coord2[2])
 							glEnd()
 					else:
-#						print()
-#						print('line:', primitive)
-						pnt0 = (orig[0]+zvec[0]*radi, orig[1]+zvec[1]*radi, orig[2]+zvec[2]*radi)
+						print()
+						print('line:', primitive)
+#						print('xvec:', xvec)
+#						print('yvec:', yvec)
+#						print('zvec:', zvec)
+#						print('yvec X zvec:', np.cross(yvec,zvec))
+#						print('zvec X yvec:', np.cross(zvec,yvec))
+						# calculate angles
+						pnt0 = (orig[0]+xvec[0]*radi, orig[1]+xvec[1]*radi, orig[2]+xvec[2]*radi)
 						v0 = [pnt0[0]-orig[0],pnt0[1]-orig[1],pnt0[2]-orig[2]]
 						v0 = v0 / np.linalg.norm(v0)
 #						print('v0:', v0)
@@ -6942,32 +6967,75 @@ or .sol-files.
 #						print('dot_product2:', dot_product2)
 						ang2 = np.arccos(dot_product2)
 
-						geom['lines'][primitive]['length'] = abs(ang2-ang1)*radi
-						pnts = abs(floor((18/(np.pi))*(ang2 - ang1)))
-#						print('pnts:', pnts)
-#						print('ang1:', ang1)
-#						print('ang2:', ang2)
+						print()
+						print('v0:', v0)
+						print('v1:', v1)
+						print('v2:', v2)
+						print()
+						print('v0 X yvec:', np.cross(v0,yvec))
+						print('v0 X v1:', np.cross(v0,v1))
+						print('v0 X v2:', np.cross(v0,v2))
+						print()
+						
+						# check if angles are larger than 180 degrees
+						v0_test = np.cross(v0,yvec)/np.linalg.norm(np.cross(v0,yvec))
+						print('v0_test:', v0_test)
+						print()
+						print('v0==v1:', v0==v1)
+						if not np.all(np.cross(v0,v1) == 0):
+							v1_test = np.cross(v0,v1)/np.linalg.norm(np.cross(v0,v1))
+						else:
+							v1_test = v0_test
+						print('v1_test:', v1_test)
+						print()
+						print('v0==v2:', v0==v2)
+						if not np.all(np.cross(v0,v2) == 0):
+							v2_test = np.cross(v0,v2)/np.linalg.norm(np.cross(v0,v2))
+						else:
+							v2_test = v0_test
+						print('v2_test:', v2_test)
+
+						check1 = (v0_test == v1_test)
+						print('check1:', check1)
+						if not np.all(check1 == True):
+							ang1 = 2*np.pi-ang1
+							
+						check2 = (v0_test == v2_test)
+						print('check2:', check2)
+						if not np.all(check2 == True):
+							ang2 = 2*np.pi-ang2
+								
+
+						d_ang = ang2-ang1
+						if ang1 > ang2:
+							d_ang = (2*np.pi-ang1)+ang2
+						geom['lines'][primitive]['length'] = abs(d_ang)*radi
+						geom['lines'][primitive]['angle1'] = ang1
+						geom['lines'][primitive]['angle2'] = ang2
+						geom['lines'][primitive]['d_angle'] = d_ang
+						pnts = abs(floor((18/(np.pi))*d_ang))
+						if pnts == 0:
+							pnts = 2
+						print('pnts:', pnts)
+						print('radius:', radi)
+						print('length:', geom['lines'][primitive]['length'])
+						print('ang1:', ang1)
+						print('ang2:', ang2)
 						vc = np.cos(ang1)
 						vs = np.sin(ang1)
-						if ang2 < ang1:
-							vs = -np.sin(ang1)
-						vrts.append((orig[0]+vs*xvec[0]*radi+vc*zvec[0]*radi,
-									 orig[1]+vs*xvec[1]*radi+vc*zvec[1]*radi,
-									 orig[2]+vs*xvec[2]*radi+vc*zvec[2]*radi))
+						vrts.append((orig[0]+vs*yvec[0]*radi+vc*xvec[0]*radi,
+									 orig[1]+vs*yvec[1]*radi+vc*xvec[1]*radi,
+									 orig[2]+vs*yvec[2]*radi+vc*xvec[2]*radi))
 						for v in range(pnts):
 							d = pnts/(v+1)
-							vc = np.cos(ang1 + (ang2 - ang1)/d)
-							vs = np.sin(ang1 + (ang2 - ang1)/d)
-							if ang2 < ang1:
-								vs = -np.sin(ang1 + (ang2 - ang1)/d)
+							vc = np.cos(ang1 + (d_ang)/d)
+							vs = np.sin(ang1 + (d_ang)/d)
 							if v == pnts-1:
 								vc = np.cos(ang2)
 								vs = np.sin(ang2)
-								if ang2 < ang1:
-									vs = -np.sin(ang2)
-							vrts.append((orig[0]+vs*xvec[0]*radi+vc*zvec[0]*radi,
-										 orig[1]+vs*xvec[1]*radi+vc*zvec[1]*radi,
-										 orig[2]+vs*xvec[2]*radi+vc*zvec[2]*radi))
+							vrts.append((orig[0]+vs*yvec[0]*radi+vc*xvec[0]*radi,
+										 orig[1]+vs*yvec[1]*radi+vc*xvec[1]*radi,
+										 orig[2]+vs*yvec[2]*radi+vc*xvec[2]*radi))
 						for v in range(pnts):
 							glBegin(GL_LINES)
 							glColor3f(0.05, 0.1, 0.05)
@@ -7060,6 +7128,8 @@ or .sol-files.
 	mesh seeds on the specified line.
 	'''
 		geom = self.geometry[self.gui.viewer.currentGeometry]
+#		geom['lines'][line_num]['seeds'].clear()
+
 		length = geom['lines'][line_num]['length']
 		points = geom['lines'][line_num]['points']
 		n_seed = geom['lines'][line_num]['n_seed']
@@ -7067,30 +7137,75 @@ or .sol-files.
 
 		seeds.clear()
 		if n_seed <= 2:
-			seeds = [points[0], points[-1]]
-		else:
 			seeds.append(points[0])
+			seeds.append(points[-1])
+			geom['lines'][line_num]['n_seed'] = 2
+		else:
 			if len(points) == 2:
+				seeds.append(points[0])
 				n_split = n_seed-1
 				for i in range(n_seed-2):
 					seeds.append((points[0][0]+(i+1)*(points[1][0]-points[0][0])/n_split,
 								  points[0][1]+(i+1)*(points[1][1]-points[0][1])/n_split,
 								  points[0][2]+(i+1)*(points[1][2]-points[0][2])/n_split))
+				seeds.append(points[-1])
 			else:
-				n_points = len(points)
-				for i in range(n_seed-2):
-					if n_points%(n_seed-1) == 0:
-						p1 = int((i+1)*n_points/(n_seed-1))
-						p2 = 0
-						seeds.append(points[p1])
-					else:
-						p1 = floor((i+1)*n_points/(n_seed-1))
-						p2 = ceil((i+1)*n_points/(n_seed-1))
-						seeds.append((points[p1][0]+(i+1)*(points[p2][0]-points[p1][0])/2,
-									  points[p1][1]+(i+1)*(points[p2][1]-points[p1][1])/2,
-									  points[p1][2]+(i+1)*(points[p2][2]-points[p1][2])/2))
-			seeds.append(points[-1])
+				print('length:', length)
+				print('n_seed:', n_seed)
 
+				orig = geom['lines'][line_num]['center']
+				xvec = geom['lines'][line_num]['x_vect']
+				yvec = geom['lines'][line_num]['y_vect']
+				radi = geom['lines'][line_num]['radius']
+				ang1 = geom['lines'][line_num]['angle1']
+				ang2 = geom['lines'][line_num]['angle2']
+				d_ang = geom['lines'][line_num]['d_angle']
+				vc = np.cos(ang1)
+				vs = np.sin(ang1)
+				seeds.append((orig[0]+vs*yvec[0]*radi+vc*xvec[0]*radi,
+							  orig[1]+vs*yvec[1]*radi+vc*xvec[1]*radi,
+							  orig[2]+vs*yvec[2]*radi+vc*xvec[2]*radi))
+				if d_ang == 2*np.pi:
+					for v in range(n_seed-1):
+						d = n_seed/(v+1)
+						vc = np.cos(ang1 + (d_ang)/d)
+						vs = np.sin(ang1 + (d_ang)/d)
+						if v == n_seed-1:
+							vc = np.cos(ang2)
+							vs = np.sin(ang2)
+						seeds.append((orig[0]+vs*yvec[0]*radi+vc*xvec[0]*radi,
+									  orig[1]+vs*yvec[1]*radi+vc*xvec[1]*radi,
+									  orig[2]+vs*yvec[2]*radi+vc*xvec[2]*radi))
+				else:
+					for v in range(n_seed-2):
+						d = (n_seed-1)/(v+1)
+						vc = np.cos(ang1 + (d_ang)/d)
+						vs = np.sin(ang1 + (d_ang)/d)
+						if v == n_seed-1:
+							vc = np.cos(ang2)
+							vs = np.sin(ang2)
+						seeds.append((orig[0]+vs*yvec[0]*radi+vc*xvec[0]*radi,
+									  orig[1]+vs*yvec[1]*radi+vc*xvec[1]*radi,
+									  orig[2]+vs*yvec[2]*radi+vc*xvec[2]*radi))
+
+#				for i in range(n_seed-2):
+#					if n_points%(n_seed-1) == 0:
+#						p1 = int((i+1)*n_points/(n_seed-1))
+#						p2 = 0
+#						seeds.append(points[p1])
+#						print('seed at point', p1)
+#					else:
+#						p1 = floor((i+1)*n_points/(n_seed-1))
+#						p2 = ceil((i+1)*n_points/(n_seed-1))
+#						if p1 == p2:
+#							seeds.append(points[p1])
+#							print('seed at point', p1)
+#						else:
+#							print('seed between points:', p1, p2)
+#							seeds.append((points[p1][0]+(i+1)*(points[p2][0]-points[p1][0])/2,
+#										  points[p1][1]+(i+1)*(points[p2][1]-points[p1][1])/2,
+#										  points[p1][2]+(i+1)*(points[p2][2]-points[p1][2])/2))
+			print('seeds:', seeds)
 
 		geom['displayLists']['nodes'] = glGenLists(1)
 		glNewList(geom['displayLists']['nodes'], GL_COMPILE)
