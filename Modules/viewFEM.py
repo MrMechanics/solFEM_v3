@@ -17,6 +17,7 @@ import sys
 import re
 from math import floor, ceil
 from copy import deepcopy
+from scipy.spatial import Delaunay
 
 sys.path.insert(1, '../Objects')
 sys.path.insert(1, '../Modules')
@@ -1416,12 +1417,18 @@ is an OpenGL widget running inside this framework.
 			for face in self.model.selected_faces:
 				print('\n\tFace number:', face)
 				print('\tFace area: ...?')
-				print('\tFace boundary seeds:')
-				for edge in self.model.selected_faces[face]['edges']:
-					print('edge:', edge)
-					for line in self.model.selected_faces[face]['edges'][edge]['lines']:
-						for seed in self.model.selected_lines[line]['seeds']:
-							print('(', seed[0], ',', seed[1], '),')
+				print('\tFace lines: ...?')
+#				for edge in self.model.selected_faces[face]['edges']:
+#					print('edge:', edge)
+#					for line in self.model.selected_faces[face]['edges'][edge]['lines']:
+#						print(self.viewer.currentGeometry+'_edge'+str(edge)+'_line'+str(line)+' = [', end='')
+#						for point in self.model.selected_lines[line]['points']:
+#							print('(', point[0], ',', point[1], '),')
+#						print('\b\b]')
+#						print(self.viewer.currentGeometry+'_edge'+str(edge)+'_line'+str(line)+'_seeds = [', end='')
+#						for seed in self.model.selected_lines[line]['seeds']:
+#							print('(', seed[0], ',', seed[1], '),')
+#						print('\b\b]')
 
 		else:
 			print('\n\tPlease select the node or element you wish')
@@ -1464,6 +1471,7 @@ is an OpenGL widget running inside this framework.
 					print('\n\tElement size must be a number. Try again.')
 				else:
 					geom = self.model.geometry[self.viewer.currentGeometry]
+					geom['mesh_size'] = element_size
 					for line in geom['lines']:
 						length = geom['lines'][line]['length']
 						if length < element_size:
@@ -1482,10 +1490,18 @@ is an OpenGL widget running inside this framework.
 
 	def meshFaces(self):
 		'''
-	Mesh selected faces with input from
-	the user using a dialog box.
+	Mesh selected faces assuming it has been
+	assigned a mesh element size.
 	'''
-		print('functionality not written yet')
+		if len(self.model.geometry) == 0:
+			print('\n\tNo geometry currently selected.')
+		else:
+			geom = self.model.geometry[self.viewer.currentGeometry]
+			if geom['mesh_size'] == None:
+				print('\n\tYou must assign a mesh size to the selected geometry')
+				printn('\tbefore you can mesh it.')
+			else:
+				self.model.meshFaces()
 
 
 	def meshGeometry(self):
@@ -6829,12 +6845,14 @@ or .sol-files.
 		geom['lines'] = {}
 		geom['faces'] = {}
 		geom['volume'] = {}
+		geom['mesh_size'] = None
 		
 		nodes = {}
 		elements = {}
 		self.meshes[shortname] = Mesh(nodes,elements)
 		mesh = self.meshes[shortname]
 		geom['mesh'] = mesh
+		geom['mesh_name'] = shortname
 
 
 		for face in geom['ADVANCED_FACE']:
@@ -7221,6 +7239,203 @@ or .sol-files.
 		glEndList()
 		self.gui.viewer.currentDisplayList['displaylist']['nodes'] = geom['displayLists']['nodes']
 		self.gui.viewer.update()
+
+
+	def meshFaces(self):
+		'''
+	Mesh currently selected faces with 
+	a triangular 2D mesh.
+	'''
+		geom = self.geometry[self.gui.viewer.currentGeometry]
+		mesh = geom['mesh']
+		if len(geom['lines']) != len(self.selected_lines):
+			print('\n\tYou must select the face you want to mesh.')
+			print('\n\n\tMeshing faces is only for 2D geometry at this point.')
+			print('\tTo mesh 3D geometry use the "Mesh Geometry" functionality.')
+		else:
+			# generate sample points that will be used
+			# as input for Delaunay triangulation			
+			all_seeds = []
+			for line in geom['lines']:
+				all_seeds += geom['lines'][line]['seeds']
+			all_seeds = np.array(all_seeds)
+			all_seeds = np.unique(all_seeds, axis=0)
+			all_seeds = self.remove_duplicate_points(all_seeds[:,:2])
+			outside_point = np.array([np.min(all_seeds, axis=None)-1,np.min(all_seeds, axis=None)-1])
+			outside_point[0] -= np.pi
+
+			poisson_sample_points = self.poisson_disk_sampling(all_seeds, outside_point, geom, geom['mesh_size'])
+			all_points_poisson = np.array(poisson_sample_points.tolist()+all_seeds.tolist())
+			all_points_poisson = np.unique(all_points_poisson, axis=0)
+
+			tri = Delaunay(all_points_poisson, qhull_options='Qt QJ')
+			all_triangles = self.keep_internal_triangles(geom, outside_point, all_points_poisson, all_seeds, tri.simplices)
+
+			print('\n\tClearing all existing nodes and elements from geometry')
+			print('\tand generating a new mesh...', end=' ')
+			mesh.nodes.clear()
+			mesh.elements.clear()
+			for n in range(len(all_points_poisson)):
+				mesh.nodes[n+1] = Node(n+1,all_points_poisson[n][0],all_points_poisson[n][1])
+			print('mesh.nodes:', mesh.nodes)
+			elem = 1
+			for t in range(len(all_triangles)):
+				mesh.elements[elem] = Element(elem,None,[mesh.nodes[all_triangles[t][0]+1],
+														 mesh.nodes[all_triangles[t][1]+1],
+														 mesh.nodes[all_triangles[t][2]+1]])
+				mesh.elements[elem].type = 'TRI3N'
+				elem += 1
+			print('mesh.elements:', mesh.elements)
+			print('Finished!')
+			print('\n\tMesh', geom['mesh_name'], 'now has', len(mesh.nodes), 'new nodes, and', len(mesh.elements), 'new elements.')
+			mesh.nodesets = {}
+			mesh.elementsets = {}
+			mesh.materials = {}
+			mesh.solutions = {}
+			mesh.displayLists = {'solutions': {}}
+			x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+			x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes )
+			y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+			y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes )
+			z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+			z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes )
+			mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+			mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+			mesh.sections_applied = False
+			self.checkForSection(mesh)
+			self.buildDisplayList(mesh)
+			self.gui.new_mesh_view = {'Mesh': geom['mesh_name']}
+
+			
+
+	def poisson_disk_sampling(self, all_seeds, outside_point, geometry, r_max):
+		samples = all_seeds
+		samples = self.remove_duplicate_points(samples)
+		boundary_samples = samples
+		previous_samples = []
+		
+		# first layer of points inside boundary
+		for p in range(len(samples)-1):
+			current_point = samples[p]
+			current_rad = self.get_rad(p, samples, r_max)
+			new_points = self.get_new_points(current_point, current_rad, samples)
+			for n in new_points:
+				if self.keep_point(n, current_rad, samples, geometry, outside_point):
+					previous_samples.append(n)
+					samples = np.vstack((samples,np.array(n)))
+		previous_samples = np.array(previous_samples)
+		
+		# add more layers of points inside until no more space
+		for n in range(10):
+			new_samples = []
+			for p in range(len(previous_samples)-1):
+				current_point = previous_samples[p]
+				current_rad = self.get_rad(p, previous_samples, r_max)
+				new_points = self.get_new_points(current_point, current_rad, previous_samples)
+				for n in new_points:
+					if self.keep_point(n, current_rad, samples, geometry, outside_point):
+						new_samples.append(n)
+						samples = np.vstack((samples,np.array(n)))
+			if len(new_samples) == 0:
+				break
+			previous_samples = np.array(new_samples)
+	
+		# add one layer of points outside boundary
+		for p in range(len(boundary_samples)-1):
+			current_point = boundary_samples[p]
+			current_rad = self.get_rad(p, boundary_samples, r_max)
+			new_points = self.get_new_points(current_point, current_rad, boundary_samples)
+			for n in new_points:
+				if self.keep_point(n, current_rad, samples, geometry, outside_point, outside=True):
+					samples = np.vstack((samples,np.array(n)))
+	        
+		return samples
+	
+	
+	def get_rad(self, index, samples, r_max):
+		r1 = 1.1*np.linalg.norm(samples[index-1] - samples[index])
+		r2 = 1.1*np.linalg.norm(samples[index] - samples[index+1])
+		return min(r_max, min(r1,r2))
+	
+	
+	def get_new_points(self, point, radius, samples):
+		new_points = []
+		for t in range(12):
+			theta = (t/12.)*2*np.pi
+			x = point[0] + radius*np.cos(theta)
+			y = point[1] + radius*np.sin(theta)
+			new_points.append([x,y])
+		return new_points
+	
+	
+	def keep_point(self, point, radius, samples, geometry, outside_point, outside=False):
+		if not outside:
+			if not self.is_within_boundary(point, geometry, outside_point):
+				return False
+		else:
+			if self.is_within_boundary(point, geometry, outside_point):
+				return False
+		# check if the point intersects any other points
+		for s in samples:
+			if np.linalg.norm(point - s) < radius:
+				return False
+		return True
+		
+	
+	def is_on_boundary(self, point, all_seeds):
+		for s in all_seeds:
+			if np.linalg.norm(point - s) < 0.1:
+				return True
+	
+	
+	def is_within_boundary(self, point, geometry, outside_point):
+#		outside_point = np.array([np.min(part['all_lines'], axis=None)-1,np.min(part['all_lines'], axis=None)-1])
+#		outside_point[0] -= np.pi
+		intersections = 0
+		for line in geometry['lines']:
+			for p in range(len(geometry['lines'][line]['points'])-1):
+				line_segment = np.array([geometry['lines'][line]['points'][p],geometry['lines'][line]['points'][p+1]])
+				if self.does_intersect(point, outside_point, line_segment):
+					intersections += 1
+		return intersections % 2 == 1
+	
+	
+	def does_intersect(self, p1, p2, line_segment):
+		if self.intersect(p1, p2, line_segment[0], line_segment[1]):
+			return True
+		return False
+	
+	
+	def intersect(self, p1, p2, p3, p4):
+	    d = (p2[0] - p1[0]) * (p4[1] - p3[1]) - (p2[1] - p1[1]) * (p4[0] - p3[0])
+	    if d == 0:
+	        return False
+	    u = ((p3[0] - p1[0]) * (p4[1] - p3[1]) - (p3[1] - p1[1]) * (p4[0] - p3[0])) / d
+	    v = ((p3[0] - p1[0]) * (p2[1] - p1[1]) - (p3[1] - p1[1]) * (p2[0] - p1[0])) / d
+	    if u >= 0 and u <= 1 and v >= 0 and v <= 1:
+	        return True
+	    return False
+	
+	
+	def keep_internal_triangles(self, geometry, outside_point, all_points, all_seeds, simplices):
+		internal_triangles = []
+		for simplex in simplices:
+			keep_simplex = True
+			for p in simplex:
+				if not self.is_within_boundary(all_points[p], geometry, outside_point):
+					if not self.is_on_boundary(all_points[p], all_seeds):
+						keep_simplex = False
+						break
+			if keep_simplex:
+				internal_triangles.append(simplex)
+		return np.array(internal_triangles)
+	
+	
+	def remove_duplicate_points(self, boundary_points, tolerance=0.1):
+		arr_rounded = np.round(boundary_points/tolerance)*tolerance
+		unique_rounded, indices = np.unique(arr_rounded, axis=0, return_index=True)
+		print('removing', len(boundary_points)-len(indices), 'points...')
+		return boundary_points[indices]
 
 
 	def importMesh(self,filename):
