@@ -49,6 +49,13 @@ is at its original position again.
 	return [qPnt1.i+axis0[0], qPnt1.j+axis0[1], qPnt1.k+axis0[2]]
 
 
+def getAngleBetweenThreePoints(origin,point1,point2):
+	'''
+Creates two vectors and finds the
+angles between them using quaternions
+'''
+
+	return angle
 
 
 class Quaternion(object):

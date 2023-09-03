@@ -24,6 +24,7 @@ results (displacement, acceleration...).
 		self.coord = [[float(x)],[float(y)],[float(z)]]
 		self.NFS = [0,0,0,0,0,0]
 		self.solutions = {}
+		self.free = True
 
 
 	def translate(self,x,y,z):

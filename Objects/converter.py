@@ -41,11 +41,54 @@ used with viewFEM.
 			self.input_error = self.readInp(inputfile)
 		if filetype == '.bdf':
 			self.input_error = self.readBdf(inputfile)
+		if filetype == '.dat':
+			self.input_error = self.readDat(inputfile)
 		read_file_stop = time.time()
 		self.read_time = read_file_stop - read_file_start
 		print('%.3f seconds\n' % (self.read_time))
 		print('\tNumber of nodes in mesh: '+str(len(self.nodes)))
 		print('\tNumber of elements in mesh: '+str(len(self.elements)))
+
+
+
+	def readDat(self,inputfile):
+		'''
+	Reads Freecad dat-file (from Gmsh)
+	into nodes and elements.
+	'''
+		try:
+			fobj = open(inputfile, 'r')
+
+		except OSError as e:
+			print('\n\n  *** ERROR!!!', e)
+
+		else:
+			input_error = False
+			line_number = 1
+
+			for eachLine in fobj:
+				line = [x.strip() for x in eachLine.split(' ')]
+#				print(line)
+
+				if len(line) == 4:
+					self.nodes[int(line[0])] = {'coord':[float(x) for x in line[1:]]}
+				elif len(line) == 13:
+					self.elements[int(line[0])] = {'type': 'TET10N',
+												   'section': None,
+												   'nodes': [int(x) for x in line[2:12]]}
+#								[3, 4, 2, 1, 10, 9, 6, 7, 8, 5]
+					reshuffle = [2, 3, 1, 0, 9, 8, 5, 6, 7, 4]
+					self.elements[int(line[0])]['nodes'] = [self.elements[int(line[0])]['nodes'][x] for x in reshuffle]
+				else:
+					pass
+
+				line_number +=1
+
+#			print('nodes:', self.nodes.keys())
+#			print('elements:', self.elements.keys())
+
+			fobj.close()
+			return input_error
 
 
 

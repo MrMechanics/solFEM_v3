@@ -58,6 +58,19 @@ Base class for section properties.
 
 
 
+class MassSect(Section):
+	'''
+Class for mass element cross section properties.
+Subclass of Section.
+'''
+	def __init__(self,number,material,m_x,m_y,m_z,m_rx,m_ry,m_rz):
+		self.mass = [float(m_x), float(m_y), float(m_z), 
+						float(m_rx), float(m_ry), float(m_rz)]
+		super(MassSect, self).__init__(number,material)
+
+
+
+
 class RodSect(Section):
 	'''
 Class for rod element cross section properties.

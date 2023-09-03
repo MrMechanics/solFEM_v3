@@ -258,8 +258,10 @@ the force vector F.
 		F_1 = np.array(F_1)
 
 		if hasattr(self,'K_mpc'):
+#			u_1 = mkl.sparse_qr_solve_mkl(self.K_11,F_1-mkl.dot_product_mkl(self.K_12,u_2))
 			u_1 = sp.linalg.spsolve(self.K_11,F_1-self.K_12.dot(u_2))
 		else:
+#			u_1 = mkl.sparse_qr_solve_mkl(self.K_11,F_1-mkl.dot_product_mkl(self.K_12,u_2))
 			u_1 = sp.linalg.spsolve(self.K_11,F_1-self.K_12.dot(u_2))
 
 		self.u = []
@@ -862,7 +864,7 @@ modified mass matrix, M_11.
 	normalized eigenvectors.
 	'''
 		nModes = self.results['modeshapes']
-		nDOFs = self.mesh.nDOFs
+		nDOFs = self.mesh.nDOFs+len(self.MPCs)
 		NFMT = self.mesh.NFMT
 		NFAT = self.mesh.NFAT
 
@@ -987,8 +989,14 @@ modified mass matrix, M_11.
 						pass
 				else:
 					pass
-		excitation_vectors = excitation_vectors[self.index11]
-		excitation_vectors = excitation_vectors[:nDOFs+len(self.MPCs)-len(self.fixedDOFs)]
+		if hasattr(self,'K_mpc'):
+#			print('nDOFs:', nDOFs)
+#			print('index11:', self.index11)
+			excitation_vectors = excitation_vectors[self.index11]
+			excitation_vectors = excitation_vectors[:nDOFs+len(self.MPCs)-len(self.fixedDOFs)]
+		else:
+			excitation_vectors = excitation_vectors[self.index11]
+			excitation_vectors = excitation_vectors[:nDOFs-len(self.fixedDOFs)]
 		
 		# Calculate the modal effective masses
 		self.modalMass = {}

@@ -86,14 +86,59 @@ section properties and nodes listed in an array.
 
 
 
-class MASS1N(Element):	# NOT READY TO BE USED
+class MASS1N2D(Element):
 	'''
 Class for 1 node point arbitrary mass element.
 Has between 1 and 6 active degrees of freedom.
 '''
-	def __init__(self,number,sect,nodes,mass):
+	def __init__(self,number,sect,nodes):
+		super(MASS1N2D,self).__init__(number,sect,nodes)
+		self.EFS = [[1,1,0,0,0,1],]*1
+		self.nodeFreedomSignature()
+		self.type = 'MASS1N2D'
+
+
+	def nodeFreedomSignature(self):
+		'''
+	Update node freedom signature for nodes in element.
+	'''
+		for i in range(len(self.nodes)):
+			if self.nodes[i].NFS[0] == 0:
+				self.nodes[i].NFS[0] = 1
+			if self.nodes[i].NFS[1] == 0:
+				self.nodes[i].NFS[1] = 1
+			if self.nodes[i].NFS[5] == 0:
+				self.nodes[i].NFS[5] = 1
+
+
+	def calcStiffnessMatrix(self):
+		'''
+	Calculate the element stiffness matrix.
+	'''
+		self.K = np.zeros((3,3))
+
+
+	def calcMassMatrix(self):
+		'''
+	Calculate the element mass matrix using the
+	lumped mass matrix method.
+	'''
+		self.M = np.array([[self.section.mass[0], 0., 0.],
+							   [0., self.section.mass[1], 0.],
+							   [0., 0., self.section.mass[5]]])
+
+
+
+
+
+class MASS1N(Element):
+	'''
+Class for 1 node point arbitrary mass element.
+Has between 1 and 6 active degrees of freedom.
+'''
+	def __init__(self,number,sect,nodes):
 		super(MASS1N,self).__init__(number,sect,nodes)
-		self.EFS = [[1,1,0,0,0,0],]*1
+		self.EFS = [[1,1,1,1,1,1],]*1
 		self.nodeFreedomSignature()
 		self.type = 'MASS1N'
 
@@ -102,9 +147,46 @@ Has between 1 and 6 active degrees of freedom.
 		'''
 	Update node freedom signature for nodes in element.
 	'''
-		for i in range(len(self.nodes[0])):
-			if self.nodes[0].NFS[i] == 0:
-				self.nodes[0].NFS[i] = 1
+		for i in range(len(self.nodes)):
+			if self.nodes[i].NFS[0] == 0:
+				self.nodes[i].NFS[0] = 1
+			if self.nodes[i].NFS[1] == 0:
+				self.nodes[i].NFS[1] = 1
+			if self.nodes[i].NFS[2] == 0:
+				self.nodes[i].NFS[2] = 1
+			if self.nodes[i].NFS[3] == 0:
+				self.nodes[i].NFS[3] = 1
+			if self.nodes[i].NFS[4] == 0:
+				self.nodes[i].NFS[4] = 1
+			if self.nodes[i].NFS[5] == 0:
+				self.nodes[i].NFS[5] = 1
+
+
+	def calcStiffnessMatrix(self):
+		'''
+	Calculate the element stiffness matrix.
+	'''
+		self.K = np.zeros((6,6))
+
+
+	def calcMassMatrix(self):
+		'''
+	Calculate the element mass matrix using the
+	lumped mass matrix method.
+	'''
+		self.M = np.array([[self.section.mass[0], 0., 0., 0., 0., 0.],
+						   [0., self.section.mass[1], 0., 0., 0., 0.],
+						   [0., 0., self.section.mass[2], 0., 0., 0.],
+						   [0., 0., 0., self.section.mass[3], 0., 0.],
+						   [0., 0., 0., 0., self.section.mass[4], 0.],
+						   [0., 0., 0., 0., 0., self.section.mass[5]]])
+
+
+	def calcStrain(self,u,calcStrain,calcStress,sol):
+		'''
+	Calculate the element stress and/or strain.
+	'''
+		self.strain = 0.
 
 
 

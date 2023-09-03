@@ -145,6 +145,14 @@ is accessible to the FEModel object.
 							self.sections[line[2]]['properties']['Iyy']  = float(line[6])
 					elif self.sections[line[2]]['type'] == 'SolidSect':
 						pass
+					elif self.sections[line[2]]['type'] == 'MassSect':
+						self.sections[line[2]]['material'] = None
+						self.sections[line[2]]['properties']['m_x'] = float(line[3])
+						self.sections[line[2]]['properties']['m_y'] = float(line[4])
+						self.sections[line[2]]['properties']['m_z'] = float(line[5])
+						self.sections[line[2]]['properties']['m_rx'] = float(line[6])
+						self.sections[line[2]]['properties']['m_ry'] = float(line[7])
+						self.sections[line[2]]['properties']['m_rz'] = float(line[8])
 					else:
 						print('\n\tERROR: (line number '+str(line_number)+')')
 						print('\tUnknown SECTION type: ', line[1])
@@ -214,8 +222,8 @@ is accessible to the FEModel object.
 					self.elements[int(line[2])] = {'type': line[1],
 												   'section': line[3],
 												   'nodes': [int(x) for x in line[4:]]}
-					if line[1] in ['ROD2N', 'ROD2N2D', 'BEAM2N', 'BEAM2N2D', 'TRI3N',
-									'TRI6N', 'QUAD4N', 'QUAD8N', 'TET4N', 'TET10N', 'HEX8N', 'HEX20N']:
+					if line[1] in ['MASS1N', 'MASS1N2D', 'ROD2N', 'ROD2N2D', 'BEAM2N', 'BEAM2N2D', 'TRI3N',
+								   'TRI6N', 'QUAD4N', 'QUAD8N', 'TET4N', 'TET10N', 'HEX8N', 'HEX20N']:
 						pass
 					else:
 						print('\n\tERROR: (line number '+str(line_number)+')')
@@ -674,15 +682,20 @@ is accessible to the FEModel object.
 					if len(self.elements[element]['nodes']) != 20:
 						print('\n\tERROR:\n\tElement '+str(element)+' does not have the right number of nodes.')
 						input_error = True
+				elif self.elements[element]['type'] in ['MASS1N', 'MASS1N2D']:
+					if len(self.elements[element]['nodes']) != 1:
+						print('\n\tERROR:\n\tElement '+str(element)+' does not have the right number of nodes.')
+						input_error = True
 				else:
 					pass
 
 			# check if specified section
 			# material is actually defined
 			for sect in self.sections:
-				if self.sections[sect]['material'] not in self.materials:
-					print('\n\tERROR:\n\tSection '+sect+' uses material that has not been defined.')
-					input_error = True
+				if self.sections[sect]['type'] != 'MassSect':
+					if self.sections[sect]['material'] not in self.materials:
+						print('\n\tERROR:\n\tSection '+sect+' uses material that has not been defined.')
+						input_error = True
 
 			# check if specifed tables
 			# can be accessed
