@@ -72,6 +72,7 @@ is an OpenGL widget running inside this framework.
 		self.new_node = {}
 		self.new_node_movement = {}
 		self.new_elements = {}
+		self.new_point_mass = {}
 		self.new_extrusion = {}
 		self.new_conversion = {}
 		self.new_orientation = {}
@@ -341,6 +342,10 @@ is an OpenGL widget running inside this framework.
 		fusenodes = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_fuse_nodes.png'),'Fuse Nodes', self)
 		fusenodes.setStatusTip('Fuse selected nodes within specified tolerance')
 		fusenodes.triggered.connect(self.fuseNodes)
+
+		pointmass = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_new_point_mass.png'),'Create Point Mass', self)
+		pointmass.setStatusTip('Create a new point mass element')
+		pointmass.triggered.connect(self.createPointMass)
 
 		element = QtWidgets.QAction(QtGui.QIcon('../Icons/icon_new_elements.png'),'Create Elements', self)
 		element.setStatusTip('Create new elements')
@@ -614,6 +619,7 @@ is an OpenGL widget running inside this framework.
 		elementMenu = meshMenu.addMenu('&Elements')
 		elementMenu.addAction(element)
 		elementMenu.addAction(extrude)
+		elementMenu.addAction(pointmass)
 		elementMenu.addAction(insert)
 		elementMenu.addAction(convert)
 		elementMenu.addAction(copy)
@@ -827,7 +833,7 @@ is an OpenGL widget running inside this framework.
 		main_toolbar3.addAction(seedgeometry)
 		main_toolbar3.addAction(meshfaces)
 		main_toolbar3.addAction(meshgeometry)
-		main_toolbar3.addAction(empty5)
+		main_toolbar3.addAction(pointmass)
 		main_toolbar3.addAction(beamorient)
 		main_toolbar3.addAction(splitbeams)
 		main_toolbar3.addSeparator()
@@ -1079,6 +1085,9 @@ is an OpenGL widget running inside this framework.
 			self.new_file_import['file'] = filename
 			self.viewer.update()
 		elif filename[-4:] == '.inp':
+			self.new_file_import['file'] = filename
+			self.viewer.update()
+		elif filename[-4:] == '.dat':
 			self.new_file_import['file'] = filename
 			self.viewer.update()
 		elif (filename[-4:] == '.stp') or (filename[-5:] == '.step'):
@@ -1413,22 +1422,23 @@ is an OpenGL widget running inside this framework.
 				print('\tLine length:', self.model.selected_lines[line]['length'])
 				print('\tLine number of seeds:', self.model.selected_lines[line]['n_seed'])
 
-		elif len(self.model.selected_faces) == 1:
+		elif len(self.model.selected_faces) != 0:
 			for face in self.model.selected_faces:
 				print('\n\tFace number:', face)
 				print('\tFace area: ...?')
 				print('\tFace lines: ...?')
-#				for edge in self.model.selected_faces[face]['edges']:
+				for edge in self.model.selected_faces[face]['edges']:
 #					print('edge:', edge)
-#					for line in self.model.selected_faces[face]['edges'][edge]['lines']:
+					print('all_seeds = [', end='')
+					for line in self.model.selected_faces[face]['edges'][edge]['lines']:
 #						print(self.viewer.currentGeometry+'_edge'+str(edge)+'_line'+str(line)+' = [', end='')
 #						for point in self.model.selected_lines[line]['points']:
 #							print('(', point[0], ',', point[1], '),')
 #						print('\b\b]')
 #						print(self.viewer.currentGeometry+'_edge'+str(edge)+'_line'+str(line)+'_seeds = [', end='')
-#						for seed in self.model.selected_lines[line]['seeds']:
-#							print('(', seed[0], ',', seed[1], '),')
-#						print('\b\b]')
+						for seed in self.model.selected_lines[line]['seeds']:
+							print('(', seed[0], ',', seed[1], ',', seed[2], '),')
+					print(']')
 
 		else:
 			print('\n\tPlease select the node or element you wish')
@@ -1444,10 +1454,19 @@ is an OpenGL widget running inside this framework.
 			n_seeds = 3
 			text, ok = QtWidgets.QInputDialog.getText(self, 'Seed Lines', 'Number of seeds:', text=str(n_seeds))
 			if ok and (len(self.model.selected_lines) != 0):
+				print(str(text).split(','))
+				print(len(str(text).split(',')))
 				if str(text).isdigit():
 					for line in self.model.selected_lines:
 						self.model.selected_lines[line]['n_seed'] = int(text)
 						self.model.seedLine(line)
+						print('\n\tLine length:', self.model.selected_lines[line]['length'])
+						print('\tLine number of seeds:', self.model.selected_lines[line]['n_seed'])
+				elif len(str(text).split(',')) == 2:
+					user_input = str(text).split(',')
+					for line in self.model.selected_lines:
+						self.model.selected_lines[line]['n_seed'] = int(user_input[0])
+						self.model.seedLine(line,float(user_input[1]))
 						print('\n\tLine length:', self.model.selected_lines[line]['length'])
 						print('\tLine number of seeds:', self.model.selected_lines[line]['n_seed'])
 				else:
@@ -1951,6 +1970,28 @@ is an OpenGL widget running inside this framework.
 			self.elementsWidget = MakeElements(self.new_elements)
 			self.elementsWidget.window_closed.connect(self.viewer.update)
 			self.elementsWidget.show()
+		else:
+			print('\n\tNo mesh currently selected.')
+
+
+	def createPointMass(self):
+		'''
+	Creates a new point mass at selected node and
+	assigns mass given by user input.
+	'''
+		if self.viewer.currentMesh != 'None':
+			if len(self.model.selected_nodes) == 1:
+				createPointMass = {}
+				createPointMass['inputs'] = {'mx': '0.', 'my': '0.', 'mz': '0.', 'mrx': '0.', 'mry': '0.', 'mrz': '0.'}
+				createPointMass['choices'] = [ [], [] ]
+				createPointMass['current'] = {}
+				createPointMass['inOrder'] = ['mx', 'my', 'mz', 'mrx', 'mry', 'mrz']
+				self.new_point_mass = {}
+				self.selectionWidget = InputDialog(createPointMass, 'Create Point Mass', self.new_point_mass)
+				self.selectionWidget.window_closed.connect(self.viewer.update)
+				self.selectionWidget.show()
+			else:
+				print('\n\tSelect one node to apply the point mass to.')
 		else:
 			print('\n\tNo mesh currently selected.')
 
@@ -4141,6 +4182,10 @@ animations, loads, etc.
 			self.model.createNewElement()
 			self.gui.new_elements.clear()
 
+		if len(self.gui.new_point_mass) > 1:
+			self.model.createNewPointMass()
+			self.gui.new_point_mass.clear()
+
 		if len(self.gui.new_extrusion) > 1:
 			self.model.createNewExtrusion()
 			self.gui.new_extrusion.clear()
@@ -5087,14 +5132,14 @@ or .sol-files.
 		
 		self.nodesets = {}
 		self.elementsets = {}
-		self.materials = {'6061-T6_aluminum (N m kg)': 	 {'Elasticity':   689e8, 'Poisson ratio': 0.35, 'Density':   2700.},
-						  '1010_carbon_steel (N m kg)':	 {'Elasticity':   205e9, 'Poisson ratio': 0.29, 'Density':   7870.},
-						  '316_stainless_steel (N m kg)':  {'Elasticity':   193e9, 'Poisson ratio': 0.27, 'Density':   7870.},
-						  'Grade2_titanium (N m kg)':	 	 {'Elasticity':   105e9, 'Poisson ratio': 0.37, 'Density':   4510.},
-						  '6061-T6_aluminum (N mm kg)': 	 {'Elasticity':  68900., 'Poisson ratio': 0.35, 'Density':  2.7e-9},
-						  '1010_carbon_steel (N mm kg)':	 {'Elasticity': 205000., 'Poisson ratio': 0.29, 'Density': 7.87e-9},
-						  '316_stainless_steel (N mm kg)': {'Elasticity': 193000., 'Poisson ratio': 0.27, 'Density': 7.87e-9},
-						  'Grade2_titanium (N mm kg)':	 {'Elasticity': 105000., 'Poisson ratio': 0.37, 'Density': 4.51e-9} }
+		self.materials = {'6061-T6_aluminum (m kg)': 	 	{'Elasticity': 689e8, 'Poisson ratio': 0.35, 'Density':   2700.},
+						  '1010_carbon_steel (m kg)':	 	{'Elasticity': 205e9, 'Poisson ratio': 0.29, 'Density':   7870.},
+						  '316_stainless_steel (m kg)':	    {'Elasticity': 193e9, 'Poisson ratio': 0.27, 'Density':   7870.},
+						  'Grade2_titanium (m kg)':	 		{'Elasticity': 105e9, 'Poisson ratio': 0.37, 'Density':   4510.},
+						  '6061-T6_aluminum (mm kg)': 		{'Elasticity': 689e5, 'Poisson ratio': 0.35, 'Density':  2.7e-6},
+						  '1010_carbon_steel (mm kg)':		{'Elasticity': 205e6, 'Poisson ratio': 0.29, 'Density': 7.87e-6},
+						  '316_stainless_steel (mm kg)': 	{'Elasticity': 193e6, 'Poisson ratio': 0.27, 'Density': 7.87e-6},
+						  'Grade2_titanium (mm kg)':	 	{'Elasticity': 105e6, 'Poisson ratio': 0.37, 'Density': 4.51e-6}}
 		self.sections = {}
 		self.meshes = {}
 		self.results = {}
@@ -5166,14 +5211,14 @@ or .sol-files.
 		self.geometry.clear()
 		self.results.clear()
 		self.meshes.clear()
-		self.materials = {'6061-T6_aluminum (N m kg)': 	 {'Elasticity':   689e8, 'Poisson ratio': 0.35, 'Density':   2700.},
-						  '1010_carbon_steel (N m kg)':	 {'Elasticity':   205e9, 'Poisson ratio': 0.29, 'Density':   7870.},
-						  '316_stainless_steel (N m kg)':  {'Elasticity':   193e9, 'Poisson ratio': 0.27, 'Density':   7870.},
-						  'Grade2_titanium (N m kg)':	 	 {'Elasticity':   105e9, 'Poisson ratio': 0.37, 'Density':   4510.},
-						  '6061-T6_aluminum (N mm kg)': 	 {'Elasticity':  68900., 'Poisson ratio': 0.35, 'Density':  2.7e-9},
-						  '1010_carbon_steel (N mm kg)':	 {'Elasticity': 205000., 'Poisson ratio': 0.29, 'Density': 7.87e-9},
-						  '316_stainless_steel (N mm kg)': {'Elasticity': 193000., 'Poisson ratio': 0.27, 'Density': 7.87e-9},
-						  'Grade2_titanium (N mm kg)':	 {'Elasticity': 105000., 'Poisson ratio': 0.37, 'Density': 4.51e-9} }
+		self.materials = {'6061-T6_aluminum (m kg)': 	 	{'Elasticity': 689e8, 'Poisson ratio': 0.35, 'Density':   2700.},
+						  '1010_carbon_steel (m kg)':	 	{'Elasticity': 205e9, 'Poisson ratio': 0.29, 'Density':   7870.},
+						  '316_stainless_steel (m kg)':	    {'Elasticity': 193e9, 'Poisson ratio': 0.27, 'Density':   7870.},
+						  'Grade2_titanium (m kg)':	 		{'Elasticity': 105e9, 'Poisson ratio': 0.37, 'Density':   4510.},
+						  '6061-T6_aluminum (mm kg)': 		{'Elasticity': 689e5, 'Poisson ratio': 0.35, 'Density':  2.7e-6},
+						  '1010_carbon_steel (mm kg)':		{'Elasticity': 205e6, 'Poisson ratio': 0.29, 'Density': 7.87e-6},
+						  '316_stainless_steel (mm kg)': 	{'Elasticity': 193e6, 'Poisson ratio': 0.27, 'Density': 7.87e-6},
+						  'Grade2_titanium (mm kg)':	 	{'Elasticity': 105e6, 'Poisson ratio': 0.37, 'Density': 4.51e-6}}
 		self.sections.clear()
 		self.displayLists.clear()
 		self.gui.viewer.update()
@@ -5493,6 +5538,58 @@ or .sol-files.
 			self.buildDisplayList(mesh)
 			self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
 			self.elementOrientation()
+			self.gui.viewer.update()
+
+
+	def createNewPointMass(self):
+		'''
+	Creates a new point mass as specified by
+	user input.
+	'''
+		element_created = False
+		mesh = self.meshes[self.gui.viewer.currentMesh]
+		try:
+			mx = float(self.gui.new_point_mass['mx'])
+			my = float(self.gui.new_point_mass['my'])
+			mz = float(self.gui.new_point_mass['mz'])
+			mrx = float(self.gui.new_point_mass['mrx'])
+			mry = float(self.gui.new_point_mass['mry'])
+			mrz = float(self.gui.new_point_mass['mrz'])
+		except ValueError:
+			print('\n\tmass properties specified must be a number.')		
+		else:
+			element_number = max(mesh.elements) +1
+			node_number = list(self.selected_nodes.keys())[0]
+			self.nodesSelected = False
+			self.selected_nodes.clear()
+			
+			sectname = 'pointmass-'+str(len(self.sections))
+			sectnum = len(self.sections)
+			self.sections[sectname] = {'Number': sectnum}
+			for m in ['mx','my','mz','mrx','mry','mrz']:
+				self.sections[sectname][m] = float(self.gui.new_point_mass[m])
+
+			mesh.elements[element_number] = Element(element_number,sectname,[mesh.nodes[node_number]])
+			mesh.elements[element_number].type = 'MASS1N'
+			element_created = True
+
+		if element_created:
+			print('\n\tNew MASS1N element...')
+			print('\tElement number:', element_number)
+			print('\tElement nodes:', node_number)
+			x_max = max(mesh.nodes[i].coord[0][0] for i in mesh.nodes)
+			x_min = min(mesh.nodes[i].coord[0][0] for i in mesh.nodes)
+			y_max = max(mesh.nodes[i].coord[1][0] for i in mesh.nodes)
+			y_min = min(mesh.nodes[i].coord[1][0] for i in mesh.nodes)
+			z_max = max(mesh.nodes[i].coord[2][0] for i in mesh.nodes)
+			z_min = min(mesh.nodes[i].coord[2][0] for i in mesh.nodes)
+			mesh.viewScope = {'max': [x_max, y_max, z_max], 'min': [x_min, y_min, z_min]}
+			mesh.viewRadius = 1.25*max( (x_max-x_min)/2., (y_max-y_min)/2., (z_max-z_min)/2. )
+			self.buildDisplayList(mesh)
+			self.gui.new_mesh_view = {'Mesh': self.gui.viewer.currentMesh}
+			self.elementOrientation()
+			for mesh in self.meshes:
+				self.checkForSection(self.meshes[mesh])
 			self.gui.viewer.update()
 
 
@@ -7109,16 +7206,29 @@ or .sol-files.
 
 		glNewList(geom['displayLists']['shaded'], GL_COMPILE)
 
-		glBegin(GL_TRIANGLES)
-		glColor3f(0.32, 0.43, 0.49)
-		coord = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][vpts[0]]]
-		glVertex3f(coord[0],coord[1],coord[2])
-		coord = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][vpts[1]]]
-		glVertex3f(coord[0],coord[1],coord[2])
-		coord = geom['CARTESIAN_POINT'][geom['VERTEX_POINT'][vpts[2]]]
-		glVertex3f(coord[0],coord[1],coord[2])
-		glEnd()
+		for face in geom['faces']:
+			for edge in geom['faces'][face]['edges']:
+				facepoints = []
+				if len(geom['faces'][face]['edges'][edge]['lines']) == 1:
+					for line in geom['faces'][face]['edges'][edge]['lines']:
+						for p in geom['lines'][line]['points']:
+							facepoints.append(p)
+				else:
+					for line in geom['faces'][face]['edges'][edge]['lines']:
+						for p in geom['lines'][line]['points']:
+							facepoints.append(p)
+							break
 
+				glBegin(GL_TRIANGLES)
+				glColor3f(0.32, 0.43, 0.49)
+				coord = facepoints[0]
+				glVertex3f(coord[0],coord[1],coord[2])
+				coord = facepoints[1]
+				glVertex3f(coord[0],coord[1],coord[2])
+				coord = facepoints[2]
+				glVertex3f(coord[0],coord[1],coord[2])
+				glEnd()
+				
 		glEndList()
 
 
@@ -7140,7 +7250,7 @@ or .sol-files.
 		self.gui.viewer.update()
 
 
-	def seedLine(self,line_num):
+	def seedLine(self,line_num,weight=None):
 		'''
 	Calculate the coordinates of the
 	mesh seeds on the specified line.
@@ -7160,13 +7270,28 @@ or .sol-files.
 			geom['lines'][line_num]['n_seed'] = 2
 		else:
 			if len(points) == 2:
-				seeds.append(points[0])
-				n_split = n_seed-1
-				for i in range(n_seed-2):
-					seeds.append((points[0][0]+(i+1)*(points[1][0]-points[0][0])/n_split,
-								  points[0][1]+(i+1)*(points[1][1]-points[0][1])/n_split,
-								  points[0][2]+(i+1)*(points[1][2]-points[0][2])/n_split))
-				seeds.append(points[-1])
+				if weight == None:
+					seeds.append(points[0])
+					n_split = n_seed-1
+					for i in range(n_seed-2):
+						seeds.append((points[0][0]+(i+1)*(points[1][0]-points[0][0])/n_split,
+									  points[0][1]+(i+1)*(points[1][1]-points[0][1])/n_split,
+									  points[0][2]+(i+1)*(points[1][2]-points[0][2])/n_split))
+					seeds.append(points[-1])
+				else:
+					flip = False
+					if weight < 0:
+						weight = abs(weight)
+						flip = True
+					n_splits = [(x**weight)*(1/(n_seed**weight)) for x in range(n_seed)]
+					if flip:
+						n_splits = [1-x for x in n_splits]
+					seeds.append(points[0])
+					for i in range(n_seed-2):
+						seeds.append((points[0][0]+(points[1][0]-points[0][0])*n_splits[i+1],
+									  points[0][1]+(points[1][1]-points[0][1])*n_splits[i+1],
+									  points[0][2]+(points[1][2]-points[0][2])*n_splits[i+1]))
+					seeds.append(points[-1])
 			else:
 				print('length:', length)
 				print('n_seed:', n_seed)
@@ -7275,19 +7400,24 @@ or .sol-files.
 			print('\tand generating a new mesh...', end=' ')
 			mesh.nodes.clear()
 			mesh.elements.clear()
+			deletable_nodes = [x+1 for x in range(len(all_points_poisson))]
 			for n in range(len(all_points_poisson)):
 				mesh.nodes[n+1] = Node(n+1,all_points_poisson[n][0],all_points_poisson[n][1])
-			print('mesh.nodes:', mesh.nodes)
 			elem = 1
 			for t in range(len(all_triangles)):
+				if all_triangles[t][0]+1 in deletable_nodes:
+					deletable_nodes.pop(deletable_nodes.index(all_triangles[t][0]+1))
+				if all_triangles[t][1]+1 in deletable_nodes:
+					deletable_nodes.pop(deletable_nodes.index(all_triangles[t][1]+1))
+				if all_triangles[t][2]+1 in deletable_nodes:
+					deletable_nodes.pop(deletable_nodes.index(all_triangles[t][2]+1))
 				mesh.elements[elem] = Element(elem,None,[mesh.nodes[all_triangles[t][0]+1],
 														 mesh.nodes[all_triangles[t][1]+1],
 														 mesh.nodes[all_triangles[t][2]+1]])
 				mesh.elements[elem].type = 'TRI3N'
 				elem += 1
-			print('mesh.elements:', mesh.elements)
-			print('Finished!')
-			print('\n\tMesh', geom['mesh_name'], 'now has', len(mesh.nodes), 'new nodes, and', len(mesh.elements), 'new elements.')
+			for node in deletable_nodes:
+				del mesh.nodes[node]
 			mesh.nodesets = {}
 			mesh.elementsets = {}
 			mesh.materials = {}
@@ -7305,8 +7435,7 @@ or .sol-files.
 			self.checkForSection(mesh)
 			self.buildDisplayList(mesh)
 			self.gui.new_mesh_view = {'Mesh': geom['mesh_name']}
-
-			
+		
 
 	def poisson_disk_sampling(self, all_seeds, outside_point, geometry, r_max):
 		samples = all_seeds
@@ -7339,7 +7468,7 @@ or .sol-files.
 			if len(new_samples) == 0:
 				break
 			previous_samples = np.array(new_samples)
-	
+		
 		# add one layer of points outside boundary
 		for p in range(len(boundary_samples)-1):
 			current_point = boundary_samples[p]
@@ -7452,6 +7581,11 @@ or .sol-files.
 		if filename[-4:] == '.inp':
 			print('\n\tConverting inp-file to sol-file for import ...')
 			mesh = ConvertMesh(filename,'.inp')
+			mesh.writeSol(filename[:-4])
+			filename = filename[:-4]+'.sol'
+		if filename[-4:] == '.dat':
+			print('\n\tConverting dat-file to sol-file for import ...')
+			mesh = ConvertMesh(filename,'.dat')
 			mesh.writeSol(filename[:-4])
 			filename = filename[:-4]+'.sol'
 		try:
@@ -9124,7 +9258,8 @@ or .sol-files.
 		# Define materials
 		materials = {}
 		for section in self.meshes[mesh].sections:
-			materials[self.sections[section]['Material']] = self.materials[self.sections[section]['Material']]
+			if 'Material' in self.sections[section]:
+				materials[self.sections[section]['Material']] = self.materials[self.sections[section]['Material']]
 		for material in materials:
 			fobj.write('MATERIAL, Isotropic, '+material+', '+str(self.materials[material]['Elasticity'])+', '+ \
 						str(self.materials[material]['Poisson ratio'])+', '+str(self.materials[material]['Density'])+'\n')
@@ -9140,13 +9275,24 @@ or .sol-files.
 				self.sections[self.meshes[mesh].elements[element].section]['Type'] = 'PlaneSect'
 			elif self.meshes[mesh].elements[element].type in ['TET4N', 'TET10N', 'HEX8N', 'HEX20N']:
 				self.sections[self.meshes[mesh].elements[element].section]['Type'] = 'SolidSect'
+			elif self.meshes[mesh].elements[element].type in ['MASS1N', 'MASS1N2D']:
+				self.sections[self.meshes[mesh].elements[element].section]['Type'] = 'MassSect'
 			else:
 				print('\n\tSection:', self.meshes[mesh].elements[element].section, 'applied to unknown type of element.')
 
 		for section in self.sections:
 			if 'Type' in self.sections[section]:
 				fobj.write('SECTION, '+str(self.sections[section]['Type'])+', '+ \
-							str(self.sections[section]['Number'])+', '+str(self.sections[section]['Material']))
+							str(self.sections[section]['Number']))
+				if self.sections[section]['Type'] == 'MassSect':
+					fobj.write(', '+str(self.sections[section]['mx']))
+					fobj.write(', '+str(self.sections[section]['my']))
+					fobj.write(', '+str(self.sections[section]['mz']))
+					fobj.write(', '+str(self.sections[section]['mrx']))
+					fobj.write(', '+str(self.sections[section]['mry']))
+					fobj.write(', '+str(self.sections[section]['mrz']))
+				else:
+					fobj.write(', '+str(self.sections[section]['Material']))
 				if self.sections[section]['Type'] == 'SolidSect':
 					pass
 				elif self.sections[section]['Type'] == 'RodSect':
@@ -9577,6 +9723,14 @@ or .sol-files.
 			glLineWidth(3.0)
 			for j in elements:
 				nodelines = []
+				if elements[j].type in ['MASS1N', 'MASS1N2D']:
+					glPointSize(20.0)
+					glBegin(GL_POINTS)
+					glColor3f(0.8, 0.6, 0.2)
+					glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0], 
+								nodes[elements[j].nodes[0].number].coord[1][0],
+								nodes[elements[j].nodes[0].number].coord[2][0])
+					glEnd()
 				if elements[j].type == 'ROD2N2D':
 					nodelines = [[0,1]]
 				if elements[j].type == 'ROD2N':
@@ -14009,32 +14163,42 @@ or .sol-files.
 							glLineWidth(3.0)
 							for j in elements:
 								nodelines = []
-								if elements[j].type == 'ROD2N2D':
+								if elements[j].type in ['MASS1N2D', 'MASS1N']:
+									glPointSize(20.0)
+									glBegin(GL_POINTS)
+									glColor3f(0.8, 0.6, 0.2)
+									glVertex3f(nodes[elements[j].nodes[0].number].coord[0][0] + move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]], 
+											 nodes[elements[j].nodes[0].number].coord[1][0] + move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+1],
+											 nodes[elements[j].nodes[0].number].coord[2][0] + move*eigenvector[mesh.NFMT[elements[j].nodes[0].number]+2])
+									glEnd()
+								elif elements[j].type == 'ROD2N2D':
 									nodelines = [[0,1]]
-								if elements[j].type == 'ROD2N':
+								elif elements[j].type == 'ROD2N':
 									nodelines = [[0,1]]
-								if elements[j].type == 'BEAM2N2D':
+								elif elements[j].type == 'BEAM2N2D':
 									nodelines = [[0,1]]
-								if elements[j].type == 'BEAM2N':
+								elif elements[j].type == 'BEAM2N':
 									nodelines = [[0,1]]
-								if elements[j].type == 'TRI3N':
+								elif elements[j].type == 'TRI3N':
 									nodelines = [[0,1], [1,2], [2,0]]
-								if elements[j].type == 'TRI6N':
+								elif elements[j].type == 'TRI6N':
 									nodelines = [[0,3], [3,1], [1,4], [4,2], [2,5], [5,0]]
-								if elements[j].type == 'QUAD4N':
+								elif elements[j].type == 'QUAD4N':
 									nodelines = [[0,1], [1,2], [2,3], [0,3]]
-								if elements[j].type == 'QUAD8N':
+								elif elements[j].type == 'QUAD8N':
 									nodelines = [[0,1], [1,2], [2,3], [3,4], [4,5], [5,6], [6,7], [7,0]]
-								if elements[j].type == 'TET4N':
+								elif elements[j].type == 'TET4N':
 									nodelines = [[0,1], [1,2], [0,2], [0,3], [1,3], [2,3]]
-								if elements[j].type == 'TET10N':
+								elif elements[j].type == 'TET10N':
 									nodelines = [[0,4], [1,4], [1,5], [2,5], [0,6], [2,6], [0,7], [3,7], [1,8], [3,8], [2,9], [3,9]]
-								if elements[j].type == 'HEX8N':
+								elif elements[j].type == 'HEX8N':
 									nodelines = [[0,1], [1,2], [2,3], [0,3], [0,4], [1,5], [2,6], [3,7], [4,5], [5,6], [6,7], [4,7]]
-								if elements[j].type == 'HEX20N':
+								elif elements[j].type == 'HEX20N':
 									nodelines = [[ 0, 8], [ 8, 1], [ 1, 9], [ 9, 2], [ 2,10], [10, 3], [ 3,11], [11, 0], 
 												 [ 0,12], [12, 4], [ 1,13], [13, 5], [ 2,14], [14, 6], [ 3,15], [15, 7],
 												 [ 4,16], [16, 5], [ 5,17], [17, 6], [ 6,18], [18, 7], [ 7,19], [19, 4]]
+								else:
+									pass
 
 								if is3D:
 									for k in range(len(nodelines)):
@@ -15111,6 +15275,5 @@ if __name__ == '__main__':
     window = UserInterface()
     window.show()
     app.exec_()
-
 
 

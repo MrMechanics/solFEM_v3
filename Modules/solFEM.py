@@ -57,7 +57,7 @@ their individual boundary conditions, loads and constraints.
 		self.nodesets = {}
 		self.elementsets = {}
 		self.nodes = {}
-		self.materials = {}
+		self.materials = {None: 0}
 		self.sections = {}
 		self.elements = {}
 		self.meshes = {}
@@ -113,7 +113,14 @@ their individual boundary conditions, loads and constraints.
 		# instantiate all Section objects listed in *.sol-file
 		for key in inputobj.sections:
 			properties = []
-			if inputobj.sections[key]['type'] == 'RodSect':
+			if inputobj.sections[key]['type'] == 'MassSect':
+				properties.append(inputobj.sections[key]['properties']['m_x'])
+				properties.append(inputobj.sections[key]['properties']['m_y'])
+				properties.append(inputobj.sections[key]['properties']['m_z'])
+				properties.append(inputobj.sections[key]['properties']['m_rx'])
+				properties.append(inputobj.sections[key]['properties']['m_ry'])
+				properties.append(inputobj.sections[key]['properties']['m_rz'])
+			elif inputobj.sections[key]['type'] == 'RodSect':
 				if 'area' in inputobj.sections[key]['properties']:
 					properties.append(inputobj.sections[key]['properties']['area'])
 				else:
@@ -148,6 +155,8 @@ their individual boundary conditions, loads and constraints.
 				self.elements[key] = globals()[inputobj.elements[key]['type']](key, \
 										self.sections[inputobj.elements[key]['section']], \
 										inputobj.elements[key]['nodes'])
+			for node in inputobj.elements[key]['nodes']:
+				node.free = False
 
 		# apply beam orientation to any Element given a specified beam orientation
 		for key in inputobj.beamOrients:
@@ -234,19 +243,12 @@ their individual boundary conditions, loads and constraints.
 
 		# check for loose nodes that have not been set with a NFS, and then give them
 		# NFS = [1,1,0,0,0,1] if 2D, and NFS = [1,1,1,1,1,1] if 3D.
-		element_nodes = []
-		for mesh in self.meshes:
-			for element in self.meshes[mesh].elements:
-				for node in self.meshes[mesh].elements[element].nodes:
-					if node.number not in element_nodes:
-						element_nodes.append(node.number)
-		for mesh in self.meshes:
-			for node in self.meshes[mesh].nodes:
-				if node not in element_nodes:
-					if self.meshes[mesh].is3D:
-						self.meshes[mesh].nodes[node].NFS = [1,1,1,1,1,1]
-					else:
-						self.meshes[mesh].nodes[node].NFS = [1,1,0,0,0,1]
+		for node in self.nodes:
+			if self.nodes[node].free:
+				if self.meshes[mesh].is3D:
+					node.NFS = [1,1,1,1,1,1]
+				else:
+					node.NFS = [1,1,0,0,0,1]
 
 		# instantiate all Load objects listed in *.sol-file
 		for key in inputobj.loads:
@@ -324,7 +326,6 @@ their individual boundary conditions, loads and constraints.
 				self.dampings[target].table = self.tables[key]
 			else:
 				pass
-
 
 		# assemble stiffness and mass matrices so they are ready
 		# for the solutions that need them
@@ -491,17 +492,22 @@ their individual boundary conditions, loads and constraints.
 
 	
 			print('\tDeleting stiffness matrices...')
-			# print out stiffness-matrix by
-			# uncommenting the next 5 lines
-			# (not including MPCs!).
-#			print('\n\tStiffness matrix:')
-#			for row in range(self.meshes[mesh].nDOFs):
-#				for col in range(self.meshes[mesh].nDOFs):
-#					print(self.meshes[mesh].K_mpc[row,col], end=' ')
-#				print(' ')
 			del self.meshes[mesh].K
 			for solution in self.meshes[mesh].solutions:
 				if hasattr(self.solutions[solution], 'K_11'):
+        			# print out stiffness-matrix by
+        			# uncommenting the next 5 lines
+        			# (not including MPCs!).
+#					print('\n\tStiffness matrix:')
+#					for row in range(self.solutions[solution].K_11.shape[0]):
+#						for col in range(self.solutions[solution].K_11.shape[0]):
+#							print(self.solutions[solution].K_11[row,col], end=' ')
+#						print(' ')
+#					print('\n\tMass matrix:')
+#					for row in range(self.solutions[solution].M_11.shape[0]):
+#						for col in range(self.solutions[solution].M_11.shape[0]):
+#							print(self.solutions[solution].M_11[row,col], end=' ')
+#						print(' ')
 					del self.solutions[solution].K_11
 				if hasattr(self.solutions[solution], 'K_12'):
 					del self.solutions[solution].K_12
@@ -528,10 +534,10 @@ their individual boundary conditions, loads and constraints.
 				# uncommenting the next 8 lines
 				# (not including MPCs!).
 #				print('\n\tMass matrix:')
-#				for row in range(self.meshes[mesh].nDOFs):
-#					for col in range(self.meshes[mesh].nDOFs):
+#				for row in range(self.meshes[mesh].solutions.M_11):
+#					for col in range(self.meshes[mesh].solutions.M_11):
 #						if row == col:
-#							print(self.meshes[mesh].M[row], end=' ')
+#							print(self.meshes[mesh].solutions.M_11[row], end=' ')
 #						else:
 #							print(0.0, end=' ')
 #					print(' ')
@@ -635,7 +641,6 @@ their individual boundary conditions, loads and constraints.
 		else:
 			print('\tSomething wrong with mass matrix...')
 			print('\tMass:', mesh.totalMass[0])
-
 
 
 

@@ -50,7 +50,7 @@ user in dialog box.
 #							  'QUAD8N'  : QtGui.QPixmap('../Icons/pix_quad8.png'),
 #							  'TET4N'   : QtGui.QPixmap('../Icons/pix_tet4.png'),
 #							  'TET10N'  : QtGui.QPixmap('../Icons/pix_tet10.png'),
-							  'HEX8N'   : QtGui.QPixmap('../Icons/pix_hex8.png')}#,
+							  'HEX8N'   : QtGui.QPixmap('../Icons/pix_hex8.png')}
 #							  'HEX20N'  : QtGui.QPixmap('../Icons/pix_hex20.png')}
 
 		# Initialize the labels
