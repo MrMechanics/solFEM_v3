@@ -2253,7 +2253,8 @@ is an OpenGL widget running inside this framework.
 				self.model.meshes['tmpmesh'].viewScope = currentMesh.viewScope
 				self.model.meshes['tmpmesh'].viewRadius = currentMesh.viewRadius
 				self.model.meshes['tmpmesh'].displayLists = {'solutions': {}}
-
+				
+				self.model.externalNodes(self.model.meshes['tmpmesh'])
 				self.model.buildDisplayList(self.model.meshes['tmpmesh'],[solution,result,subresult])
 				self.model.selected_elements.clear()
 				self.model.selected_nodes.clear()
@@ -4821,7 +4822,7 @@ animations, loads, etc.
 			return selected_lines
 
 
-	def nodeSelect(self):
+	def nodeSelect(self,selecting_elements=False):
 		if self.currentDisplayList['mesh'] != None:
 			if self.selectionRectangleEnd[0] < self.selectionRectangleStart[0]:
 				x = [self.selectionRectangleEnd[0], self.selectionRectangleStart[0],
@@ -4865,7 +4866,7 @@ animations, loads, etc.
 			Frustum.append(np.cross((P[6]-P[2]),(P[7]-P[3]))) # bottom plane normal vector
 			Frustum.append(np.cross((P[4]-P[0]),(P[6]-P[2]))) # left plane normal vector
 			nodes = {}
-			if hasattr(self.currentDisplayList['mesh'],'external'):
+			if hasattr(self.currentDisplayList['mesh'],'external') and (self.model.selectOption == 'Nodes'):
 				meshnodes = self.currentDisplayList['mesh'].external
 			else:
 				meshnodes = self.currentDisplayList['mesh'].nodes
@@ -5461,7 +5462,7 @@ or .sol-files.
 				for n in range(len(face)):
 					if face[n] not in mesh.external:
 						mesh.external[face[n]] = nodes[face[n]]
-		print('External nodes:', list(mesh.external.keys())[:42])
+#		print('External nodes:', list(mesh.external.keys())[:42])
 
 	
 	def createNewNode(self):
@@ -8103,6 +8104,7 @@ or .sol-files.
 
 			print('\t'+newResults+'_mesh-'+str(mesh+1))
 			self.meshes[newResults+'_mesh-'+str(mesh+1)] = self.results[newResults].meshes[mesh]
+			self.externalNodes(self.results[newResults].meshes[mesh])
 			self.buildDisplayList(self.results[newResults].meshes[mesh])
 
 		print('\n\tNew results available from solutions...',end=' ')
@@ -10417,7 +10419,8 @@ or .sol-files.
 				glNewList(self.displayLists[solution][result][subresult]['nodes'], GL_COMPILE)
 
 				scale_factor = self.scale_factor
-				displacements = mesh.nodes
+#				displacements = mesh.nodes
+				displacements = mesh.external
 
 				glPointSize(5.0)
 				glBegin(GL_POINTS)
@@ -10470,20 +10473,38 @@ or .sol-files.
 						pass
 
 					for k in range(len(nodelines)):
-						glBegin(GL_LINES)
-						glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0] + 
-									scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][0]),
-								   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0] +
-									scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][1]),
-								   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0] +
-									scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][2]))
-						glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0] +
-									scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][0]),
-								   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0] +
-									scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][1]),
-								   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0] +
-									scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][2]))
-						glEnd()
+						if len(allexternal) != 0:
+							if set([elements[j].nodes[nodelines[k][0]].number,
+								    elements[j].nodes[nodelines[k][1]].number]).issubset(allexternal):
+								glBegin(GL_LINES)
+								glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][2]))
+								glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][2]))
+								glEnd()
+						else:
+							glBegin(GL_LINES)
+							glVertex3f(nodes[elements[j].nodes[nodelines[k][0]].number].coord[0][0] + 
+										scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][0]),
+									   nodes[elements[j].nodes[nodelines[k][0]].number].coord[1][0] +
+										scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][1]),
+									   nodes[elements[j].nodes[nodelines[k][0]].number].coord[2][0] +
+										scale_factor*(displacements[elements[j].nodes[nodelines[k][0]].number].solutions[solution]['displacement'][2]))
+							glVertex3f(nodes[elements[j].nodes[nodelines[k][1]].number].coord[0][0] +
+										scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][0]),
+									   nodes[elements[j].nodes[nodelines[k][1]].number].coord[1][0] +
+										scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][1]),
+									   nodes[elements[j].nodes[nodelines[k][1]].number].coord[2][0] +
+										scale_factor*(displacements[elements[j].nodes[nodelines[k][1]].number].solutions[solution]['displacement'][2]))
+							glEnd()
 						
 					if result == 'elementforce':
 						if elements[j].type in ['BEAM2N2D', 'BEAM2N']:
@@ -10877,132 +10898,265 @@ or .sol-files.
 						else:
 							pass
 
+							
 						for l in range(len(nodelines)):
-							glBegin(GL_LINES)
-							for k in range(len(disp_mag_values)):
-								if subresult == 'magnitude' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
-																										['displacement'][6] > disp_mag_values[k]):
-										pass
-								elif subresult == 'x-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
-																										['displacement'][0] > disp_mag_values[k]):
-										pass
-								elif subresult == 'y-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
-																										['displacement'][1] > disp_mag_values[k]):
-										pass
-								elif subresult == 'z-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
-																										['displacement'][2] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							node1_color = deepcopy(disp_color)
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[nodelines[l][0]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[nodelines[l][0]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[nodelines[l][0]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if subresult == 'magnitude' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
-																										['displacement'][6] > disp_mag_values[k]):
-										pass
-								elif subresult == 'x-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
-																										['displacement'][0] > disp_mag_values[k]):
-										pass
-								elif subresult == 'y-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
-																										['displacement'][1] > disp_mag_values[k]):
-										pass
-								elif subresult == 'z-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
-																										['displacement'][2] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							node2_color = deepcopy(disp_color)
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[nodelines[l][1]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[nodelines[l][1]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[nodelines[l][1]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][2]))
-							glEnd()
+							if len(allexternal) != 0:
+								if set([elements[j].nodes[nodelines[k][0]].number,
+									    elements[j].nodes[nodelines[k][1]].number]).issubset(allexternal):
+
+									glBegin(GL_LINES)
+									for k in range(len(disp_mag_values)):
+										if subresult == 'magnitude' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																												['displacement'][6] > disp_mag_values[k]):
+												pass
+										elif subresult == 'x-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																												['displacement'][0] > disp_mag_values[k]):
+												pass
+										elif subresult == 'y-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																												['displacement'][1] > disp_mag_values[k]):
+												pass
+										elif subresult == 'z-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																												['displacement'][2] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									node1_color = deepcopy(disp_color)
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[nodelines[l][0]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[nodelines[l][0]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[nodelines[l][0]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if subresult == 'magnitude' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																												['displacement'][6] > disp_mag_values[k]):
+												pass
+										elif subresult == 'x-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																												['displacement'][0] > disp_mag_values[k]):
+												pass
+										elif subresult == 'y-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																												['displacement'][1] > disp_mag_values[k]):
+												pass
+										elif subresult == 'z-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																												['displacement'][2] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									node2_color = deepcopy(disp_color)
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[nodelines[l][1]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[nodelines[l][1]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[nodelines[l][1]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][2]))
+									glEnd()
+
+							else:
+								glBegin(GL_LINES)
+								for k in range(len(disp_mag_values)):
+									if subresult == 'magnitude' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																											['displacement'][6] > disp_mag_values[k]):
+											pass
+									elif subresult == 'x-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																											['displacement'][0] > disp_mag_values[k]):
+											pass
+									elif subresult == 'y-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																											['displacement'][1] > disp_mag_values[k]):
+											pass
+									elif subresult == 'z-dir' and (displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution] \
+																											['displacement'][2] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								node1_color = deepcopy(disp_color)
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[nodelines[l][0]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[nodelines[l][0]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[nodelines[l][0]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[l][0]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if subresult == 'magnitude' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																											['displacement'][6] > disp_mag_values[k]):
+											pass
+									elif subresult == 'x-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																											['displacement'][0] > disp_mag_values[k]):
+											pass
+									elif subresult == 'y-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																											['displacement'][1] > disp_mag_values[k]):
+											pass
+									elif subresult == 'z-dir' and (displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution] \
+																											['displacement'][2] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								node2_color = deepcopy(disp_color)
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[nodelines[l][1]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[nodelines[l][1]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[nodelines[l][1]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[nodelines[l][1]].number].solutions[solution]['displacement'][2]))
+								glEnd()								
 
 						for l in range(len(facenodes)):
-							glBegin(GL_TRIANGLES)
-							for k in range(len(disp_mag_values)):
-								if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
-																										['displacement'][6] > disp_mag_values[k]):
-										pass
-								elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
-																										['displacement'][0] > disp_mag_values[k]):
-										pass
-								elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
-																										['displacement'][1] > disp_mag_values[k]):
-										pass
-								elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
-																										['displacement'][2] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
-																										['displacement'][6] > disp_mag_values[k]):
-										pass
-								elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
-																										['displacement'][0] > disp_mag_values[k]):
-										pass
-								elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
-																										['displacement'][1] > disp_mag_values[k]):
-										pass
-								elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
-																										['displacement'][2] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
-																										['displacement'][6] > disp_mag_values[k]):
-										pass
-								elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
-																										['displacement'][0] > disp_mag_values[k]):
-										pass
-								elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
-																										['displacement'][1] > disp_mag_values[k]):
-										pass
-								elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
-																										['displacement'][2] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
-							glEnd()
+							if len(allexternal) != 0:
+								if set([elements[j].nodes[facenodes[l][0]].number,
+									    elements[j].nodes[facenodes[l][1]].number,
+									    elements[j].nodes[facenodes[l][2]].number]).issubset(allexternal):		
 							
-							
+									glBegin(GL_TRIANGLES)
+									for k in range(len(disp_mag_values)):
+										if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																												['displacement'][6] > disp_mag_values[k]):
+												pass
+										elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																												['displacement'][0] > disp_mag_values[k]):
+												pass
+										elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																												['displacement'][1] > disp_mag_values[k]):
+												pass
+										elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																												['displacement'][2] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																												['displacement'][6] > disp_mag_values[k]):
+												pass
+										elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																												['displacement'][0] > disp_mag_values[k]):
+												pass
+										elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																												['displacement'][1] > disp_mag_values[k]):
+												pass
+										elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																												['displacement'][2] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																												['displacement'][6] > disp_mag_values[k]):
+												pass
+										elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																												['displacement'][0] > disp_mag_values[k]):
+												pass
+										elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																												['displacement'][1] > disp_mag_values[k]):
+												pass
+										elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																												['displacement'][2] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+									glEnd()
+							else:
+								glBegin(GL_TRIANGLES)
+								for k in range(len(disp_mag_values)):
+									if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																											['displacement'][6] > disp_mag_values[k]):
+											pass
+									elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																											['displacement'][0] > disp_mag_values[k]):
+											pass
+									elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																											['displacement'][1] > disp_mag_values[k]):
+											pass
+									elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution] \
+																											['displacement'][2] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																											['displacement'][6] > disp_mag_values[k]):
+											pass
+									elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																											['displacement'][0] > disp_mag_values[k]):
+											pass
+									elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																											['displacement'][1] > disp_mag_values[k]):
+											pass
+									elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution] \
+																											['displacement'][2] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if subresult == 'magnitude' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																											['displacement'][6] > disp_mag_values[k]):
+											pass
+									elif subresult == 'x-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																											['displacement'][0] > disp_mag_values[k]):
+											pass
+									elif subresult == 'y-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																											['displacement'][1] > disp_mag_values[k]):
+											pass
+									elif subresult == 'z-dir' and (displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution] \
+																											['displacement'][2] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+								glEnd()							
+
 
 						if elements[j].type in ['BEAM2N2D', 'BEAM2N', 'ROD2N2D', 'ROD2N']:
 						
@@ -14285,9 +14439,9 @@ or .sol-files.
 								if is3D:
 									for l in range(len(facenodes)):
 										if len(allexternal) != 0:
-											if set([elements[j].nodes[facenodes[k][0]].number,
-												    elements[j].nodes[facenodes[k][1]].number,
-												    elements[j].nodes[facenodes[k][2]].number]).issubset(allexternal):		
+											if set([elements[j].nodes[facenodes[l][0]].number,
+												    elements[j].nodes[facenodes[l][1]].number,
+												    elements[j].nodes[facenodes[l][2]].number]).issubset(allexternal):		
 												glBegin(GL_TRIANGLES)
 		
 												glColor3f(0.0, 0.7, 0.0)
