@@ -13356,132 +13356,268 @@ or .sol-files.
 						for l in range(len(facenodes)):
 							if elements[j].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
 								break
-							glBegin(GL_TRIANGLES)
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif result not in elements[j].solutions[solution]:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif result not in elements[j].solutions[solution]:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif result not in elements[j].solutions[solution]:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
-								glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
-							elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
-								node_a = 1
-								node_b = 2
-								if facenodes[l][2] == 20:
-									node_a = 0
-									node_b = 2
-								elif facenodes[l][2] == 21:
-									node_a = 4
-									node_b = 6
-								elif facenodes[l][2] == 22:
-									node_a = 0
-									node_b = 5
-								elif facenodes[l][2] == 23:
-									node_a = 1
-									node_b = 6
-								elif facenodes[l][2] == 24:
-									node_a = 2
-									node_b = 7
-								elif facenodes[l][2] == 25:
-									node_a = 3
-									node_b = 4
-								else:
-									pass
-								glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+
+							if len(allexternal) != 0:
+								if set([elements[j].nodes[facenodes[l][0]].number,
+									    elements[j].nodes[facenodes[l][1]].number,
+									    elements[j].nodes[facenodes[l][2]].number]).issubset(allexternal):		
+		
+									glBegin(GL_TRIANGLES)
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif result not in elements[j].solutions[solution]:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif result not in elements[j].solutions[solution]:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif result not in elements[j].solutions[solution]:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+										glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+									elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+										node_a = 1
+										node_b = 2
+										if facenodes[l][2] == 20:
+											node_a = 0
+											node_b = 2
+										elif facenodes[l][2] == 21:
+											node_a = 4
+											node_b = 6
+										elif facenodes[l][2] == 22:
+											node_a = 0
+											node_b = 5
+										elif facenodes[l][2] == 23:
+											node_a = 1
+											node_b = 6
+										elif facenodes[l][2] == 24:
+											node_a = 2
+											node_b = 7
+										elif facenodes[l][2] == 25:
+											node_a = 3
+											node_b = 4
+										else:
+											pass
+										glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+									else:
+										glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+									glEnd()
+									
 							else:
-								glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
-							glEnd()
+
+								glBegin(GL_TRIANGLES)
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif result not in elements[j].solutions[solution]:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][0]+1]['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif result not in elements[j].solutions[solution]:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][1]+1]['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif result not in elements[j].solutions[solution]:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+									glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+									node_a = 1
+									node_b = 2
+									if facenodes[l][2] == 20:
+										node_a = 0
+										node_b = 2
+									elif facenodes[l][2] == 21:
+										node_a = 4
+										node_b = 6
+									elif facenodes[l][2] == 22:
+										node_a = 0
+										node_b = 5
+									elif facenodes[l][2] == 23:
+										node_a = 1
+										node_b = 6
+									elif facenodes[l][2] == 24:
+										node_a = 2
+										node_b = 7
+									elif facenodes[l][2] == 25:
+										node_a = 3
+										node_b = 4
+									else:
+										pass
+									glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								else:
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+								glEnd()
+								
 					glEndList()
 
 					self.displayLists[solution][result][subresult]['average'] = glGenLists(1)
@@ -13490,50 +13626,51 @@ or .sol-files.
 					disp_min = 0.
 					for i in elements:
 						for j in range(len(elements[i].nodes)):
-							if subresult == 'VonMises':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
-							elif subresult == 'MaxPrinc':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
-							elif subresult == 'MinPrinc':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
-							elif subresult == 'MaxShear':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+							if set([elements[i].nodes[j].number]).issubset(allexternal):	
+								if subresult == 'VonMises':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['VonMises']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+								elif subresult == 'MaxPrinc':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxPrinc']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+								elif subresult == 'MinPrinc':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MinPrinc']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+								elif subresult == 'MaxShear':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_stress']['MaxShear']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
 
 					self.displayLists[solution][result][subresult]['avg_max_val'] = disp_max
 					self.displayLists[solution][result][subresult]['avg_min_val'] = disp_min
@@ -13607,146 +13744,295 @@ or .sol-files.
 						for l in range(len(facenodes)):
 							if elements[j].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
 								break
-							glBegin(GL_TRIANGLES)
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if ((elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8)) or \
-									((elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25])):
-									if solution not in elements[j].solutions:
-										disp_color = (0.1, 0.1, 0.1)
-									elif subresult == 'VonMises' and ( \
-											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+
+							if len(allexternal) != 0:
+								if set([elements[j].nodes[facenodes[l][0]].number,
+									    elements[j].nodes[facenodes[l][1]].number,
+									    elements[j].nodes[facenodes[l][2]].number]).issubset(allexternal):		
+
+									glBegin(GL_TRIANGLES)
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if ((elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8)) or \
+											((elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25])):
+											if solution not in elements[j].solutions:
+												disp_color = (0.1, 0.1, 0.1)
+											elif subresult == 'VonMises' and ( \
+													elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxPrinc' and ( \
+													elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MinPrinc' and ( \
+													elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxShear' and ( \
+													elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+													pass
+											else:
+												disp_color = disp_colors[k]
+												break
+										else:
+											if solution not in elements[j].solutions:
+												disp_color = (0.1, 0.1, 0.1)
+											elif subresult == 'VonMises' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxPrinc' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MinPrinc' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxShear' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
+													pass
+											else:
+												disp_color = disp_colors[k]
+												break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+										glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+									elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+										node_a = 1
+										node_b = 2
+										if facenodes[l][2] == 20:
+											node_a = 0
+											node_b = 2
+										elif facenodes[l][2] == 21:
+											node_a = 4
+											node_b = 6
+										elif facenodes[l][2] == 22:
+											node_a = 0
+											node_b = 5
+										elif facenodes[l][2] == 23:
+											node_a = 1
+											node_b = 6
+										elif facenodes[l][2] == 24:
+											node_a = 2
+											node_b = 7
+										elif facenodes[l][2] == 25:
+											node_a = 3
+											node_b = 4
+										else:
 											pass
-									elif subresult == 'MaxPrinc' and ( \
-											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MinPrinc' and ( \
-											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MaxShear' and ( \
-											elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
-											pass
+										glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
 									else:
-										disp_color = disp_colors[k]
-										break
-								else:
-									if solution not in elements[j].solutions:
-										disp_color = (0.1, 0.1, 0.1)
-									elif subresult == 'VonMises' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MaxPrinc' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MinPrinc' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MaxShear' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
-											pass
-									else:
-										disp_color = disp_colors[k]
-										break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
-								glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
-							elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
-								node_a = 1
-								node_b = 2
-								if facenodes[l][2] == 20:
-									node_a = 0
-									node_b = 2
-								elif facenodes[l][2] == 21:
-									node_a = 4
-									node_b = 6
-								elif facenodes[l][2] == 22:
-									node_a = 0
-									node_b = 5
-								elif facenodes[l][2] == 23:
-									node_a = 1
-									node_b = 6
-								elif facenodes[l][2] == 24:
-									node_a = 2
-									node_b = 7
-								elif facenodes[l][2] == 25:
-									node_a = 3
-									node_b = 4
-								else:
-									pass
-								glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+										glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+									glEnd()
+
 							else:
-								glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
-							glEnd()
+								glBegin(GL_TRIANGLES)
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if ((elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8)) or \
+										((elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25])):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['stress']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									else:
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_stress']['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+									glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+									node_a = 1
+									node_b = 2
+									if facenodes[l][2] == 20:
+										node_a = 0
+										node_b = 2
+									elif facenodes[l][2] == 21:
+										node_a = 4
+										node_b = 6
+									elif facenodes[l][2] == 22:
+										node_a = 0
+										node_b = 5
+									elif facenodes[l][2] == 23:
+										node_a = 1
+										node_b = 6
+									elif facenodes[l][2] == 24:
+										node_a = 2
+										node_b = 7
+									elif facenodes[l][2] == 25:
+										node_a = 3
+										node_b = 4
+									else:
+										pass
+									glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								else:
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+								glEnd()
+
 					glEndList()
 
 				elif result == 'strain':
@@ -13872,132 +14158,267 @@ or .sol-files.
 						for l in range(len(facenodes)):
 							if elements[j].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
 								break
-							glBegin(GL_TRIANGLES)
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif result not in elements[j].solutions[solution]:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif result not in elements[j].solutions[solution]:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif result not in elements[j].solutions[solution]:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
-								glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
-							elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
-								node_a = 1
-								node_b = 2
-								if facenodes[l][2] == 20:
-									node_a = 0
-									node_b = 2
-								elif facenodes[l][2] == 21:
-									node_a = 4
-									node_b = 6
-								elif facenodes[l][2] == 22:
-									node_a = 0
-									node_b = 5
-								elif facenodes[l][2] == 23:
-									node_a = 1
-									node_b = 6
-								elif facenodes[l][2] == 24:
-									node_a = 2
-									node_b = 7
-								elif facenodes[l][2] == 25:
-									node_a = 3
-									node_b = 4
-								else:
-									pass
-								glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+							
+							if len(allexternal) != 0:
+								if set([elements[j].nodes[facenodes[l][0]].number,
+									    elements[j].nodes[facenodes[l][1]].number,
+									    elements[j].nodes[facenodes[l][2]].number]).issubset(allexternal):		
+							
+									glBegin(GL_TRIANGLES)
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif result not in elements[j].solutions[solution]:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif result not in elements[j].solutions[solution]:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif result not in elements[j].solutions[solution]:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+										glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+									elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+										node_a = 1
+										node_b = 2
+										if facenodes[l][2] == 20:
+											node_a = 0
+											node_b = 2
+										elif facenodes[l][2] == 21:
+											node_a = 4
+											node_b = 6
+										elif facenodes[l][2] == 22:
+											node_a = 0
+											node_b = 5
+										elif facenodes[l][2] == 23:
+											node_a = 1
+											node_b = 6
+										elif facenodes[l][2] == 24:
+											node_a = 2
+											node_b = 7
+										elif facenodes[l][2] == 25:
+											node_a = 3
+											node_b = 4
+										else:
+											pass
+										glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+									else:
+										glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+									glEnd()
+
 							else:
-								glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
-							glEnd()
+								glBegin(GL_TRIANGLES)
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif result not in elements[j].solutions[solution]:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][0]+1]['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif result not in elements[j].solutions[solution]:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][1]+1]['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif result not in elements[j].solutions[solution]:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+									glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+									node_a = 1
+									node_b = 2
+									if facenodes[l][2] == 20:
+										node_a = 0
+										node_b = 2
+									elif facenodes[l][2] == 21:
+										node_a = 4
+										node_b = 6
+									elif facenodes[l][2] == 22:
+										node_a = 0
+										node_b = 5
+									elif facenodes[l][2] == 23:
+										node_a = 1
+										node_b = 6
+									elif facenodes[l][2] == 24:
+										node_a = 2
+										node_b = 7
+									elif facenodes[l][2] == 25:
+										node_a = 3
+										node_b = 4
+									else:
+										pass
+									glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								else:
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+								glEnd()
+
 					glEndList()
 
 					self.displayLists[solution][result][subresult]['average'] = glGenLists(1)
@@ -14006,50 +14427,51 @@ or .sol-files.
 					disp_min = 0.
 					for i in elements:
 						for j in range(len(elements[i].nodes)):
-							if subresult == 'VonMises':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
-							elif subresult == 'MaxPrinc':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
-							elif subresult == 'MinPrinc':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
-							elif subresult == 'MaxShear':
-								if solution not in elements[i].solutions:
-									pass
-								elif result not in elements[i].solutions[solution]:
-									pass
-								else:
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear'] >= disp_max:
-										disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear']
-									if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear'] <= disp_min:
-										disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear']
-								self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+							if set([elements[i].nodes[j].number]).issubset(allexternal):	
+								if subresult == 'VonMises':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['VonMises']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+								elif subresult == 'MaxPrinc':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxPrinc'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+								elif subresult == 'MinPrinc':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MinPrinc']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
+								elif subresult == 'MaxShear':
+									if solution not in elements[i].solutions:
+										pass
+									elif result not in elements[i].solutions[solution]:
+										pass
+									else:
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear'] >= disp_max:
+											disp_max = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear']
+										if nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear'] <= disp_min:
+											disp_min = nodes[elements[i].nodes[j].number].solutions[solution]['avg_strain']['MaxShear']
+									self.displayLists[solution][result][subresult]['avg_info'] = 'Max (avg) %.4E' % (disp_max)
 
 					self.displayLists[solution][result][subresult]['avg_max_val'] = disp_max
 					self.displayLists[solution][result][subresult]['avg_min_val'] = disp_min
@@ -14123,146 +14545,296 @@ or .sol-files.
 						for l in range(len(facenodes)):
 							if elements[j].type in ['ROD2N2D', 'ROD2N', 'BEAM2N2D', 'BEAM2N']:
 								break
-							glBegin(GL_TRIANGLES)
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if solution not in elements[j].solutions:
-									disp_color = (0.1, 0.1, 0.1)
-								elif subresult == 'VonMises' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MinPrinc' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
-										pass
-								elif subresult == 'MaxShear' and ( \
-										nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
-										pass
-								else:
-									disp_color = disp_colors[k]
-									break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
-									   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
-										scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
-							for k in range(len(disp_mag_values)):
-								if ((elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8)) or \
-									((elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25])):
-									if solution not in elements[j].solutions:
-										disp_color = (0.1, 0.1, 0.1)
-									elif subresult == 'VonMises' and ( \
-											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+							
+							if len(allexternal) != 0:
+								if set([elements[j].nodes[facenodes[l][0]].number,
+									    elements[j].nodes[facenodes[l][1]].number,
+									    elements[j].nodes[facenodes[l][2]].number]).issubset(allexternal):		
+							
+									glBegin(GL_TRIANGLES)
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+									for k in range(len(disp_mag_values)):
+										if ((elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8)) or \
+											((elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25])):
+											if solution not in elements[j].solutions:
+												disp_color = (0.1, 0.1, 0.1)
+											elif subresult == 'VonMises' and ( \
+													elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxPrinc' and ( \
+													elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MinPrinc' and ( \
+													elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxShear' and ( \
+													elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+													pass
+											else:
+												disp_color = disp_colors[k]
+												break
+										else:
+											if solution not in elements[j].solutions:
+												disp_color = (0.1, 0.1, 0.1)
+											elif subresult == 'VonMises' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxPrinc' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MinPrinc' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
+													pass
+											elif subresult == 'MaxShear' and ( \
+													nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
+													pass
+											else:
+												disp_color = disp_colors[k]
+												break
+									glColor3f(disp_color[0], disp_color[1], disp_color[2])
+									if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+										glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+									elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+										node_a = 1
+										node_b = 2
+										if facenodes[l][2] == 20:
+											node_a = 0
+											node_b = 2
+										elif facenodes[l][2] == 21:
+											node_a = 4
+											node_b = 6
+										elif facenodes[l][2] == 22:
+											node_a = 0
+											node_b = 5
+										elif facenodes[l][2] == 23:
+											node_a = 1
+											node_b = 6
+										elif facenodes[l][2] == 24:
+											node_a = 2
+											node_b = 7
+										elif facenodes[l][2] == 25:
+											node_a = 3
+											node_b = 4
+										else:
 											pass
-									elif subresult == 'MaxPrinc' and ( \
-											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MinPrinc' and ( \
-											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MaxShear' and ( \
-											elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
-											pass
+										glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+												    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+													scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																	displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
 									else:
-										disp_color = disp_colors[k]
-										break
-								else:
-									if solution not in elements[j].solutions:
-										disp_color = (0.1, 0.1, 0.1)
-									elif subresult == 'VonMises' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MaxPrinc' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MinPrinc' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
-											pass
-									elif subresult == 'MaxShear' and ( \
-											nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
-											pass
-									else:
-										disp_color = disp_colors[k]
-										break
-							glColor3f(disp_color[0], disp_color[1], disp_color[2])
-							if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
-								glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
-							elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
-								node_a = 1
-								node_b = 2
-								if facenodes[l][2] == 20:
-									node_a = 0
-									node_b = 2
-								elif facenodes[l][2] == 21:
-									node_a = 4
-									node_b = 6
-								elif facenodes[l][2] == 22:
-									node_a = 0
-									node_b = 5
-								elif facenodes[l][2] == 23:
-									node_a = 1
-									node_b = 6
-								elif facenodes[l][2] == 24:
-									node_a = 2
-									node_b = 7
-								elif facenodes[l][2] == 25:
-									node_a = 3
-									node_b = 4
-								else:
-									pass
-								glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
-										    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
-											scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
-															displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+										glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+												   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+													scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+									glEnd()
+
 							else:
-								glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
-										   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
-											scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
-							glEnd()
+								glBegin(GL_TRIANGLES)
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											nodes[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][0]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][0]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][0]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if solution not in elements[j].solutions:
+										disp_color = (0.1, 0.1, 0.1)
+									elif subresult == 'VonMises' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MinPrinc' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
+											pass
+									elif subresult == 'MaxShear' and ( \
+											nodes[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
+											pass
+									else:
+										disp_color = disp_colors[k]
+										break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								glVertex3f(nodes[elements[j].nodes[facenodes[l][1]].number].coord[0][0] + 
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][0]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[1][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][1]),
+										   nodes[elements[j].nodes[facenodes[l][1]].number].coord[2][0] +
+											scale_factor*(displacements[elements[j].nodes[facenodes[l][1]].number].solutions[solution]['displacement'][2]))
+								for k in range(len(disp_mag_values)):
+									if ((elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8)) or \
+										((elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25])):
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												elements[j].solutions[solution]['strain']['nodal'][facenodes[l][2]+1]['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+									else:
+										if solution not in elements[j].solutions:
+											disp_color = (0.1, 0.1, 0.1)
+										elif subresult == 'VonMises' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['VonMises'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MaxPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MinPrinc' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MinPrinc'] > disp_mag_values[k]):
+												pass
+										elif subresult == 'MaxShear' and ( \
+												nodes[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['avg_strain']['MaxShear'] > disp_mag_values[k]):
+												pass
+										else:
+											disp_color = disp_colors[k]
+											break
+								glColor3f(disp_color[0], disp_color[1], disp_color[2])
+								if (elements[j].type == 'QUAD8N') and (facenodes[l][2] == 8):
+									glVertex3f( (nodes[elements[j].nodes[0].number].coord[0][0] + nodes[elements[j].nodes[4].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[1][0] + nodes[elements[j].nodes[4].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[0].number].coord[2][0] + nodes[elements[j].nodes[4].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								elif (elements[j].type == 'HEX20N') and (facenodes[l][2] in [20,21,22,23,24,25]):
+									node_a = 1
+									node_b = 2
+									if facenodes[l][2] == 20:
+										node_a = 0
+										node_b = 2
+									elif facenodes[l][2] == 21:
+										node_a = 4
+										node_b = 6
+									elif facenodes[l][2] == 22:
+										node_a = 0
+										node_b = 5
+									elif facenodes[l][2] == 23:
+										node_a = 1
+										node_b = 6
+									elif facenodes[l][2] == 24:
+										node_a = 2
+										node_b = 7
+									elif facenodes[l][2] == 25:
+										node_a = 3
+										node_b = 4
+									else:
+										pass
+									glVertex3f( (nodes[elements[j].nodes[node_a].number].coord[0][0] + nodes[elements[j].nodes[node_b].number].coord[0][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][0] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][0])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[1][0] + nodes[elements[j].nodes[node_b].number].coord[1][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][1] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][1])/2.),
+											    (nodes[elements[j].nodes[node_a].number].coord[2][0] + nodes[elements[j].nodes[node_b].number].coord[2][0])/2. + \
+												scale_factor*( (displacements[elements[j].nodes[0].number].solutions[solution]['displacement'][2] + \
+																displacements[elements[j].nodes[4].number].solutions[solution]['displacement'][2])/2.) )
+								else:
+									glVertex3f(nodes[elements[j].nodes[facenodes[l][2]].number].coord[0][0] + 
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][0]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[1][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][1]),
+											   nodes[elements[j].nodes[facenodes[l][2]].number].coord[2][0] +
+												scale_factor*(displacements[elements[j].nodes[facenodes[l][2]].number].solutions[solution]['displacement'][2]))
+								glEnd()
+
+
 					glEndList()
 
 				else:
