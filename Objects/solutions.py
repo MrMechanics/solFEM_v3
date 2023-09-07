@@ -19,8 +19,8 @@ from math import sqrt
 from timeit import time
 from scipy.sparse.linalg import ArpackNoConvergence
 from scipy.linalg import eigh
-from scipy.integrate import cumtrapz
-
+from scipy.integrate import cumtrapz, odeint
+from scipy.fft import fft, ifft
 
 
 
@@ -973,30 +973,18 @@ modified mass matrix, M_11.
 					elif dof == 3:
 						T = v.dot(e[3])
 						excitation_vectors[DOF][dof] += T[dof][0]
-#						for i in range(6):
-#							excitation_vectors[DOF][i] += T[i][0]
 					elif dof == 4:
 						T = v.dot(e[4])
 						excitation_vectors[DOF][dof] += T[dof][0]
-#						for i in range(6):
-#							excitation_vectors[DOF][i] += T[i][0]
 					elif dof == 5:
 						T = v.dot(e[5])
 						excitation_vectors[DOF][dof] += T[dof][0]
-#						for i in range(6):
-#							excitation_vectors[DOF][i] += T[i][0]
 					else:
 						pass
 				else:
 					pass
-		if hasattr(self,'K_mpc'):
-#			print('nDOFs:', nDOFs)
-#			print('index11:', self.index11)
-			excitation_vectors = excitation_vectors[self.index11]
-			excitation_vectors = excitation_vectors[:nDOFs+len(self.MPCs)-len(self.fixedDOFs)]
-		else:
-			excitation_vectors = excitation_vectors[self.index11]
-			excitation_vectors = excitation_vectors[:nDOFs-len(self.fixedDOFs)]
+		excitation_vectors = excitation_vectors[self.index11]
+		excitation_vectors = excitation_vectors[:nDOFs-len(self.fixedDOFs)]
 		
 		# Calculate the modal effective masses
 		self.modalMass = {}
@@ -1165,7 +1153,7 @@ of the acceleration.
 							  eigenmodes in the model
 							  corresponding to their
 							  eigenfrequencies.
-	'''
+  '''
 		if self.hasBaseMotion:
 			# rearrange the stiffness and mass matrices
 			# with regards to the accelerated boundary DOFs
@@ -1189,16 +1177,12 @@ of the acceleration.
 
 			M_q = sp.vstack([sp.hstack([self.M_22,self.M_12.T]),sp.hstack([self.M_12,self.M_11])])
 			m_q = TT.T.dot(M_q.dot(TT))
-#			m_22 = m_q[range(N)][:,range(N)]
 			m_w2 = m_q[range(N)][:,range(N,m_q.shape[0])]
 			self.m_w2 = m_w2.T
 			self.m_ww = m_q[range(N,m_q.shape[0])][:,range(N,m_q.shape[0])]
 
 			K_q = sp.vstack([sp.hstack([self.K_22,self.K_12.T]),sp.hstack([self.K_12,self.K_11])])
 			k_q = TT.T.dot(K_q.dot(TT))
-#			k_22 = k_q[range(N)][:,range(N)]
-#			k_w2 = k_q[range(N)][:,range(N,m_q.shape[0])]
-#			k_w2 = k_w2.T
 			self.k_ww = k_q[range(N,m_q.shape[0])][:,range(N,m_q.shape[0])]
 			
 			try:
@@ -1208,7 +1192,6 @@ of the acceleration.
 				eigs = ee.eigenvalues
 				svecs = ee.eigenvectors
 				output('only %d eigenvalues converged!' % len(eigs))
-
 
 		else:
 			# use the same constrained stiffness and 
@@ -1253,19 +1236,21 @@ of the acceleration.
 	self.accel  - Base acceleration as a function
 				  of time (self.t).
 	'''
+		start_time = time.time()
+		print('assembling load vector...')
 		self.F = np.zeros((self.mesh.nDOFs+len(self.MPCs),1))
 		for j in self.loads:
 			if self.loads[j].type in ['Acceleration', 'ForceDynamic']:
 				self.loads[j].calcDegreeOfFreedomForces(self.mesh.nDOFs,self.mesh.NFMT)
 			else:
-				print('\n\tUNKNOWN LOAD TYPE FOR MODAL DYNAMCS:', self.loads[j].type)
+				print('\n\tUNKNOWN LOAD TYPE FOR MODAL DYNAMICS:', self.loads[j].type)
 			for k in range(self.mesh.nDOFs):
 				self.F[k] += self.loads[j].F[k]
 
 			if self.loads[j].table.time[0] == 0.:
-				time = self.loads[j].table.time[-1]
+				time_t = self.loads[j].table.time[-1]
 				n = len(self.loads[j].table.time)
-				dt = time/n
+				dt = time_t/n
 				if self.hasBaseMotion:
 					self.accel = self.loads[j].table.accel
 				else:
@@ -1276,12 +1261,14 @@ of the acceleration.
 					self.loadError = True
 				else:
 					self.t = self.loads[j].table.time
-					self.time = time
+					self.time = time_t
 					self.n = n
 					self.dt = dt
 			else:
 				print('\n\tERROR!!!')
 				print('\n\tAcceleration/Force input table must start at time t = 0.')
+		end_time = time.time()
+		print('finished: ', end_time-start_time)
 
 
 	def newmarkCoefficients(self,dt):
@@ -1348,6 +1335,8 @@ of the acceleration.
 		# set Newmark coefficients
 		[a0,a1,a2,a3,a4,a5,a6,a7] = self.newmarkCoefficients(self.dt)
 
+		start_time = time.time()
+		print('setting damping ratio...')
 		# set damping ratio
 		for damp in self.dampings:
 			if len(self.dampings) > 1:
@@ -1365,6 +1354,8 @@ of the acceleration.
 						if freq == len(self.dampings[damp].table.frequency)-1:
 							self.dampRatio.append(self.dampings[damp].table.dampRatio[freq])
 			break
+		end_time = time.time()
+		print('finished: ', end_time-start_time)
 
 
 		if self.hasBaseMotion:
@@ -1372,6 +1363,9 @@ of the acceleration.
 			A_2 = self.F[self.index11]
 			enf_dofs = self.index11[M:]
 			free_dofs = self.index11[:M]
+
+			start_time = time.time()
+			print('find velocity and displacement at base...')
 
 			# given base acceleration, use integration
 			# to find velocity and displacement at base
@@ -1387,7 +1381,12 @@ of the acceleration.
 					enf_du = cumtrapz(enf_velc[r])
 					enf_disp[r] = np.zeros(self.n)
 					enf_disp[r][1:self.n] = enf_du*self.dt
+
+			end_time = time.time()
+			print('finished: ', end_time-start_time)
 					
+			start_time = time.time()
+			print('set up base acceleration, velocity and displacement vectors as sparse matrices...')
 			# set up base acceleration, velocity and
 			# displacement vectors as sparse matrices
 			# because of all the zeros
@@ -1429,6 +1428,10 @@ of the acceleration.
 			C_Q = sp.diags(C_Q,0)
 			C_Q = C_Q.tocsc()
 
+			end_time = time.time()
+			print('finished: ', end_time-start_time)
+					
+
 			# variables in which to save
 			# the requested results
 			self.displacement = {}
@@ -1436,6 +1439,8 @@ of the acceleration.
 			self.acceleration = {}
 			self.frf_accel = {}
 
+			start_time = time.time()
+			print('specify res_dofs...')
 			# specify res_dofs
 			res_dofs = {'displacement': [], 'velocity': [], 'acceleration': []}
 			for result in self.results:
@@ -1547,7 +1552,9 @@ of the acceleration.
 										if self.mesh.NFMT[node]+m not in res_dofs[res]:
 											res_dofs[res].append(self.mesh.NFMT[node]+m)
 									m += 1
-
+			end_time = time.time()
+			print('finished: ', end_time-start_time)
+			
 			disp = {}
 			for dof in res_dofs['displacement']:
 				disp[dof] = np.zeros((self.n,1))
@@ -1565,10 +1572,23 @@ of the acceleration.
 
 			KH = K_Q+a0*M_Q+a1*C_Q
 
+			start_time = time.time()
+			print('invert KH...')			
+			
 			inv_KH = sp.linalg.inv(KH)
 			inv_KH_diag = np.zeros(self.nModes)
 			for i in range(self.nModes):
 				inv_KH_diag[i]=inv_KH[i,i]
+
+			end_time = time.time()
+			print('finished: ', end_time-start_time)
+
+			start_time = time.time()
+			print('calculate response in modal coordinates...')			
+
+			disp_indices = {dof: free_dofs.index(dof) for dof in res_dofs['displacement']}
+			velc_indices = {dof: free_dofs.index(dof) for dof in res_dofs['velocity']}
+			accl_indices = {dof: free_dofs.index(dof) for dof in res_dofs['acceleration']}
 
 			n_min1 = self.n-1
 			for i in range(n_min1):
@@ -1590,12 +1610,24 @@ of the acceleration.
 					qdd[dof] = qddn[dof]
 
 				for dof in res_dofs['displacement']:
-					disp[dof][i+1] = evecs_s[free_dofs.index(dof)].dot(q)
+					disp[dof][i+1] = evecs_s[disp_indices[dof]].dot(q)
 				for dof in res_dofs['velocity']:
-					velc[dof][i+1] = evecs_s[free_dofs.index(dof)].dot(qd)
+					velc[dof][i+1] = evecs_s[velc_indices[dof]].dot(qd)
 				for dof in res_dofs['acceleration']:
-					accl[dof][i+1] = evecs_s[free_dofs.index(dof)].dot(qdd)
+					accl[dof][i+1] = evecs_s[accl_indices[dof]].dot(qdd)
 
+#				for dof in res_dofs['displacement']:
+#					disp[dof][i+1] = evecs_s[free_dofs.index(dof)].dot(q)
+#				for dof in res_dofs['velocity']:
+#					velc[dof][i+1] = evecs_s[free_dofs.index(dof)].dot(qd)
+#				for dof in res_dofs['acceleration']:
+#					accl[dof][i+1] = evecs_s[free_dofs.index(dof)].dot(qdd)
+
+			end_time = time.time()
+			print('finished: ', end_time-start_time)
+			
+			start_time = time.time()
+			print('transform response from modal to real coordinates...')			
 			# set up acceleration, velocity and
 			# displacement vectors for all dofs as
 			# sparse matrices because of all the zeros
@@ -1644,6 +1676,12 @@ of the acceleration.
 			ZaT = sp.hstack([aT.T,enf_accl])
 			ZaT = ZaT.tocsc()
 
+			end_time = time.time()
+			print('finished: ', end_time-start_time)
+			
+			start_time = time.time()
+			print('save results to file...')			
+
 			# save requested results to
 			# solution to be written in
 			# *.out-file
@@ -1683,6 +1721,8 @@ of the acceleration.
 						self.freq = (1./self.dt)/2.
 						self.df = self.freq/len(self.frf_accel[node][dof]['MAGN'])
 						self.f = np.arange(0., self.freq, self.df)
+			end_time = time.time()
+			print('finished: ', end_time-start_time)
 
 
 		else:
