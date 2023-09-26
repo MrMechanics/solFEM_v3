@@ -1962,7 +1962,7 @@ Has 3 active degrees of freedom per node.
 		
 		detJ = x21*(y23*z34-y34*z23) + x32*(y34*z12-y12*z34) + x43*(y12*z23-y23*z12)
 		
-		invdetJ = 1.0/(6.0*detJ)
+		invdetJ = 1.0/detJ
 		
 		dNf_drc = [[y42*z32-y32*z42, y31*z43-y34*z13, y24*z14-y14*z24, y13*z21-y12*z31],
 				   [x32*z42-x42*z32, x43*z31-x13*z34, x14*z24-x24*z14, x21*z13-x31*z12],
@@ -1994,8 +1994,9 @@ Has 3 active degrees of freedom per node.
 			B[5].append(0.0)
 			B[5].append(dNf_drc[0][r])
 		B = np.array(B)
+		B = B*invdetJ
 
-		return [invdetJ,B]
+		return [detJ,B]
 
 
 	def calcStiffnessMatrix(self):
@@ -2005,8 +2006,8 @@ Has 3 active degrees of freedom per node.
 	'''
 		self.K = np.array([[0.0,]*12,]*12)
 
-		[invdetJ,B] = self.calcStrainDisplacementMatrix()
-		self.K = ((B.transpose().dot(self.section.E)).dot(B))*invdetJ + self.K
+		[detJ,B] = self.calcStrainDisplacementMatrix()
+		self.K = ((B.transpose().dot(self.section.E)).dot(B))*(detJ/6.) + self.K
 
 
 	def calcMassMatrix(self):
@@ -2040,16 +2041,16 @@ Has 3 active degrees of freedom per node.
 		if calcStress == True:
 			self.solutions[sol]['stress'] = {'nodal': {}}
 
-		[invdetJ,B] = self.calcStrainDisplacementMatrix()
+		[detJ,B] = self.calcStrainDisplacementMatrix()
 
 		if calcStrain:
-			self.solutions[sol]['strain']['nodal'][1] = {'strain_tensor': (B*invdetJ).dot(u), 
+			self.solutions[sol]['strain']['nodal'][1] = {'strain_tensor': B.dot(u), 
 									'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
 			self.solutions[sol]['strain']['nodal'][2] = self.solutions[sol]['strain']['nodal'][1]
 			self.solutions[sol]['strain']['nodal'][3] = self.solutions[sol]['strain']['nodal'][1]
 			self.solutions[sol]['strain']['nodal'][4] = self.solutions[sol]['strain']['nodal'][1]
 		if calcStress:
-			self.solutions[sol]['stress']['nodal'][1] = {'stress_tensor': self.section.E.dot((B*invdetJ).dot(u)), 
+			self.solutions[sol]['stress']['nodal'][1] = {'stress_tensor': self.section.E.dot(B.dot(u)), 
 									'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
 			self.solutions[sol]['stress']['nodal'][2] = self.solutions[sol]['stress']['nodal'][1]
 			self.solutions[sol]['stress']['nodal'][3] = self.solutions[sol]['stress']['nodal'][1]
@@ -2185,7 +2186,7 @@ Has 3 active degrees of freedom per node.
 
 		detJ = Jx21*(Jy23*Jz34-Jy34*Jz23) + Jx32*(Jy34*Jz12-Jy12*Jz34) + Jx43*(Jy12*Jz23-Jy23*Jz12)
 
-		invdetJ = 1.0/(6.0*detJ)
+		invdetJ = 1.0/detJ
 
 		a1 = Jy42*Jz32-Jy32*Jz42
 		a2 = Jy31*Jz43-Jy34*Jz13
@@ -2236,8 +2237,9 @@ Has 3 active degrees of freedom per node.
 			B[5].append(0.0)
 			B[5].append(dNf_drc[0][r])
 		B = np.array(B)
+		B = B*invdetJ
 
-		return [invdetJ,B]
+		return [detJ,B]
 
 
 	def calcStiffnessMatrix(self):
@@ -2258,9 +2260,9 @@ Has 3 active degrees of freedom per node.
 			zeta3 = self.gaussPnts[i][2]
 			zeta4 = self.gaussPnts[i][3]
 
-			[invdetJ,B] = self.calcStrainDisplacementMatrix(zeta1,zeta2,zeta3,zeta4)
+			[detJ,B] = self.calcStrainDisplacementMatrix(zeta1,zeta2,zeta3,zeta4)
 
-			self.K = ((B.transpose().dot(self.section.E)).dot(B))*(w*invdetJ) + self.K
+			self.K = ((B.transpose().dot(self.section.E)).dot(B))*(w*detJ/6.) + self.K
 
 
 	def calcMassMatrix(self):
@@ -2306,12 +2308,12 @@ Has 3 active degrees of freedom per node.
 			zeta3 = self.gaussPnts[i][2]
 			zeta4 = self.gaussPnts[i][3]
 
-			[invdetJ,B] = self.calcStrainDisplacementMatrix(zeta1,zeta2,zeta3,zeta4)
+			[detJ,B] = self.calcStrainDisplacementMatrix(zeta1,zeta2,zeta3,zeta4)
 			if calcStrain:
-				self.solutions[sol]['strain']['int_points'][i+1] = {'strain_tensor': (B*invdetJ).dot(u), 
+				self.solutions[sol]['strain']['int_points'][i+1] = {'strain_tensor': B.dot(u), 
 											'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
 			if calcStress:
-				self.solutions[sol]['stress']['int_points'][i+1] = {'stress_tensor': self.section.E.dot((B*invdetJ).dot(u)), 
+				self.solutions[sol]['stress']['int_points'][i+1] = {'stress_tensor': self.section.E.dot(B.dot(u)), 
 											'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
 		
 		zeta = [[1.,0.,0.,0.], [0.,1.,0.,0.], [0.,0.,1.,0.], [0.,0.,0.,1.], [.5,.5,0.,0.],
@@ -2324,10 +2326,10 @@ Has 3 active degrees of freedom per node.
 
 			[invdetJ,B] = self.calcStrainDisplacementMatrix(zeta1,zeta2,zeta3,zeta4)
 			if calcStrain:
-				self.solutions[sol]['strain']['nodal'][j+1] = {'strain_tensor': (B*invdetJ).dot(u), 
+				self.solutions[sol]['strain']['nodal'][j+1] = {'strain_tensor': B.dot(u), 
 									'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
 			if calcStress:
-				self.solutions[sol]['stress']['nodal'][j+1] = {'stress_tensor': self.section.E.dot((B*invdetJ).dot(u)), 
+				self.solutions[sol]['stress']['nodal'][j+1] = {'stress_tensor': self.section.E.dot(B.dot(u)), 
 									'VonMises': 0., 'MaxPrinc': 0., 'MinPrinc': 0., 'MaxShear': 0.}
 
 		if calcStrain == True:
